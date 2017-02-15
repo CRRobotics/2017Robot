@@ -1,12 +1,12 @@
-#ifndef ACQUISITION_IN_H
-#define ACQUISITION_IN_H
+#ifndef START_CLIMBER_H
+#define START_CLIMBER_H
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
 
-class AcquisitionIn: public CommandBase {
+class StartClimber: public CommandBase {
 public:
-	AcquisitionIn();
+	StartClimber();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;

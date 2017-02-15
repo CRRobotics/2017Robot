@@ -1,32 +1,32 @@
-#include "AcquisitionIn.h"
+#include "StopClimber.h"
 
-AcquisitionIn::AcquisitionIn() {
+StopClimber::StopClimber() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 }
 
 // Called just before this Command runs the first time
-void AcquisitionIn::Initialize() {
+void StopClimber::Initialize() {
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void AcquisitionIn::Execute() {
-	Robot::acquisition->Intake();
+void StopClimber::Execute() {
+	Robot::climbing->UnLockMotor();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool AcquisitionIn::IsFinished() {
-	return false;
+bool StopClimber::IsFinished() {
+	return !Robot::climbing->IsMotorLocked();
 }
 
 // Called once after isFinished returns true
-void AcquisitionIn::End() {
+void StopClimber::End() {
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void AcquisitionIn::Interrupted() {
+void StopClimber::Interrupted() {
 
 }

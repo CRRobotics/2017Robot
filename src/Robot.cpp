@@ -9,13 +9,31 @@
 
 #include "Commands/ExampleCommand.h"
 #include "CommandBase.h"
+#include "Robot.h"
 
-class Robot: public frc::IterativeRobot {
-public:
-	void RobotInit() override {
-		chooser.AddDefault("Default Auto", new ExampleCommand());
-		// chooser.AddObject("My Auto", new MyAutoCommand());
-		frc::SmartDashboard::PutData("Auto Modes", &chooser);
+std::unique_ptr<OI> oi;
+std::shared_ptr<Drive> drive;
+std::shared_ptr<Shooter> shooter;
+std::shared_ptr<Gear> gear;
+std::shared_ptr<Climbing> climbing;
+std::shared_ptr<Acquisition> acquisition;
+std::shared_ptr<Storage> storage;
+
+std::unique_ptr<frc::Command> autonomousCommand;
+frc::SendableChooser<frc::Command*> chooser;
+
+void Robot::RobotInit() {
+	// chooser.AddObject("My Auto", new MyAutoCommand());
+	frc::SmartDashboard::PutData("Auto Modes", &chooser);
+
+		RobotMap::init();
+		oi.reset(new OI);
+		drive.reset(new Drive());
+		shooter.reset(new Shooter());
+		gear.reset(new Gear());
+		climbing.reset(new Climbing());
+		acquisition.reset(new Acquisition());
+		storage.reset(new Storage());
 	}
 
 	/**
@@ -23,11 +41,11 @@ public:
 	 * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
 	 */
-	void DisabledInit() override {
+	void DisabledInit() {
 
 	}
 
-	void DisabledPeriodic() override {
+	void DisabledPeriodic() {
 		frc::Scheduler::GetInstance()->Run();
 	}
 
@@ -42,7 +60,7 @@ public:
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the if-else structure below with additional strings & commands.
 	 */
-	void AutonomousInit() override {
+	void AutonomousInit() {
 		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
 		if (autoSelected == "My Auto") {
 			autonomousCommand.reset(new MyAutoCommand());
@@ -51,38 +69,34 @@ public:
 			autonomousCommand.reset(new ExampleCommand());
 		} */
 
-		autonomousCommand.reset(chooser.GetSelected());
 
 		if (autonomousCommand.get() != nullptr) {
 			autonomousCommand->Start();
 		}
 	}
 
-	void AutonomousPeriodic() override {
+	void AutonomousPeriodic(){
 		frc::Scheduler::GetInstance()->Run();
 	}
 
-	void TeleopInit() override {
+	void TeleopInit(){
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != nullptr) {
+		if (true) {
 			autonomousCommand->Cancel();
 		}
 	}
 
-	void TeleopPeriodic() override {
+	void TeleopPeriodic(){
 		frc::Scheduler::GetInstance()->Run();
 	}
 
-	void TestPeriodic() override {
+	void TestPeriodic(){
 		frc::LiveWindow::GetInstance()->Run();
 	}
 
-private:
-	std::unique_ptr<frc::Command> autonomousCommand;
-	frc::SendableChooser<frc::Command*> chooser;
-};
+
 
 START_ROBOT_CLASS(Robot)

@@ -1,12 +1,12 @@
-#ifndef ACQUISITION_IN_H
-#define ACQUISITION_IN_H
+#ifndef GEAR_IN_H
+#define GEAR_IN_H
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
 
-class AcquisitionIn: public CommandBase {
+class GearIn: public CommandBase {
 public:
-	AcquisitionIn();
+	GearIn();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
