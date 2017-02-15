@@ -21,8 +21,7 @@ std::shared_ptr<CANTalon> RobotMap::driverDrive2;
 std::shared_ptr<CANTalon> RobotMap::drivelDrive1;
 std::shared_ptr<CANTalon> RobotMap::drivelDrive2;
 std::shared_ptr<Solenoid> RobotMap::drivebrakes;
-std::shared_ptr<CANTalon> RobotMap::shooterflywheel1;
-std::shared_ptr<CANTalon> RobotMap::shooterflywheel2;
+std::shared_ptr<CANTalon> RobotMap::shooterflywheel;
 std::shared_ptr<Solenoid> RobotMap::shooterangleShift;
 std::shared_ptr<Solenoid> RobotMap::gearpiston;
 std::shared_ptr<Solenoid> RobotMap::climbingdriveShiftPiston;
@@ -59,11 +58,8 @@ void RobotMap::init() {
     drivebrakes.reset(new Solenoid(BRAKES_IN, BRAKES_OUT));
     lw->AddActuator("Drive", "brakes", drivebrakes);
     
-    shooterflywheel1.reset(new CANTalon(FLYWHEEL_1));
-    lw->AddActuator("Shooter", "flywheel1", shooterflywheel1);
-    
-    shooterflywheel2.reset(new CANTalon(FLYWHEEL_2));
-    lw->AddActuator("Shooter", "flywheel2", shooterflywheel2);
+    shooterflywheel.reset(new CANTalon(FLYWHEEL));
+    lw->AddActuator("Shooter", "flywheel1", shooterflywheel);
     
     shooterangleShift.reset(new Solenoid(ANGLE_SHIFT_DOWN, ANGLE_SHIFT_UP));
     lw->AddActuator("Shooter", "angleShift", shooterangleShift);

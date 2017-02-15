@@ -10,8 +10,7 @@
 #define L_DRIVE_2 3
 #define BRAKES_OUT 4
 #define BRAKES_IN 0
-#define FLYWHEEL_1 4
-#define FLYWHEEL_2 7
+#define FLYWHEEL 4
 #define ANGLE_SHIFT_UP 3
 #define ANGLE_SHIFT_DOWN 0
 #define PISTON_UP 0
@@ -51,8 +50,7 @@ public:
 	static std::shared_ptr<CANTalon> drivelDrive1;
 	static std::shared_ptr<CANTalon> drivelDrive2;
 	static std::shared_ptr<Solenoid> drivebrakes;
-	static std::shared_ptr<CANTalon> shooterflywheel1;
-	static std::shared_ptr<CANTalon> shooterflywheel2;
+	static std::shared_ptr<CANTalon> shooterflywheel;
 	static std::shared_ptr<Solenoid> shooterangleShift;
 	static std::shared_ptr<Solenoid> gearpiston;
 	static std::shared_ptr<Solenoid> climbingdriveShiftPiston;

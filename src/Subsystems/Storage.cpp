@@ -28,11 +28,15 @@ void Storage::SetControlMode(CANTalon::ControlMode cMode){
 	if (cMode == CANTalon::ControlMode::kSpeed)
 	{
 		ballControlMotor->SetPIDSourceType(PIDSourceType::kRate);
-		ballControlMotor->SetPID(storageP, storageI, storageD, storageF);
+		ballControlMotor->SetPID(storageVP, storageVI, storageVD, storageVF);
+	}
+	else if(cMode == CANTalon::ControlMode::kPosition)
+	{
+
 	}
 }
 
-void Storage::MoveStorage()
+void Storage::MoveStorage(double speed)
 {
-	ballControlMotor->Set(.5);
+	ballControlMotor->Set(speed);
 }

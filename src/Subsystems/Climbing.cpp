@@ -44,10 +44,7 @@ void Climbing::UnLockMotor()
 {
 	driveShiftPiston->Set(false);
 }
-void Climbing::Climb()
-{
-	Robot::drive->TankDrive(.5,.5,false);
-}
+
 bool Climbing::IsMotorLocked(){
 	return driveShiftPiston->Get();
 }

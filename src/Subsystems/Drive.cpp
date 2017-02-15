@@ -56,14 +56,8 @@ int Drive::GetREncoderRate(){
 // here. Call these from Commands.
 
 void Drive::TankDrive(double lSpeed, double rSpeed, bool speedClosed){
-	if(!speedClosed)
-	{
-		rDrive1->Set(rSpeed);
-		rDrive2->Set(rSpeed);
-		lDrive1->Set(lSpeed);
-		lDrive2->Set(lSpeed);
-	}
-	//TODO Implement closed loop
+	rDrive1->Set(rSpeed);
+	rDrive2->Set(rSpeed);
 }
 
 void Drive::ChangeGear(bool high)
@@ -100,20 +94,37 @@ bool Drive::GetGear(){
 	return gearShift->Get();
 }
 
-//Should be run once everytime we
+//Should be run once every time we change into a control mode
 void Drive::SetControlMode(DriveControlMode cMode){
 	switch (cMode)
 	{
 		case DriveControlMode::MotionProfile:
-
+			rDrive1->SetControlMode(CANTalon::ControlMode::kMotionProfile);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kMotionProfile);
+			rDrive1->SetPID(motionP, motionI, motionD, motionF);
+			lDrive1->SetPID(motionP, motionI, motionD, motionF);
 		break;
 		case DriveControlMode::Position:
+			rDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
+			rDrive1->SetPID(posP, posI, posD, posF);
+			lDrive1->SetPID(posP, posI, posD, posF);
 		break;
 		case DriveControlMode::VelocityDriving:
+			rDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+			rDrive1->SetPID(vDriveP, vDriveI, vTurnD, vDriveF);
+			lDrive1->SetPID(vDriveP, vDriveI, vTurnD, vDriveF);
 		break;
 		case DriveControlMode::VelocityTurning:
+			rDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+			rDrive1->SetPID(vTurnP, vTurnI, vTurnD, vTurnF);
+			lDrive1->SetPID(vTurnP, vTurnI, vTurnD, vTurnF);
 		break;
 		case DriveControlMode::Voltage:
+			rDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
 		break;
 	};
 }
