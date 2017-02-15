@@ -1,11 +1,11 @@
-#ifndef EXAMPLE_COMMAND_H
-#define EXAMPLE_COMMAND_H
+#ifndef ACQUISITION_IN_H
+#define ACQUISITION_IN_H
 
-#include "../CommandBase.h"
+#include "../../CommandBase.h"
 
-class ExampleCommand: public CommandBase {
+class AcquisitionIn: public CommandBase {
 public:
-	ExampleCommand();
+	AcquisitionIn();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;

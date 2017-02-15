@@ -1,8 +1,8 @@
 #ifndef JOYSTICK_DRIVE_H
 #define JOYSTICK_DRIVE_H
 
-#include "../CommandBase.h"
-#include "../Robot.h"
+#include "../../CommandBase.h"
+#include "../../Robot.h"
 
 class JoystickDrive: public CommandBase {
 public:
