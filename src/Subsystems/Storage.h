@@ -24,14 +24,14 @@ private:
 	// It's desirable that everything possible is private except
 	// for methods that implement subsystem capabilities
 	std::shared_ptr<CANTalon> ballControlMotor;
-	const double storageVP = 0.0;
-	const double storageVI = 0.0;
-	const double storageVD = 0.0;
-	const double storageVF = 0.0;
-	const double storagePP = 0.0;
-	const double storagePI = 0.0;
-	const double storagePD = 0.0;
-	const double storagePF = 0.0;
+	double storageVP = 0.0;
+	double storageVI = 0.0;
+	double storageVD = 0.0;
+	double storageVF = 0.0;
+	double storagePP = 0.0;
+	double storagePI = 0.0;
+	double storagePD = 0.0;
+	double storagePF = 0.0;
 
 
 public:

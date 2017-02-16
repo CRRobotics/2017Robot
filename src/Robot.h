@@ -31,6 +31,18 @@
 
 class Robot : public IterativeRobot {
 public:
+
+	enum class TestMode{
+		NONE,
+		SHOOTER_SPEED,
+		STORAGE_SPEED,
+		DRIVE_SPEED,
+		DRIVE_TURN_SPEED,
+		DRIVE_POSITION,
+		DRIVE_MOTION_PROFILE
+	};
+
+	static TestMode tMode;
 	std::unique_ptr<Command> autonomousCommand;
 	static std::unique_ptr<OI> oi;
 	LiveWindow *lw = LiveWindow::GetInstance();

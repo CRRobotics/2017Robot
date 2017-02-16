@@ -12,6 +12,7 @@
 #include "CANTalon.h"
 
 
+#include "Robot.h"
 #include "Storage.h"
 #include "../RobotMap.h"
 
