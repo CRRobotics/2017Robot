@@ -1,6 +1,7 @@
 #include "OI.h"
 
 #include <WPILib.h>
+#include "Robot.h"
 
 bool OI::controllerLeft;
 

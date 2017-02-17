@@ -44,7 +44,7 @@ public:
 
 	static TestMode tMode;
 	std::unique_ptr<Command> autonomousCommand;
-	static std::unique_ptr<OI> oi;
+	static std::shared_ptr<OI> oi;
 	LiveWindow *lw = LiveWindow::GetInstance();
 	static std::shared_ptr<Drive> drive;
     static std::shared_ptr<Shooter> shooter;

@@ -19,7 +19,6 @@
 #define SHOOTER_ANGLE_FAR 0
 #define SHOOTER_ANGLE_SHORT 0
 
-
 #include "WPILib.h"
 
 

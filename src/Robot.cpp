@@ -11,7 +11,7 @@
 #include "CommandBase.h"
 #include "Robot.h"
 
-std::unique_ptr<OI> Robot::oi;
+std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Drive> Robot::drive;
 std::shared_ptr<Shooter> Robot::shooter;
 std::shared_ptr<Gear> Robot::gear;
@@ -50,9 +50,15 @@ void Robot::RobotInit() {
 		break;
 		case TestMode::DRIVE_TURN_SPEED:
 			SmartDashboard::PutString("test_mode", "drive_turn_speed");
+			SmartDashboard::PutNumber("test_max_speed", 0);
+			SmartDashboard::PutNumber("test_slow_start", 0);
+			SmartDashboard::PutNumber("test_slow_end", 0);
 		break;
 		case TestMode::DRIVE_POSITION:
 			SmartDashboard::PutString("test_mode", "drive_speed_position");
+			SmartDashboard::PutNumber("test_max_speed", 0);
+			SmartDashboard::PutNumber("test_slow_start", 0);
+			SmartDashboard::PutNumber("test_slow_end", 0);
 		break;
 		case TestMode::DRIVE_MOTION_PROFILE:
 			SmartDashboard::PutString("test_mode", "drive_motion_profile");

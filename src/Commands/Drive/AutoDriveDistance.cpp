@@ -9,12 +9,16 @@ AutoDriveDistance::AutoDriveDistance(double dist) {
 
 // Called just before this Command runs the first time
 void AutoDriveDistance::Initialize() {
-	desiredDist = SmartDashboard::GetNumber("test_setPoint", 0);
+	if (Robot::tMode == Robot::TestMode::DRIVE_POSITION)
+	{
+		desiredDist = SmartDashboard::GetNumber("test_setPoint", 0);
+		maxSpeed = SmartDashboard::GetNumber("test_max_speed", 0);
+		slowStart = SmartDashboard::GetNumber("test_slow_start", 0);
+		slowEnd = SmartDashboard::GetNumber("test_slow_end", 0);
+	}
 	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
 	desiredEncTick = avgEncTick + desiredDist * ENC_PULSE_PER_IN;
-	maxSpeed = SmartDashboard::GetNumber("test_max_speed", 0);
-	slowStart = SmartDashboard::GetNumber("test_slow_start", 0);
-	slowEnd = SmartDashboard::GetNumber("test_slow_end", 0);
+	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 }
 
 // Called repeatedly when this Command is scheduled to run
