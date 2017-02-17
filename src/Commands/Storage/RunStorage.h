@@ -1,10 +1,10 @@
 #ifndef RUN_STORAGE_H
 #define RUN_STORAGE_H
 
+#include <Commands/Shooter/RunShooter.h>
 #include "../../CommandBase.h"
-#include "../Shooter/FireShooter.h"
 
-class RunStorage: public CommandBase {
+class RunStorage: public Command {
 public:
 	RunStorage();
 	void Initialize() override;

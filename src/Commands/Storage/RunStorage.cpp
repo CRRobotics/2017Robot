@@ -13,7 +13,7 @@ void RunStorage::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RunStorage::Execute() {
-	if (fabs(Robot::shooter->GetFlywheelSpeed() - FireShooter::GetDesiredSpeed()) < SHOOTER_ACCEPTABLE_ERROR){
+	if (fabs(Robot::shooter->GetFlywheelSpeed() - RunShooter::GetDesiredSpeed()) < SHOOTER_ACCEPTABLE_ERROR){
 		Robot::storage->MoveStorage(0.3);
 	}
 }
