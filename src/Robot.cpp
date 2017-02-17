@@ -8,6 +8,8 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 #include "Commands/ExampleCommand.h"
+#include "Commands/Drive/AutoDriveDistance.h"
+#include "Commands/Drive/AutoDriveTurn.h"
 #include "CommandBase.h"
 #include "Robot.h"
 
@@ -53,12 +55,14 @@ void Robot::RobotInit() {
 			SmartDashboard::PutNumber("test_max_speed", 0);
 			SmartDashboard::PutNumber("test_slow_start", 0);
 			SmartDashboard::PutNumber("test_slow_end", 0);
+			SmartDashboard::PutData("test_turn_to_setPoint", new AutoDriveTurn(0));
 		break;
 		case TestMode::DRIVE_POSITION:
 			SmartDashboard::PutString("test_mode", "drive_speed_position");
 			SmartDashboard::PutNumber("test_max_speed", 0);
 			SmartDashboard::PutNumber("test_slow_start", 0);
 			SmartDashboard::PutNumber("test_slow_end", 0);
+			SmartDashboard::PutData("test_drive_to_setPoint", new AutoDriveDistance(0));
 		break;
 		case TestMode::DRIVE_MOTION_PROFILE:
 			SmartDashboard::PutString("test_mode", "drive_motion_profile");

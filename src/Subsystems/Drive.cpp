@@ -68,7 +68,7 @@ void Drive::TankDrive(double lSpeed, double rSpeed, bool speedClosed){
 
 void Drive::ChangeGear(bool high)
 {
-	gearShift->Set(high);
+	gearShift->Set(!high);
 }
 
 //void Drive::EnableBraking()

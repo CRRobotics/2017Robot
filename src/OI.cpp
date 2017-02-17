@@ -2,6 +2,15 @@
 
 #include <WPILib.h>
 #include "Robot.h"
+#include "Commands/Acquisition/AcquisitionIn.h"
+#include "Commands/Climbing/StartClimber.h"
+#include "Commands/Climbing/StopClimber.h"
+#include "Commands/Drive/ShiftHigh.h"
+#include "Commands/Drive/ShiftLow.h"
+#include "Commands/Gear/GearIn.h"
+#include "Commands/Gear/GearOut.h"
+#include "Commands/Shooter/FireShooter.h"
+#include "Commands/Storage/RunStorage.h"
 
 bool OI::controllerLeft;
 
@@ -35,13 +44,29 @@ void OI::MapButtons(){
 		driverR = lJoystick2;
 	}
 	driveShiftLowGear.reset(new JoystickButton(driverL.get(), SHIFT_LOW_GEAR));
+	driveShiftLowGear->WhenPressed(new ShiftLow());
+
 	driveShiftHighGear.reset(new JoystickButton(driverR.get(), SHIFT_HIGH_GEAR));
+	driveShiftHighGear->WhenPressed(new ShiftHigh());
+
 	drivePTO.reset(new JoystickButton(controllerR.get(), SHIFT_PTO));
+	drivePTO->WhenPressed(new StartClimber());
+
 	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
+	toggleShooter->WhileHeld(new FireShooter());
+
 	storageFeedShooter.reset(new JoystickButton(controllerL.get(), STORAGE_FEED_SHOOTER));
+	storageFeedShooter->WhileHeld(new RunStorage());
+
 	extendGear.reset(new JoystickButton(controllerL.get(), EXTEND_GEAR));
+	extendGear->WhenPressed(new GearOut());
+
 	retractGear.reset(new JoystickButton(controllerL.get(), RETRACT_GEAR));
+	retractGear->WhenPressed(new GearIn());
+
 	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
+	acqIn->WhileHeld(new AcquisitionIn());
+
 	turnToBoiler.reset(new JoystickButton(driverR.get(), DRIVE_TO_BOILER));
 	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
 	shooterAngleFar.reset(new JoystickButton(driverR.get(), SHOOTER_ANGLE_FAR));
