@@ -14,6 +14,8 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "AHRS.h"
+#define MAX_ENC_VEL 0
+#define ENC_PULSE_PER_IN 0
 
 /**
  *
@@ -46,10 +48,10 @@ private:
 	double motionI = 0.0;
 	double motionD = 0.0;
 	double motionF = 0.0;
-	double posP = 0.0;
-	double posI = 0.0;
-	double posD = 0.0;
-	double posF = 0.0;
+//	double posP = 0.0;
+//	double posI = 0.0;
+//	double posD = 0.0;
+//	double posF = 0.0;
 
 public:
 	Drive();
@@ -58,8 +60,8 @@ public:
 		VelocityTurning,
 		VelocityDriving,
 		Voltage,
-		MotionProfile,
-		Position
+		MotionProfile
+//		Position
 	};
 	void SetControlMode(DriveControlMode cMode);
 	void ChangeGear(bool high);

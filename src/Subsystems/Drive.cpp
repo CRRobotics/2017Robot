@@ -56,8 +56,14 @@ int Drive::GetREncoderRate(){
 // here. Call these from Commands.
 
 void Drive::TankDrive(double lSpeed, double rSpeed, bool speedClosed){
-	rDrive1->Set(rSpeed);
-	rDrive2->Set(rSpeed);
+	if (!speedClosed){
+		rDrive1->Set(rSpeed);
+		lDrive1->Set(lSpeed);
+	}
+	else{
+		rDrive1->Set(rSpeed * MAX_ENC_VEL);
+		lDrive1->Set(lSpeed * MAX_ENC_VEL);
+	}
 }
 
 void Drive::ChangeGear(bool high)
@@ -111,19 +117,19 @@ void Drive::SetControlMode(DriveControlMode cMode){
 			rDrive1->SetPID(motionP, motionI, motionD, motionF);
 			lDrive1->SetPID(motionP, motionI, motionD, motionF);
 		break;
-		case DriveControlMode::Position:
-			rDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
-			lDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
-			if (Robot::tMode == Robot::TestMode::DRIVE_POSITION)
-			{
-				posP = frc::SmartDashboard::GetNumber("test_pCons", 0.0);
-				posI = frc::SmartDashboard::GetNumber("test_iCons", 0.0);
-				posD = frc::SmartDashboard::GetNumber("test_dCons", 0.0);
-				posF = frc::SmartDashboard::GetNumber("test_fCons", 0.0);
-			}
-			rDrive1->SetPID(posP, posI, posD, posF);
-			lDrive1->SetPID(posP, posI, posD, posF);
-		break;
+		//case DriveControlMode::Position:
+//			rDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
+//			lDrive1->SetControlMode(CANTalon::ControlMode::kPosition);
+//			if (Robot::tMode == Robot::TestMode::DRIVE_POSITION)
+//			{
+//				posP = frc::SmartDashboard::GetNumber("test_pCons", 0.0);
+//				posI = frc::SmartDashboard::GetNumber("test_iCons", 0.0);
+//				posD = frc::SmartDashboard::GetNumber("test_dCons", 0.0);
+//				posF = frc::SmartDashboard::GetNumber("test_fCons", 0.0);
+//			}
+//			rDrive1->SetPID(posP, posI, posD, posF);
+//			lDrive1->SetPID(posP, posI, posD, posF);
+//		break;
 		case DriveControlMode::VelocityDriving:
 			rDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
 			lDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
@@ -151,8 +157,8 @@ void Drive::SetControlMode(DriveControlMode cMode){
 			lDrive1->SetPID(vTurnP, vTurnI, vTurnD, vTurnF);
 		break;
 		case DriveControlMode::Voltage:
-			rDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
-			lDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+			rDrive1->SetControlMode(CANTalon::ControlMode::kPercentVbus);
+			lDrive1->SetControlMode(CANTalon::ControlMode::kPercentVbus);
 		break;
 	};
 }
