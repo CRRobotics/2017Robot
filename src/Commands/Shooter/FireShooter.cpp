@@ -32,5 +32,8 @@ void FireShooter::Interrupted() {
 }
 
 double FireShooter::GetDesiredSpeed(){
-	return 600;
+	if (Robot::tMode == Robot::TestMode::SHOOTER_SPEED)
+		return SmartDashboard::GetNumber("test_setPoint", 0);
+	else
+		return 600;
 }
