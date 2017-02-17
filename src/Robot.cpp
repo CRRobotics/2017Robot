@@ -21,11 +21,11 @@ std::shared_ptr<Storage> Robot::storage;
 Robot::TestMode Robot::tMode;
 
 std::unique_ptr<frc::Command> autonomousCommand;
-frc::SendableChooser<frc::Command*> chooser;
+//frc::SendableChooser<bool> sideChooser;
 
 void Robot::RobotInit() {
-	// chooser.AddObject("My Auto", new MyAutoCommand());
-	frc::SmartDashboard::PutData("Auto Modes", &chooser);
+//	sideChooser = new SendableChooser<bool>();
+	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
 	oi.reset(new OI);
@@ -117,6 +117,9 @@ void Robot::RobotInit() {
 		if (true) {
 			autonomousCommand->Cancel();
 		}
+		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
+		oi->SetControllerSide(cLeftSide);
+		oi->MapButtons();
 	}
 
 	void Robot::TeleopPeriodic(){

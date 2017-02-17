@@ -9,8 +9,7 @@
 #define SHIFT_HIGH_GEAR 0
 #define SHIFT_LOW_GEAR 0
 #define SHIFT_PTO 0
-#define RUN_SHOOTER 0
-#define STOP_SHOOTER 0
+#define TOGGLE_SHOOTER 0
 #define STORAGE_FEED_SHOOTER 0
 #define EXTEND_GEAR 0
 #define RETRACT_GEAR 0
@@ -40,18 +39,17 @@ private:
 	std::shared_ptr<Joystick> lJoystick1;
 	std::shared_ptr<Joystick> lJoystick2;
 
-	std::shared_ptr<JoystickButton> driveHighGear;
-	std::shared_ptr<JoystickButton> driveLowGear;
+	std::shared_ptr<JoystickButton> driveShiftHighGear;
+	std::shared_ptr<JoystickButton> driveShiftLowGear;
 	std::shared_ptr<JoystickButton> drivePTO;
-	std::shared_ptr<JoystickButton> runShooter;
-	std::shared_ptr<JoystickButton> stopShooter;
+	std::shared_ptr<JoystickButton> toggleShooter;
 	std::shared_ptr<JoystickButton> storageFeedShooter;
 	std::shared_ptr<JoystickButton> extendGear;
 	std::shared_ptr<JoystickButton> retractGear;
 	std::shared_ptr<JoystickButton> acqIn;
 	std::shared_ptr<JoystickButton> turnToBoiler;
 	std::shared_ptr<JoystickButton> turnToGear;
-	std::shared_ptr<JoystickButton> ShooterAngleFar;
+	std::shared_ptr<JoystickButton> shooterAngleFar;
 	std::shared_ptr<JoystickButton> shooterAngleShort;
 
 

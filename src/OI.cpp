@@ -17,24 +17,34 @@ void OI::SetControllerSide(bool left){
 }
 
 void OI::MapButtons(){
-	//frc::Joystick controllerL = new frc::Joystick();
-	//Joystick controllerR = new Joystick();
-	//Joystick driverL = new Joystick();
-	//Joystick driverR = new Joystick();
+	std::shared_ptr<Joystick> controllerL;
+	std::shared_ptr<Joystick> controllerR;
+	std::shared_ptr<Joystick> driverL;
+	std::shared_ptr<Joystick> driverR;
 	if (controllerLeft){
-		/*controllerL = lJoystick1.get();
-		controllerR = lJoystick2.get();
-		driverL = rJoystick1.get();
-		driverR = rJoystick2.get();*/
+		controllerL = lJoystick1;
+		controllerR = lJoystick2;
+		driverL = rJoystick1;
+		driverR = rJoystick2;
 	}
 	else{
-		/*controllerL = rJoystick1.get();
-		controllerR = rJoystick2.get();
-		driverL = lJoystick1.get();
-		driverR = lJoystick2.get();*/
+		controllerL = rJoystick1;
+		controllerR = rJoystick2;
+		driverL = lJoystick1;
+		driverR = lJoystick2;
 	}
-
-
+	driveShiftLowGear.reset(new JoystickButton(driverL.get(), SHIFT_LOW_GEAR));
+	driveShiftHighGear.reset(new JoystickButton(driverR.get(), SHIFT_HIGH_GEAR));
+	drivePTO.reset(new JoystickButton(controllerR.get(), SHIFT_PTO));
+	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
+	storageFeedShooter.reset(new JoystickButton(controllerL.get(), STORAGE_FEED_SHOOTER));
+	extendGear.reset(new JoystickButton(controllerL.get(), EXTEND_GEAR));
+	retractGear.reset(new JoystickButton(controllerL.get(), RETRACT_GEAR));
+	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
+	turnToBoiler.reset(new JoystickButton(driverR.get(), DRIVE_TO_BOILER));
+	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
+	shooterAngleFar.reset(new JoystickButton(driverR.get(), SHOOTER_ANGLE_FAR));
+	shooterAngleShort.reset(new JoystickButton(driverR.get(), SHOOTER_ANGLE_SHORT));
 }
 
 double OI::GetYControllerL(){
