@@ -15,7 +15,7 @@ void JoystickDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute() {
-	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), Robot::tMode == Robot::TestMode::DRIVE_SPEED);
+	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), false);
 }
 
 // Make this return true when this Command no longer needs to run execute()

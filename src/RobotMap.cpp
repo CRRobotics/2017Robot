@@ -54,40 +54,37 @@ void RobotMap::init() {
     drivelDrive2->SetControlMode(CANTalon::ControlMode::kFollower);
     driverDrive2->Set(R_DRIVE_1);
     drivelDrive2->Set(L_DRIVE_1);
-
-    //drivebrakes.reset(new Solenoid(BRAKES_IN, BRAKES_OUT));
-    //lw->AddActuator("Drive", "brakes", drivebrakes);
     
-//    shooterflywheel.reset(new CANTalon(FLYWHEEL));
-//    lw->AddActuator("Shooter", "flywheel1", shooterflywheel);
-//
-//    shooterangleShift.reset(new Solenoid(PCM_ID,SHOOTER_PISTON));
-//    lw->AddActuator("Shooter", "angleShift", shooterangleShift);
-//
-//    gearpiston.reset(new Solenoid(PCM_ID,GEAR_PISTON));
-//    lw->AddActuator("Gear", "piston", gearpiston);
-//
-//    climbingdriveShiftPiston.reset(new Solenoid(PCM_ID,PTO_PISTON));
-//    lw->AddActuator("Climbing", "driveShiftPiston", climbingdriveShiftPiston);
-//
-//    drivegearShift.reset(new Solenoid(PCM_ID,SHIFTERS));
-//    lw->AddActuator("GearShifting","driveGearShift",drivegearShift);
-//
-//    leftGate.reset(new Solenoid(PCM_ID,LFUEL_GATE));
-//    lw->AddActuator("leftGate","leftGate",leftGate);
-//
-//    rightGate.reset(new Solenoid(PCM_ID,RFUEL_GATE));
-//    lw->AddActuator("rightGate","rightGate",rightGate);
-//
-//    doorPiston.reset(new Solenoid(PCM_ID,PASSIVE_ACQ));
-//    lw->AddActuator("doorPiston","doorPiston",doorPiston);
+    shooterflywheel.reset(new CANTalon(FLYWHEEL));
+    lw->AddActuator("Shooter", "flywheel1", shooterflywheel);
+
+    shooterangleShift.reset(new Solenoid(PCM_ID,SHOOTER_PISTON));
+    lw->AddActuator("Shooter", "angleShift", shooterangleShift);
+
+    gearpiston.reset(new Solenoid(PCM_ID,GEAR_PISTON));
+    lw->AddActuator("Gear", "piston", gearpiston);
+
+    climbingdriveShiftPiston.reset(new Solenoid(PCM_ID,PTO_PISTON));
+    lw->AddActuator("Climbing", "driveShiftPiston", climbingdriveShiftPiston);
+
+    drivegearShift.reset(new Solenoid(PCM_ID,SHIFTERS));
+    lw->AddActuator("GearShifting","driveGearShift",drivegearShift);
+
+    leftGate.reset(new Solenoid(PCM_ID,LFUEL_GATE));
+    lw->AddActuator("leftGate","leftGate",leftGate);
+
+    rightGate.reset(new Solenoid(PCM_ID,RFUEL_GATE));
+    lw->AddActuator("rightGate","rightGate",rightGate);
+
+    doorPiston.reset(new Solenoid(PCM_ID,PASSIVE_ACQ));
+    lw->AddActuator("doorPiston","doorPiston",doorPiston);
 
 
 //    acquisitionarmPiston.reset(new Solenoid());
 //    lw->AddActuator("Acquisition", "armPiston", acquisitionarmPiston);
     
-//    acquisitionintakeRoller.reset(new CANTalon(INTAKE_ROLLER));
-//    lw->AddActuator("Acquisition", "intakeRoller", acquisitionintakeRoller);
+    acquisitionintakeRoller.reset(new CANTalon(INTAKE_ROLLER));
+    lw->AddActuator("Acquisition", "intakeRoller", acquisitionintakeRoller);
     
     storageballControlMotor.reset(new CANTalon(STORAGE_ROLLER));
     lw->AddActuator("Storage", "ballControlMotor", storageballControlMotor);

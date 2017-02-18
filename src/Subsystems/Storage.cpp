@@ -16,6 +16,8 @@
 #include "Storage.h"
 #include "../RobotMap.h"
 
+std::shared_ptr<Solenoid> Storage::lGatingPiston;
+std::shared_ptr<Solenoid> Storage::rGatingPiston;
 
 Storage::Storage() : Subsystem("Storage") {
     ballControlMotor = RobotMap::storageballControlMotor;

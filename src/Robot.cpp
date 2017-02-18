@@ -38,11 +38,11 @@ void Robot::RobotInit() {
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
-//	shooter.reset(new Shooter());
-//	gear.reset(new Gear());
-//	climbing.reset(new Climbing());
-//	acquisition.reset(new Acquisition());
-//	storage.reset(new Storage());
+	shooter.reset(new Shooter());
+	gear.reset(new Gear());
+	climbing.reset(new Climbing());
+	acquisition.reset(new Acquisition());
+	storage.reset(new Storage());
 	SmartDashboard::PutNumber("test_pCons", 0.0);
 	SmartDashboard::PutNumber("test_iCons", 0.0);
 	SmartDashboard::PutNumber("test_dCons", 0.0);
@@ -116,9 +116,9 @@ void Robot::RobotInit() {
 		} */
 
 
-		if (autonomousCommand.get() != nullptr) {
-			autonomousCommand->Start();
-		}
+//		if (autonomousCommand.get() != nullptr) {
+////			autonomousCommand->Start();
+//		}
 	}
 
 	void Robot::AutonomousPeriodic(){
@@ -131,7 +131,7 @@ void Robot::RobotInit() {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (true) {
-			autonomousCommand->Cancel();
+//			autonomousCommand->Cancel();
 		}
 		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
 		oi->SetControllerSide(cLeftSide);
