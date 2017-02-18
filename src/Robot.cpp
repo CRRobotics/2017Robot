@@ -135,7 +135,7 @@ void Robot::RobotInit() {
 		}
 		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
 		oi->SetControllerSide(cLeftSide);
-		oi->MapButtons();
+		//oi->MapButtons();
 	}
 
 	void Robot::TeleopPeriodic(){
