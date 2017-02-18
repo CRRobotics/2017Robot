@@ -41,3 +41,17 @@ void Storage::MoveStorage(double speed)
 {
 	ballControlMotor->Set(speed);
 }
+
+void Storage::SetGatePosition(bool pos) {
+	lGatingPiston->Set(pos);
+	rGatingPiston->Set(pos);
+}
+
+void Storage::SetLGatePosition(bool pos) {
+	lGatingPiston->Set(pos);
+}
+
+void Storage::SetRGatePosition(bool pos) {
+	rGatingPiston->Set(pos);
+}
+

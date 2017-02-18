@@ -5,27 +5,32 @@
 #include "AHRS.h"
 #include "CANTalon.h"
 
-#define R_DRIVE_1 0
-#define R_DRIVE_2 1
-#define L_DRIVE_1 2
-#define L_DRIVE_2 3
-#define BRAKES_OUT 4
-#define BRAKES_IN 0
-#define FLYWHEEL 4
-#define ANGLE_SHIFT_UP 3
-#define ANGLE_SHIFT_DOWN 0
-#define PISTON_UP 0
-#define PISTON_DOWN 0
-#define DRIVE_SHIFT_PISTON_UP 0
-#define DRIVE_SHIFT_PISTON_DOWN 0
-#define ACQ_ARM_PISTON_UP 0
-#define ACQ_ARM_PISTON_DOWN 0
-#define INTAKE_ROLLER 5
-#define STORAGE_ROLLER 1123
+#define R_DRIVE_1 3
+#define R_DRIVE_2 4
+#define L_DRIVE_1 1
+#define L_DRIVE_2 2
+//#define BRAKES_OUT 4
+//#define BRAKES_IN 0
+#define FLYWHEEL 5
+
+
+#define INTAKE_ROLLER 0 //Change
+#define STORAGE_ROLLER 6
 //#define RIGHT_DRIVE_ENC 123123
 //#define LEFT_DRIVE_ENC 321321
-#define GEAR_DRIVE_DOWN 987897
-#define GEAR_DRIVE_UP 666
+#define GEAR_DRIVE 987897
+//#define GEAR_DRIVE_UP 666
+
+//Pistons
+#define PCM_ID 61
+#define PTO_PISTON 0
+#define SHIFTERS 1
+#define LFUEL_GATE 7
+#define RFUEL_GATE 6
+#define GEAR_PISTON 5
+#define SHOOTER_PISTON 4
+
+#define PASSIVE_ACQ 2
 //anthony is a pretty fly guy
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -52,16 +57,23 @@ public:
 	static std::shared_ptr<CANTalon> drivelDrive2;
 	static std::shared_ptr<Solenoid> drivebrakes;
 	static std::shared_ptr<CANTalon> shooterflywheel;
-	static std::shared_ptr<Solenoid> shooterangleShift;
-	static std::shared_ptr<Solenoid> gearpiston;
-	static std::shared_ptr<Solenoid> climbingdriveShiftPiston;
-	static std::shared_ptr<Solenoid> acquisitionarmPiston;
 	static std::shared_ptr<CANTalon> acquisitionintakeRoller;
 	static std::shared_ptr<CANTalon> storageballControlMotor;
 //	static std::shared_ptr<Encoder> driverEnc;
 //	static std::shared_ptr<Encoder> drivelEnc;
 	static std::shared_ptr<AHRS> driveahrs;
+
+
+
 	static std::shared_ptr<Solenoid> drivegearShift;
+	static std::shared_ptr<Solenoid> shooterangleShift;
+	static std::shared_ptr<Solenoid> gearpiston;
+	static std::shared_ptr<Solenoid> climbingdriveShiftPiston;
+	static std::shared_ptr<Solenoid> acquisitionarmPiston;
+	static std::shared_ptr<Solenoid> rightGate;
+	static std::shared_ptr<Solenoid> leftGate;
+	static std::shared_ptr<Solenoid> doorPiston;
+
 
 	static void init();
 private:

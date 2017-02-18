@@ -6,18 +6,20 @@
 #define RJOYSTICK_OUTER 2
 #define RJOYSTICK_INNER 3
 
-#define SHIFT_HIGH_GEAR 0
-#define SHIFT_LOW_GEAR 0
-#define SHIFT_PTO 0
-#define TOGGLE_SHOOTER 0
-#define STORAGE_FEED_SHOOTER 0
-#define EXTEND_GEAR 0
-#define RETRACT_GEAR 0
-#define ACQ_IN 0
-#define DRIVE_TO_BOILER 0
-#define DRIVE_TO_GEAR 0
-#define SHOOTER_ANGLE_FAR 0
-#define SHOOTER_ANGLE_SHORT 0
+#define SHIFT_HIGH_GEAR 11 //driver right
+#define SHIFT_LOW_GEAR 6 //driver left
+#define SHIFT_PTO_ON 1 //driver right
+#define SHIFT_PTO_OFF 1 //driver left
+#define TOGGLE_SHOOTER 8 //
+#define STORAGE_FEED_SHOOTER 9
+#define EXTEND_GEAR 6
+#define RETRACT_GEAR 7
+#define ACQ_IN 10
+#define DRIVE_TO_BOILER 8
+#define DRIVE_TO_GEAR 9
+#define SHOOTER_ANGLE_FAR 6
+#define SHOOTER_ANGLE_SHORT 7
+#define TOGGLE_VISION_SHOOTER 2
 
 #include "WPILib.h"
 
@@ -40,8 +42,10 @@ private:
 
 	std::shared_ptr<JoystickButton> driveShiftHighGear;
 	std::shared_ptr<JoystickButton> driveShiftLowGear;
-	std::shared_ptr<JoystickButton> drivePTO;
+	std::shared_ptr<JoystickButton> drivePTOOn;
+	std::shared_ptr<JoystickButton> drivePTOOff;
 	std::shared_ptr<JoystickButton> toggleShooter;
+	std::shared_ptr<JoystickButton> toggleVisionShooter;
 	std::shared_ptr<JoystickButton> storageFeedShooter;
 	std::shared_ptr<JoystickButton> extendGear;
 	std::shared_ptr<JoystickButton> retractGear;
@@ -50,9 +54,6 @@ private:
 	std::shared_ptr<JoystickButton> turnToGear;
 	std::shared_ptr<JoystickButton> shooterAngleFar;
 	std::shared_ptr<JoystickButton> shooterAngleShort;
-
-
-
 
 };
 

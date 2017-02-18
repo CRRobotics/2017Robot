@@ -1,4 +1,5 @@
 #include <Commands/Shooter/RunShooter.h>
+#include <Commands/Shooter/RunVisionShooter.h>
 #include "OI.h"
 
 #include <WPILib.h>
@@ -12,6 +13,7 @@
 #include "Commands/Gear/GearOut.h"
 #include "Commands/Storage/RunStorage.h"
 #include "Commands/Shooter/RunShooter.h"
+
 
 bool OI::controllerLeft;
 
@@ -50,11 +52,17 @@ void OI::MapButtons(){
 	driveShiftHighGear.reset(new JoystickButton(driverR.get(), SHIFT_HIGH_GEAR));
 	driveShiftHighGear->WhenPressed(new ShiftHigh());
 
-	drivePTO.reset(new JoystickButton(controllerR.get(), SHIFT_PTO));
-	drivePTO->WhenPressed(new StartClimber());
+	drivePTOOn.reset(new JoystickButton(controllerR.get(), SHIFT_PTO_ON));
+	drivePTOOn->WhenPressed(new StartClimber());
+
+	drivePTOOff.reset(new JoystickButton(controllerL.get(), SHIFT_PTO_OFF));
+	drivePTOOff->WhenPressed(new StopClimber());
 
 	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
 	toggleShooter->WhenPressed(new RunShooter());
+
+	toggleVisionShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_VISION_SHOOTER));
+	toggleVisionShooter->WhenPressed(new RunVisionShooter());
 
 	storageFeedShooter.reset(new JoystickButton(controllerL.get(), STORAGE_FEED_SHOOTER));
 	storageFeedShooter->WhileHeld(new RunStorage());

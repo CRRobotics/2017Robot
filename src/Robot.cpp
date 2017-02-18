@@ -21,22 +21,28 @@ std::shared_ptr<Climbing> Robot::climbing;
 std::shared_ptr<Acquisition> Robot::acquisition;
 std::shared_ptr<Storage> Robot::storage;
 Robot::TestMode Robot::tMode;
+std::shared_ptr<NetworkTable> Robot::table;
 
 std::unique_ptr<frc::Command> autonomousCommand;
 //frc::SendableChooser<bool> sideChooser;
 
 void Robot::RobotInit() {
 //	sideChooser = new SendableChooser<bool>();
+//	NetworkTable::SetServerMode();
+//	NetworkTable::SetIPAddress("0.0.0.0");
+////	NetworkTable::SetTeam(639);
+//	table = NetworkTable::GetTable("CameraTracker");
+
 	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
-	shooter.reset(new Shooter());
-	gear.reset(new Gear());
-	climbing.reset(new Climbing());
-	acquisition.reset(new Acquisition());
-	storage.reset(new Storage());
+//	shooter.reset(new Shooter());
+//	gear.reset(new Gear());
+//	climbing.reset(new Climbing());
+//	acquisition.reset(new Acquisition());
+//	storage.reset(new Storage());
 	SmartDashboard::PutNumber("test_pCons", 0.0);
 	SmartDashboard::PutNumber("test_iCons", 0.0);
 	SmartDashboard::PutNumber("test_dCons", 0.0);

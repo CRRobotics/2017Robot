@@ -52,6 +52,7 @@ public:
     static std::shared_ptr<Climbing> climbing;
     static std::shared_ptr<Acquisition> acquisition;
     static std::shared_ptr<Storage> storage;
+    static std::shared_ptr<NetworkTable> table;
 	virtual void RobotInit();
 	virtual void DisabledInit();
 	virtual void DisabledPeriodic();
