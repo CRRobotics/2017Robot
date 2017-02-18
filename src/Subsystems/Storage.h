@@ -24,8 +24,6 @@ private:
 	// It's desirable that everything possible is private except
 	// for methods that implement subsystem capabilities
 	std::shared_ptr<CANTalon> ballControlMotor;
-	std::shared_ptr<Solenoid> lGatingPiston;
-	std::shared_ptr<Solenoid> rGatingPiston;
 	double storageVP = 0.0;
 	double storageVI = 0.0;
 	double storageVD = 0.0;
@@ -37,6 +35,8 @@ private:
 
 
 public:
+	std::shared_ptr<Solenoid> lGatingPiston;
+	std::shared_ptr<Solenoid> rGatingPiston;
 	Storage();
 	void InitDefaultCommand();
 	void SetControlMode(CANTalon::ControlMode cMode);

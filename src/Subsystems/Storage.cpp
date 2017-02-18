@@ -16,10 +16,11 @@
 #include "Storage.h"
 #include "../RobotMap.h"
 
-std::shared_ptr<Solenoid> Storage::lGatingPiston;
-std::shared_ptr<Solenoid> Storage::rGatingPiston;
+
 
 Storage::Storage() : Subsystem("Storage") {
+//	std::shared_ptr<Solenoid> Storage::lGatingPiston;
+//	std::shared_ptr<Solenoid> Storage::rGatingPiston;
     ballControlMotor = RobotMap::storageballControlMotor;
 }
 
