@@ -4,7 +4,6 @@ bool RunShooter::running;
 RunShooter::RunShooter() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
-	running = false;
 }
 
 // Called just before this Command runs the first time
@@ -14,7 +13,7 @@ void RunShooter::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RunShooter::Execute() {
-	if (!running)
+	if (!Robot::shooter->isRunning())
 		Robot::shooter->RunFlywheel(GetDesiredSpeed());
 	else
 		Robot::shooter->RunFlywheel(0);
@@ -22,7 +21,6 @@ void RunShooter::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool RunShooter::IsFinished() {
-	running = !running;
 	return true;
 }
 

@@ -13,7 +13,6 @@ public:
 	void End() override;
 	void Interrupted() override;
 	static double GetDesiredSpeed();
-	static bool running;
 };
 
 #endif  // EXAMPLE_COMMAND_H

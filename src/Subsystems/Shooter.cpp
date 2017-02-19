@@ -33,6 +33,10 @@ void Shooter::InitDefaultCommand() {
 
 void Shooter::RunFlywheel(double speed){
 	flywheel->Set(speed);
+	if (speed == 0) 
+		isRunning = false;
+	else
+		isRunning = true;
 }
 
 void Shooter::ChangeControlMode(CANTalon::ControlMode cMode){
@@ -53,4 +57,9 @@ void Shooter::ChangeControlMode(CANTalon::ControlMode cMode){
 double Shooter::GetFlywheelSpeed()
 {
 	return flywheel->GetEncVel();
+}
+
+bool Shooter::IsRunning()
+{
+	return isRunning;
 }
