@@ -1,5 +1,4 @@
 #include <Commands/Shooter/RunShooter.h>
-bool RunShooter::running;
 
 RunShooter::RunShooter() {
 	// Use Requires() here to declare subsystem dependencies
