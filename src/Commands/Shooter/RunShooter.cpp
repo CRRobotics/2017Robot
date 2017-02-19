@@ -13,7 +13,7 @@ void RunShooter::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RunShooter::Execute() {
-	if (!Robot::shooter->isRunning())
+	if (!Robot::shooter->IsRunning())
 		Robot::shooter->RunFlywheel(GetDesiredSpeed());
 	else
 		Robot::shooter->RunFlywheel(0);
