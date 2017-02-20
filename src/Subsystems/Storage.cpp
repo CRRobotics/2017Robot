@@ -8,23 +8,20 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 #include "CANTalon.h"
 
 
 #include "Robot.h"
 #include "Storage.h"
-#include "../RobotMap.h"
-
-
+#include "RobotMap.h"
+#include "Commands/Storage/RunStorage.h"
 
 Storage::Storage() : Subsystem("Storage") {
-//	std::shared_ptr<Solenoid> Storage::lGatingPiston;
-//	std::shared_ptr<Solenoid> Storage::rGatingPiston;
     ballControlMotor = RobotMap::storageballControlMotor;
 }
 
 void Storage::InitDefaultCommand() {
+	SetDefaultCommand(new RunStorage());
 }
 
 void Storage::SetControlMode(CANTalon::ControlMode cMode){
@@ -45,16 +42,4 @@ void Storage::MoveStorage(double speed)
 	ballControlMotor->Set(speed);
 }
 
-void Storage::SetGatePosition(bool pos) {
-	lGatingPiston->Set(pos);
-	rGatingPiston->Set(pos);
-}
-
-void Storage::SetLGatePosition(bool pos) {
-	lGatingPiston->Set(pos);
-}
-
-void Storage::SetRGatePosition(bool pos) {
-	rGatingPiston->Set(pos);
-}
 

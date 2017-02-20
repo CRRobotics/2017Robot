@@ -33,6 +33,8 @@ public:
 	double GetYControllerR();
 	double GetYDriverL();
 	double GetYDriverR();
+	bool GetAcquisition();
+	bool GetFiring();
 private:
 	static bool controllerLeft;
 	std::shared_ptr<Joystick> rJoystick1;

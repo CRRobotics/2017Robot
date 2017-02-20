@@ -13,7 +13,7 @@
 #include "Commands/Gear/GearOut.h"
 #include "Commands/Storage/RunStorage.h"
 #include "Commands/Shooter/RunShooter.h"
-
+#include "Commands/Shooter/FireBalls.h"
 
 bool OI::controllerLeft;
 
@@ -65,7 +65,7 @@ void OI::MapButtons(){
 	toggleVisionShooter->WhenPressed(new RunVisionShooter());
 
 	storageFeedShooter.reset(new JoystickButton(controllerL.get(), STORAGE_FEED_SHOOTER));
-	storageFeedShooter->WhileHeld(new RunStorage());
+	storageFeedShooter->WhileHeld(new FireBalls());
 
 	extendGear.reset(new JoystickButton(controllerL.get(), EXTEND_GEAR));
 	extendGear->WhenPressed(new GearOut());
@@ -108,4 +108,12 @@ double OI::GetYDriverR(){
 		return rJoystick2->GetY();
 	else
 		return lJoystick2->GetY();
+}
+
+bool OI::GetAcquisition(){
+	return acqIn->Get();
+}
+
+bool OI::GetFiring(){
+	return storageFeedShooter->Get();
 }

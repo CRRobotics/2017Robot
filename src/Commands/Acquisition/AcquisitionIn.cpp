@@ -14,8 +14,6 @@ void AcquisitionIn::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AcquisitionIn::Execute() {
 	Robot::acquisition->Intake();
-	Robot::storage->MoveStorage(0.2);
-	Robot::storage->SetGatePosition(true);
 }
 
 // Make this return true when this Command no longer needs to run execute()

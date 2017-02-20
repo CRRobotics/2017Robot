@@ -63,3 +63,17 @@ bool Shooter::IsRunning()
 {
 	return isRunning;
 }
+
+void Shooter::SetGatePosition(bool pos) {
+	RobotMap::leftGate->Set(pos);
+	RobotMap::rightGate->Set(pos);
+}
+
+void Shooter::SetRGatePosition(bool pos) {
+	RobotMap::rightGate->Set(pos);
+}
+
+void Shooter::SetLGatePosition(bool pos) {
+	RobotMap::leftGate->Set(pos);
+}
+
