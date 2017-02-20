@@ -1,5 +1,4 @@
 #include "RunStorage.h"
-#define SHOOTER_ACCEPTABLE_ERROR 50
 
 RunStorage::RunStorage() {
 	// Use Requires() here to declare subsystem dependencies
@@ -13,11 +12,12 @@ void RunStorage::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void RunStorage::Execute() {
-	if (fabs(Robot::shooter->GetFlywheelSpeed() - RunShooter::GetDesiredSpeed()) < SHOOTER_ACCEPTABLE_ERROR){
+	//Either Acquisition is running or the shooter is sunning and ready to fire
+	if (Robot::oi->GetAcquisition() || (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed())){
 		Robot::storage->MoveStorage(0.2);
-	}
-	else
+	} else {
 		Robot::storage->MoveStorage(0.0);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -37,6 +37,7 @@ public:
 	void ChangeControlMode(CANTalon::ControlMode cMode);
 	void RunFlywheel(double speed);
 	double GetFlywheelSpeed();
+	bool UpToSpeed();
 	bool IsRunning();
 	void SetRGatePosition(bool pos);
 	void SetLGatePosition(bool pos);

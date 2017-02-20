@@ -1,7 +1,5 @@
 #include <Commands/Shooter/FireBalls.h>
 
-#define SHOOTER_ACCEPTABLE_ERROR 50
-
 FireBalls::FireBalls() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
@@ -14,7 +12,7 @@ void FireBalls::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void FireBalls::Execute() {
-	if (fabs(Robot::shooter->GetFlywheelSpeed() - RunShooter::GetDesiredSpeed()) < SHOOTER_ACCEPTABLE_ERROR)
+	if (Robot::shooter->UpToSpeed()) //Is the shooter up to speed?
 		Robot::shooter->SetGatePosition(false); //TODO make the shooter alternate sides while held
 	else
 		Robot::shooter->SetGatePosition(true);
