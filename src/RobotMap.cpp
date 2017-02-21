@@ -18,16 +18,14 @@ std::shared_ptr<CANTalon> RobotMap::driverDrive1;
 std::shared_ptr<CANTalon> RobotMap::driverDrive2;
 std::shared_ptr<CANTalon> RobotMap::drivelDrive1;
 std::shared_ptr<CANTalon> RobotMap::drivelDrive2;
-std::shared_ptr<Solenoid> RobotMap::drivebrakes;
+
 std::shared_ptr<CANTalon> RobotMap::shooterflywheel;
 std::shared_ptr<Solenoid> RobotMap::shooterangleShift;
 std::shared_ptr<Solenoid> RobotMap::gearpiston;
 std::shared_ptr<Solenoid> RobotMap::climbingdriveShiftPiston;
-std::shared_ptr<Solenoid> RobotMap::acquisitionarmPiston;
-std::shared_ptr<CANTalon> RobotMap::acquisitionintakeRoller;
+//std::shared_ptr<Solenoid> RobotMap::acquisitionarmPiston;
+//std::shared_ptr<CANTalon> RobotMap::acquisitionintakeRoller;
 std::shared_ptr<CANTalon> RobotMap::storageballControlMotor;
-//std::shared_ptr<Encoder> RobotMap::driverEnc;
-//std::shared_ptr<Encoder> RobotMap::drivelEnc;
 std::shared_ptr<AHRS> RobotMap::driveahrs;
 std::shared_ptr<Solenoid> RobotMap::drivegearShift;
 std::shared_ptr<Solenoid> RobotMap::rightGate;
@@ -70,29 +68,24 @@ void RobotMap::init() {
     drivegearShift.reset(new Solenoid(PCM_ID,SHIFTERS));
     lw->AddActuator("GearShifting","driveGearShift",drivegearShift);
 
-    leftGate.reset(new Solenoid(PCM_ID,LFUEL_GATE));
+    leftGate.reset(new Solenoid(PCM_ID,LFUEL_GATE)); //Shooter ball control piston
     lw->AddActuator("leftGate","leftGate",leftGate);
 
     rightGate.reset(new Solenoid(PCM_ID,RFUEL_GATE));
     lw->AddActuator("rightGate","rightGate",rightGate);
 
-    doorPiston.reset(new Solenoid(PCM_ID,PASSIVE_ACQ));
+    doorPiston.reset(new Solenoid(PCM_ID,PASSIVE_ACQ)); //Hopper piston
     lw->AddActuator("doorPiston","doorPiston",doorPiston);
-
 
 //    acquisitionarmPiston.reset(new Solenoid());
 //    lw->AddActuator("Acquisition", "armPiston", acquisitionarmPiston);
     
-    acquisitionintakeRoller.reset(new CANTalon(INTAKE_ROLLER));
-    lw->AddActuator("Acquisition", "intakeRoller", acquisitionintakeRoller);
+//    //acquisitionintakeRoller.reset(new CANTalon(INTAKE_ROLLER));	//Active floor pickup acquisition
+//    //lw->AddActuator("Acquisition", "intakeRoller", acquisitionintakeRoller);
     
     storageballControlMotor.reset(new CANTalon(STORAGE_ROLLER));
     lw->AddActuator("Storage", "ballControlMotor", storageballControlMotor);
     
-//    driverEnc.reset(new Encoder();
-
-//    drivelEnc.reset(new Encoder(LEFT_DRIVE_ENC));
-
     driveahrs.reset(new AHRS(frc::SerialPort::kMXP));
 
 //    drivegearShift.reset(new Solenoid(GEAR_DRIVE_DOWN, GEAR_DRIVE_UP));

@@ -7,7 +7,6 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
-#include "Commands/ExampleCommand.h"
 #include "Commands/Drive/AutoDriveDistance.h"
 #include "Commands/Drive/AutoDriveTurn.h"
 #include "CommandBase.h"
@@ -24,15 +23,8 @@ Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
 
 std::unique_ptr<frc::Command> autonomousCommand;
-//frc::SendableChooser<bool> sideChooser;
 
 void Robot::RobotInit() {
-//	sideChooser = new SendableChooser<bool>();
-//	NetworkTable::SetServerMode();
-//	NetworkTable::SetIPAddress("0.0.0.0");
-////	NetworkTable::SetTeam(639);
-//	table = NetworkTable::GetTable("CameraTracker");
-
 	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
@@ -135,7 +127,7 @@ void Robot::RobotInit() {
 		}
 		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
 		oi->SetControllerSide(cLeftSide);
-		//oi->MapButtons();
+		oi->MapButtons();
 	}
 
 	void Robot::TeleopPeriodic(){

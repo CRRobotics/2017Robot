@@ -1,3 +1,5 @@
+#include <Commands/Shooter/FireBallsHigh.h>
+#include <Commands/Shooter/FireBallsLow.h>
 #include <Commands/Shooter/RunShooter.h>
 #include <Commands/Shooter/RunVisionShooter.h>
 #include "OI.h"
@@ -5,6 +7,7 @@
 #include <WPILib.h>
 #include "Robot.h"
 #include "Commands/Acquisition/AcquisitionIn.h"
+#include "Commands/Acquisition/ToggleHopper.h"
 #include "Commands/Climbing/StartClimber.h"
 #include "Commands/Climbing/StopClimber.h"
 #include "Commands/Drive/ShiftHigh.h"
@@ -13,7 +16,6 @@
 #include "Commands/Gear/GearOut.h"
 #include "Commands/Storage/RunStorage.h"
 #include "Commands/Shooter/RunShooter.h"
-
 
 bool OI::controllerLeft;
 
@@ -52,10 +54,10 @@ void OI::MapButtons(){
 	driveShiftHighGear.reset(new JoystickButton(driverR.get(), SHIFT_HIGH_GEAR));
 	driveShiftHighGear->WhenPressed(new ShiftHigh());
 
-	drivePTOOn.reset(new JoystickButton(controllerR.get(), SHIFT_PTO_ON));
+	drivePTOOn.reset(new JoystickButton(driverR.get(), SHIFT_PTO_ON));
 	drivePTOOn->WhenPressed(new StartClimber());
 
-	drivePTOOff.reset(new JoystickButton(controllerL.get(), SHIFT_PTO_OFF));
+	drivePTOOff.reset(new JoystickButton(driverL.get(), SHIFT_PTO_OFF));
 	drivePTOOff->WhenPressed(new StopClimber());
 
 	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
@@ -63,9 +65,6 @@ void OI::MapButtons(){
 
 	toggleVisionShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_VISION_SHOOTER));
 	toggleVisionShooter->WhenPressed(new RunVisionShooter());
-
-	storageFeedShooter.reset(new JoystickButton(controllerL.get(), STORAGE_FEED_SHOOTER));
-	storageFeedShooter->WhileHeld(new RunStorage());
 
 	extendGear.reset(new JoystickButton(controllerL.get(), EXTEND_GEAR));
 	extendGear->WhenPressed(new GearOut());
@@ -76,10 +75,17 @@ void OI::MapButtons(){
 	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
 	acqIn->WhileHeld(new AcquisitionIn());
 
+	toggleHopper.reset(new JoystickButton(controllerL.get(), TOGGLE_HOPPER));
+	toggleHopper->WhenPressed(new ToggleHopper());
+
 	turnToBoiler.reset(new JoystickButton(driverR.get(), DRIVE_TO_BOILER));
 	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
-	shooterAngleFar.reset(new JoystickButton(driverR.get(), SHOOTER_ANGLE_FAR));
-	shooterAngleShort.reset(new JoystickButton(driverR.get(), SHOOTER_ANGLE_SHORT));
+
+	shooterAngleFar.reset(new JoystickButton(controllerL.get(), SHOOT_FAR));
+	shooterAngleFar->WhileHeld(new FireBallsHigh());
+
+	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
+	shooterAngleShort->WhileHeld(new FireBallsLow());
 }
 
 double OI::GetYControllerL(){
@@ -108,4 +114,12 @@ double OI::GetYDriverR(){
 		return rJoystick2->GetY();
 	else
 		return lJoystick2->GetY();
+}
+
+bool OI::GetAcquisition(){
+	return acqIn->Get();
+}
+
+bool OI::GetFiring(){
+	return shooterAngleFar->Get() || shooterAngleShort->Get();
 }

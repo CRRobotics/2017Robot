@@ -1,9 +1,7 @@
 #include "AcquisitionIn.h"
 
 AcquisitionIn::AcquisitionIn() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
-	Requires(Robot::storage.get());
+	Requires(Robot::acquisition.get());
 }
 
 // Called just before this Command runs the first time
@@ -13,9 +11,8 @@ void AcquisitionIn::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void AcquisitionIn::Execute() {
-	Robot::acquisition->Intake();
-	Robot::storage->MoveStorage(0.2);
-	Robot::storage->SetGatePosition(true);
+	//Robot::acquisition->Intake();
+	//Robot::acquisition->LowerArm();
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -25,7 +22,8 @@ bool AcquisitionIn::IsFinished() {
 
 // Called once after isFinished returns true
 void AcquisitionIn::End() {
-
+	//Robot::acquisition->Stop();
+	//Robot::acquisition->RaiseArm();
 }
 
 // Called when another command which requires one or more of the same

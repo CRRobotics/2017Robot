@@ -3,6 +3,7 @@
 
 #include <Commands/Shooter/RunShooter.h>
 #include "../../CommandBase.h"
+#include "Robot.h"
 
 class RunStorage: public Command {
 public:

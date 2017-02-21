@@ -23,7 +23,8 @@ class Acquisition: public Subsystem {
 private:
 	// It's desirable that everything possible is private except
 	// for methods that implement subsystem capabilities
-	std::shared_ptr<Solenoid> armPiston;
+	//std::shared_ptr<Solenoid> armPiston;
+	std::shared_ptr<Solenoid> hopperPiston;
 	std::shared_ptr<CANTalon> intakeRoller;
 
 public:
@@ -32,8 +33,8 @@ public:
 	void Intake();
 	void Output();
 	void Stop();
-	void RaiseArm();
-	void LowerArm();
+	void OpenHopper();
+	void CloseHopper();
 };
 
 #endif

@@ -41,9 +41,6 @@ public:
 	void InitDefaultCommand();
 	void SetControlMode(CANTalon::ControlMode cMode);
 	void MoveStorage(double speed);
-	void SetRGatePosition(bool pos);
-	void SetLGatePosition(bool pos);
-	void SetGatePosition(bool pos);
 };
 
 #endif
