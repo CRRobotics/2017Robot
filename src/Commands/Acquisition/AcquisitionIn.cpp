@@ -19,10 +19,11 @@ void AcquisitionIn::Execute() {
 bool AcquisitionIn::IsFinished() {
 	return false;
 }
-	Robot::acquisition->Stop();
+
 // Called once after isFinished returns true
 void AcquisitionIn::End() {
-
+	Robot::acquisition->Stop();
+	Robot::acquisition->RaiseArm();
 }
 
 // Called when another command which requires one or more of the same
