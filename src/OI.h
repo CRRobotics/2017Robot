@@ -10,16 +10,17 @@
 #define SHIFT_LOW_GEAR 6 //driver left
 #define SHIFT_PTO_ON 1 //driver right
 #define SHIFT_PTO_OFF 1 //driver left
-#define TOGGLE_SHOOTER 8 //
-#define STORAGE_FEED_SHOOTER 9
-#define EXTEND_GEAR 6
-#define RETRACT_GEAR 7
-#define ACQ_IN 10
-#define DRIVE_TO_BOILER 8
-#define DRIVE_TO_GEAR 9
-#define SHOOTER_ANGLE_FAR 6
-#define SHOOTER_ANGLE_SHORT 7
-#define TOGGLE_VISION_SHOOTER 2
+#define DRIVE_TO_BOILER 8 //Driver right
+#define DRIVE_TO_GEAR 9 //Driver right
+
+//All controller buttons below
+#define TOGGLE_SHOOTER 6
+#define EXTEND_GEAR 5
+#define RETRACT_GEAR 4
+#define ACQ_IN 2
+#define SHOOT_FAR 3
+#define SHOOT_SHORT 1
+#define TOGGLE_VISION_SHOOTER 7
 
 #include "WPILib.h"
 

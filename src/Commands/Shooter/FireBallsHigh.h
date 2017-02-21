@@ -1,18 +1,18 @@
 /*
- * FireBalls.h
+ * FireBallsHigh.h
  *
  *  Created on: Feb 19, 2017
  *      Author: adnew
  */
 
-#ifndef SRC_COMMANDS_SHOOTER_FIREBALLS_H_
-#define SRC_COMMANDS_SHOOTER_FIREBALLS_H_
+#ifndef SRC_COMMANDS_SHOOTER_FIREBALLSHIGH_H_
+#define SRC_COMMANDS_SHOOTER_FIREBALLSHIGH_H_
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
-class FireBalls: public Command {
+class FireBallsHigh: public Command {
 public:
-	FireBalls();
+	FireBallsHigh();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif /* SRC_COMMANDS_SHOOTER_FIREBALLS_H_ */
+#endif /* SRC_COMMANDS_SHOOTER_FIREBALLSHIGH_H_ */

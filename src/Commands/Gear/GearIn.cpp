@@ -1,8 +1,7 @@
 #include "GearIn.h"
 
 GearIn::GearIn() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
+	Requires(Robot::gear.get()); //Don't let controller confuse the robot by mashing both buttons
 }
 
 // Called just before this Command runs the first time

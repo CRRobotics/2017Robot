@@ -75,3 +75,7 @@ void Shooter::SetLGatePosition(bool pos) {
 	RobotMap::leftGate->Set(pos);
 }
 
+void Shooter::SetAngle(bool high){
+	angleShift->Set(high);
+}
+

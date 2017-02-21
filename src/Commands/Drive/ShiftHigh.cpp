@@ -2,7 +2,6 @@
 
 ShiftHigh::ShiftHigh() {
 	// Use Requires() here to declare subsystem dependencies
-	Requires(Robot::drive.get());
 }
 
 // Called just before this Command runs the first time
