@@ -17,7 +17,8 @@
 #define TOGGLE_SHOOTER 6
 #define EXTEND_GEAR 5
 #define RETRACT_GEAR 4
-#define ACQ_IN 2
+#define ACQ_IN 8
+#define TOGGLE_HOPPER 2
 #define SHOOT_FAR 3
 #define SHOOT_SHORT 1
 #define TOGGLE_VISION_SHOOTER 7
@@ -53,6 +54,7 @@ private:
 	std::shared_ptr<JoystickButton> extendGear;
 	std::shared_ptr<JoystickButton> retractGear;
 	std::shared_ptr<JoystickButton> acqIn;
+	std::shared_ptr<JoystickButton> toggleHopper;
 	std::shared_ptr<JoystickButton> turnToBoiler;
 	std::shared_ptr<JoystickButton> turnToGear;
 	std::shared_ptr<JoystickButton> shooterAngleFar;

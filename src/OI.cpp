@@ -7,6 +7,7 @@
 #include <WPILib.h>
 #include "Robot.h"
 #include "Commands/Acquisition/AcquisitionIn.h"
+#include "Commands/Acquisition/ToggleHopper.h"
 #include "Commands/Climbing/StartClimber.h"
 #include "Commands/Climbing/StopClimber.h"
 #include "Commands/Drive/ShiftHigh.h"
@@ -74,6 +75,9 @@ void OI::MapButtons(){
 	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
 	acqIn->WhileHeld(new AcquisitionIn());
 
+	toggleHopper.reset(new JoystickButton(controllerL.get(), TOGGLE_HOPPER));
+	toggleHopper->WhenPressed(new ToggleHopper());
+
 	turnToBoiler.reset(new JoystickButton(driverR.get(), DRIVE_TO_BOILER));
 	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
 
@@ -81,7 +85,7 @@ void OI::MapButtons(){
 	shooterAngleFar->WhileHeld(new FireBallsHigh());
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
-	shooterAngleFar->WhileHeld(new FireBallsLow());
+	shooterAngleShort->WhileHeld(new FireBallsLow());
 }
 
 double OI::GetYControllerL(){

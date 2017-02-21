@@ -30,10 +30,7 @@ private:
 	std::shared_ptr<CANTalon> rDrive2;
 	std::shared_ptr<CANTalon> lDrive1;
 	std::shared_ptr<CANTalon> lDrive2;
-//	std::shared_ptr<Solenoid> brakes;
 	std::shared_ptr<Solenoid> gearShift;
-//	std::shared_ptr<Encoder> rEnc;
-//	std::shared_ptr<Encoder> lEnc;
 	std::shared_ptr<AHRS> ahrs;
 
 	double vTurnP = 0.0;
@@ -66,8 +63,6 @@ public:
 	void SetControlMode(DriveControlMode cMode);
 	void ChangeGear(bool high);
 	bool GetGear();
-//	void EnableBraking();
-//	void DisableBraking();
 	void InitDefaultCommand();
 	int GetLEncoder();
 	int GetREncoder();
