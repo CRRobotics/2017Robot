@@ -73,7 +73,7 @@ void OI::MapButtons(){
 	retractGear->WhenPressed(new GearIn());
 
 	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
-	acqIn->WhileHeld(new AcquisitionIn());
+	acqIn->WhileHeld(new RunStorage());
 
 	toggleHopper.reset(new JoystickButton(controllerL.get(), TOGGLE_HOPPER));
 	toggleHopper->WhenPressed(new ToggleHopper());

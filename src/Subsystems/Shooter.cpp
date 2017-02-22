@@ -38,10 +38,10 @@ void Shooter::ChangeControlMode(CANTalon::ControlMode cMode){
 	flywheel->SetControlMode(cMode);
 	if (Robot::tMode == Robot::TestMode::SHOOTER_SPEED)
 	{
-		shootP = frc::SmartDashboard::GetNumber("test_pCons", 0.0);
-		shootI = frc::SmartDashboard::GetNumber("test_iCons", 0.0);
+		shootP = frc::SmartDashboard::GetNumber("test_pCons", 0.1);
+		shootI = frc::SmartDashboard::GetNumber("test_iCons", -0.001);
 		shootD = frc::SmartDashboard::GetNumber("test_dCons", 0.0);
-		shootF = frc::SmartDashboard::GetNumber("test_fCons", 0.0);
+		shootF = frc::SmartDashboard::GetNumber("test_fCons", 0.03);
 	}
 	if (cMode == CANTalon::ControlMode::kSpeed)
 	{

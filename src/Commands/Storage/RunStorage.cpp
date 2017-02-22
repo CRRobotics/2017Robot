@@ -8,7 +8,7 @@ RunStorage::RunStorage() {
 
 // Called just before this Command runs the first time
 void RunStorage::Initialize() {
-	Robot::storage->SetControlMode(CANTalon::ControlMode::kVoltage);//TODO change to kSpeed
+	Robot::storage->SetControlMode(CANTalon::ControlMode::kPercentVbus);//TODO change to kSpeed
 }
 
 // Called repeatedly when this Command is scheduled to run

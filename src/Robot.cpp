@@ -27,7 +27,7 @@ std::unique_ptr<frc::Command> autonomousCommand;
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
 	SmartDashboard::PutBoolean("controller_left_side", true);
-	tMode = TestMode::NONE;
+	tMode = TestMode::SHOOTER_SPEED;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
