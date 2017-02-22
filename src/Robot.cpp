@@ -25,6 +25,7 @@ std::shared_ptr<NetworkTable> Robot::table;
 std::unique_ptr<frc::Command> autonomousCommand;
 
 void Robot::RobotInit() {
+	table = NetworkTable::GetTable("vision");
 	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
@@ -72,6 +73,9 @@ void Robot::RobotInit() {
 			SmartDashboard::PutString("test_mode", "storage_speed");
 		break;
 	}
+
+	oi->SetControllerSide(true);
+	oi->MapButtons();
 }
 
 	/**
@@ -126,8 +130,6 @@ void Robot::RobotInit() {
 //			autonomousCommand->Cancel();
 		}
 		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
-		oi->SetControllerSide(cLeftSide);
-		oi->MapButtons();
 	}
 
 	void Robot::TeleopPeriodic(){
