@@ -1,5 +1,4 @@
-#include <Commands/Shooter/FireBallsHigh.h>
-#include <Commands/Shooter/FireBallsLow.h>
+#include <Commands/Shooter/FireBalls.h>
 #include <Commands/Shooter/RunShooter.h>
 #include <Commands/Shooter/RunVisionShooter.h>
 #include "OI.h"
@@ -73,7 +72,7 @@ void OI::MapButtons(){
 	retractGear->WhenPressed(new GearIn());
 
 	acqIn.reset(new JoystickButton(controllerL.get(), ACQ_IN));
-	acqIn->WhileHeld(new AcquisitionIn());
+	//acqIn->WhileHeld(new RunStorage());
 
 	toggleHopper.reset(new JoystickButton(controllerL.get(), TOGGLE_HOPPER));
 	toggleHopper->WhenPressed(new ToggleHopper());
@@ -82,10 +81,10 @@ void OI::MapButtons(){
 	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
 
 	shooterAngleFar.reset(new JoystickButton(controllerL.get(), SHOOT_FAR));
-	shooterAngleFar->WhileHeld(new FireBallsHigh());
+	shooterAngleFar->WhileHeld(new FireBalls(true));
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
-	shooterAngleShort->WhileHeld(new FireBallsLow());
+	shooterAngleShort->WhileHeld(new FireBalls(false));
 }
 
 double OI::GetYControllerL(){
@@ -117,7 +116,7 @@ double OI::GetYDriverR(){
 }
 
 bool OI::GetAcquisition(){
-	return acqIn->Get();
+	return acqIn->Get() || toggleHopper->Get() || drivePTOOn->Get() || drivePTOOff->Get();//For testing
 }
 
 bool OI::GetFiring(){

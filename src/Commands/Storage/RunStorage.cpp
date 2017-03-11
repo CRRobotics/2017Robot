@@ -8,14 +8,15 @@ RunStorage::RunStorage() {
 
 // Called just before this Command runs the first time
 void RunStorage::Initialize() {
-	Robot::storage->SetControlMode(CANTalon::ControlMode::kVoltage);//TODO change to kSpeed
+	Robot::storage->SetControlMode(CANTalon::ControlMode::kPercentVbus);//TODO change to kSpeed
 }
 
 // Called repeatedly when this Command is scheduled to run
 void RunStorage::Execute() {
 	//Either Acquisition is running or the shooter is sunning and ready to fire
 	if (Robot::oi->GetAcquisition() || (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed())){
-		Robot::storage->MoveStorage(0.2);
+		printf("Storage running\n");
+		Robot::storage->MoveStorage(1.0);
 	} else {
 		Robot::storage->MoveStorage(0.0);
 	}

@@ -1,5 +1,6 @@
 #include <memory>
 
+#include "MrinalsControlLoop.h"
 #include <Commands/Command.h>
 #include <Commands/Scheduler.h>
 #include <IterativeRobot.h>
@@ -25,6 +26,8 @@ std::shared_ptr<NetworkTable> Robot::table;
 std::unique_ptr<frc::Command> autonomousCommand;
 
 void Robot::RobotInit() {
+	table = NetworkTable::GetTable("vision");
+	MrinalsControlLoop::InitializeValues();
 	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
@@ -72,6 +75,10 @@ void Robot::RobotInit() {
 			SmartDashboard::PutString("test_mode", "storage_speed");
 		break;
 	}
+
+	bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
+	oi->SetControllerSide(cLeftSide);
+	oi->MapButtons();
 }
 
 	/**
@@ -118,16 +125,7 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopInit(){
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (true) {
-//			autonomousCommand->Cancel();
-		}
-		bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
-		oi->SetControllerSide(cLeftSide);
-		oi->MapButtons();
+		MrinalsControlLoop::StartLoop();
 	}
 
 	void Robot::TeleopPeriodic(){

@@ -59,7 +59,7 @@ void RobotMap::init() {
     shooterangleShift.reset(new Solenoid(PCM_ID,SHOOTER_PISTON));
     lw->AddActuator("Shooter", "angleShift", shooterangleShift);
 
-    gearpiston.reset(new Solenoid(PCM_ID,GEAR_PISTON));
+    gearpiston.reset(new Solenoid(PCM_ID, GEAR_PISTON));
     lw->AddActuator("Gear", "piston", gearpiston);
 
     climbingdriveShiftPiston.reset(new Solenoid(PCM_ID,PTO_PISTON));

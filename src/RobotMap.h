@@ -6,15 +6,15 @@
 #include "CANTalon.h"
 
 #define R_DRIVE_1 3
-#define R_DRIVE_2 4
-#define L_DRIVE_1 1
-#define L_DRIVE_2 2
+#define R_DRIVE_2 63//4
+#define L_DRIVE_1 1//1
+#define L_DRIVE_2 63//2
 
-#define FLYWHEEL 5
+#define FLYWHEEL 2//5
 
 
-#define INTAKE_ROLLER 0 //Change
-#define STORAGE_ROLLER 6
+#define INTAKE_ROLLER 63//0 //Change
+#define STORAGE_ROLLER 0//6
 
 
 //Pistons
@@ -26,7 +26,7 @@
 #define GEAR_PISTON 5
 #define SHOOTER_PISTON 4
 #define PASSIVE_ACQ 2
-//anthony is a pretty fly guy i guess
+//anthony is a pretty guy i guess
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking

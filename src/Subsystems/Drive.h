@@ -14,7 +14,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "AHRS.h"
-#define MAX_ENC_VEL 0
+#define MAX_ENC_VEL 5000
 #define ENC_PULSE_PER_IN 0
 
 /**

@@ -50,16 +50,14 @@ int Drive::GetREncoderRate(){
 	return rDrive1->GetEncVel();
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
-
+// Takes input from -1 to 1
 void Drive::TankDrive(double lSpeed, double rSpeed, bool speedClosed){
 	if (!speedClosed){
-		rDrive1->Set(rSpeed);
+		rDrive1->Set(-rSpeed);
 		lDrive1->Set(lSpeed);
 	}
 	else{
-		rDrive1->Set(rSpeed * MAX_ENC_VEL);
+		rDrive1->Set(-rSpeed * MAX_ENC_VEL);
 		lDrive1->Set(lSpeed * MAX_ENC_VEL);
 	}
 }

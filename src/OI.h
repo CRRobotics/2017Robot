@@ -54,6 +54,7 @@ private:
 	std::shared_ptr<JoystickButton> extendGear;
 	std::shared_ptr<JoystickButton> retractGear;
 	std::shared_ptr<JoystickButton> acqIn;
+	std::shared_ptr<JoystickButton> runStorage;
 	std::shared_ptr<JoystickButton> toggleHopper;
 	std::shared_ptr<JoystickButton> turnToBoiler;
 	std::shared_ptr<JoystickButton> turnToGear;
