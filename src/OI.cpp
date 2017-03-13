@@ -116,9 +116,16 @@ double OI::GetYDriverR(){
 }
 
 bool OI::GetAcquisition(){
-	return acqIn->Get() || toggleHopper->Get() || drivePTOOn->Get() || drivePTOOff->Get();//For testing
+	return acqIn->Get() || toggleHopper->Get();//For testing
 }
 
+bool OI::GetDrivePTOOn(){
+	return drivePTOOn->Get();
+}
+
+bool OI::GetDrivePTOOff(){
+	return drivePTOOff->Get();
+}
 bool OI::GetFiring(){
 	return shooterAngleFar->Get() || shooterAngleShort->Get();
 }

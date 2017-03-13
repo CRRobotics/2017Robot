@@ -125,11 +125,18 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopInit(){
+		MrinalsControlLoop::recording = true;
+		MrinalsControlLoop::runningMotionProfile = false;
 		MrinalsControlLoop::StartLoop();
 	}
 
 	void Robot::TeleopPeriodic(){
 		frc::Scheduler::GetInstance()->Run();
+		if (!MrinalsControlLoop::running && Robot::oi->GetDrivePTOOff()){
+			MrinalsControlLoop::recording = false;
+			MrinalsControlLoop::runningMotionProfile = true;
+			MrinalsControlLoop::StartLoop();
+		}
 	}
 
 	void Robot::TestPeriodic(){

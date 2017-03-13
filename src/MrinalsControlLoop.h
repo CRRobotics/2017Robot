@@ -16,6 +16,7 @@ class MrinalsControlLoop
 	static void EndLoop();
 
 	static bool runningMotionProfile;
+	static bool recording;
 	static std::string motionProfileName;
 	static std::thread loop_thread;
 	static bool running;
@@ -28,6 +29,7 @@ class MrinalsControlLoop
 	static double kI;
 	static double kD;
 	static double kF;
+
 };
 
 
