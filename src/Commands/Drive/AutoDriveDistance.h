@@ -17,6 +17,9 @@ public:
 	double slowEnd;
 	double desiredEncTick;
 	double desiredDist;
+	double startAngle;
+	double kTurn = 0.0;
+
 };
 
 #endif  // EXAMPLE_COMMAND_H

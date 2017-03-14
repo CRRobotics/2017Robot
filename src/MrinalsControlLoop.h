@@ -30,6 +30,18 @@ class MrinalsControlLoop
 	static double kD;
 	static double kF;
 
+	enum class RecordMode{
+		FULL_PROFILE,
+		SPEED_PROFILE,
+		NONE
+	};
+
+	enum class PlayMode{
+		FULL_PROFILE,
+		SPEED_PROFILE,
+		NONE
+	};
+
 };
 
 

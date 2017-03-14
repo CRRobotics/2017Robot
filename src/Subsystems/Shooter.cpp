@@ -57,6 +57,10 @@ bool Shooter::UpToSpeed(){
 	return abs(flywheel->GetClosedLoopError()) < SHOOTER_ACCEPTABLE_ERROR;
 }
 
+int Shooter::GetSpeedError(){
+	return flywheel->GetClosedLoopError();
+}
+
 bool Shooter::IsRunning()
 {
 	return isRunning;

@@ -5,6 +5,11 @@ AutoDriveDistance::AutoDriveDistance(double dist) {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	desiredDist = dist;
+	startAngle = 0;
+	slowEnd = 400;
+	slowStart = 1600;
+	maxSpeed = 0.8;
+	desiredEncTick = 0;
 }
 
 // Called just before this Command runs the first time
@@ -19,19 +24,26 @@ void AutoDriveDistance::Initialize() {
 	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
 	desiredEncTick = avgEncTick + desiredDist * ENC_PULSE_PER_IN;
 	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	startAngle = Robot::drive->GetYaw();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDriveDistance::Execute() {
 	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
 	double error = desiredEncTick - avgEncTick;
+	int sign = 1;
+	if (error < 0)
+		sign = -1;
+	error = fabs(error);
+	double angleError = startAngle - Robot::drive->GetYaw();
+	double aCorr = angleError * kTurn;
 	if (error > slowStart)
-		Robot::drive->TankDrive(maxSpeed, maxSpeed, true);
+		Robot::drive->TankDrive((maxSpeed) * sign + aCorr, (maxSpeed) * sign - aCorr, true);
 	else if (error > slowEnd)
-		Robot::drive->TankDrive(0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd),
-								0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd));
+		Robot::drive->TankDrive((0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)) * sign + aCorr,
+								(0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)) * sign - aCorr);
 	else
-		Robot::drive->TankDrive(0.15, 0.15, true);
+		Robot::drive->TankDrive((0.15) * sign + aCorr, (0.15) * sign - aCorr, true);
 
 }
 
@@ -39,7 +51,7 @@ void AutoDriveDistance::Execute() {
 bool AutoDriveDistance::IsFinished() {
 	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
 	double error = desiredEncTick - avgEncTick;
-	return error < 50;
+	return fabs(error) < 50;
 }
 
 // Called once after isFinished returns true

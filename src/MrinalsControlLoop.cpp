@@ -24,7 +24,7 @@ struct DataPoint
 
 void MrinalsControlLoop::InitializeValues(){
 	running = false;
-	time_interval = 20;
+	time_interval = 10;
 }
 
 //record lSpeed, rSpeed, angle, time interval, time
@@ -39,24 +39,26 @@ void MrinalsControlLoop::Loop()
 	int time_start = std::chrono::system_clock::now().time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
 	std::chrono::system_clock::time_point current_time = std::chrono::system_clock::now();
 	std::chrono::system_clock::time_point stop_time = std::chrono::system_clock::now();
-	double lastLSpeed = Robot::drive->GetLEncoderRate();
-	double lastRSpeed = Robot::drive->GetREncoderRate();
 	int ticker = 0;
+	double kAngle = 0;
 	if (runningMotionProfile)
 	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 
 		std::ifstream inputFile;
 		inputFile.open("/home/lvuser/MatchData/MrinalLoggerData.txt");
 		std::string lString;
 		std::string rString;
+		std::string aString;
 		while (std::getline(inputFile, lString, ',')){
 			std::getline(inputFile, rString, ',');
 			double lSpd = std::strtod(lString.c_str(), NULL);
 			double rSpd = std::strtod(rString.c_str(), NULL);
+			double angle = std::strtod(aString.c_str(), NULL);
 			DataPoint d;
 			d.lSpeed = lSpd;
 			d.rSpeed = rSpd;
+			d.angle = angle;
 			dataStorage.push_back(d);
 		}
 		inputFile.close();
@@ -65,31 +67,34 @@ void MrinalsControlLoop::Loop()
 	while (running)
 	{
 		current_time = std::chrono::system_clock::now();
-		int time_diff = current_time.time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den - time_start;
-
+		int current_time_ms = current_time.time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
+		int time_diff = current_time_ms - time_start;
+		time_start = current_time_ms;
 		if (recording)
 		{
 			DataPoint d;
-			double currentLSpeed = Robot::drive->GetLEncoderRate();
-			double currentRSpeed = Robot::drive->GetREncoderRate();
-			d.lSpeed = Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL());//(currentLSpeed + lastLSpeed) / 2.0;
-			d.rSpeed = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR());//(currentRSpeed + lastRSpeed) / 2.0;
-			lastLSpeed = currentLSpeed;
-			lastRSpeed = currentRSpeed;
+			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//(currentLSpeed + lastLSpeed) / 2.0;
+			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//(currentRSpeed + lastRSpeed) / 2.0;
 			d.angle = RobotMap::driveahrs->GetYaw();
 			d.dur = time_interval * 1.0;
 			d.timeStamp = time_diff * 1.0;
 			dataStorage.push_back(d);
-			printf("speed %f\n%f\n",  d.lSpeed, d.rSpeed);
+			printf("RECORDING %d\n", time_diff);
+			//printf("speed %f\n%f\n",  d.lSpeed, d.rSpeed);
 		}
 
 		if (runningMotionProfile)
 		{
 			if (ticker < dataStorage.size())
 			{
-				Robot::drive->TankDrive(dataStorage[ticker].lSpeed, dataStorage[ticker].rSpeed);
-				printf("speed %f, %f", dataStorage[ticker].lSpeed, dataStorage[ticker].rSpeed);
+				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
+				double aCorr = 0;
+				SmartDashboard::PutNumber("Yaw error", angleError);
+				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, dataStorage[ticker].rSpeed - aCorr);
+				printf("PLAYING %d\n", time_diff);
 			}
+			else
+				runningMotionProfile = false;
 		}
 
 		ticker++;
@@ -98,20 +103,23 @@ void MrinalsControlLoop::Loop()
 		stop_time = current_time + std::chrono::milliseconds(time_interval);
 		std::this_thread::sleep_until(stop_time);
 
-		if (Robot::oi->GetDrivePTOOn())
+		if (Robot::oi->GetDrivePTOOn() || DriverStation::GetInstance().IsDisabled())
 					running = false;
 	}
 
-	std::ofstream outputFile;
-	outputFile.open("/home/lvuser/MatchData/MrinalLoggerData.txt");
-	//outputFile << "\n\n\n NEW MATCH\n";
-	for (unsigned int i = 0; i < dataStorage.size(); i++)
+	if (recording)
 	{
-		outputFile << dataStorage[i].lSpeed << ", " << dataStorage[i].rSpeed << ", ";
-		//outputFile << dataStorage[i].angle << ", " << dataStorage[i].dur << ", ";
-		//outputFile << dataStorage[i].timeStamp << ",\n";
+		std::ofstream outputFile;
+		outputFile.open("/home/lvuser/MatchData/MrinalLoggerData.txt");
+		//outputFile << "\n\n\n NEW MATCH\n";
+		for (unsigned int i = 0; i < dataStorage.size(); i++)
+		{
+			outputFile << dataStorage[i].lSpeed << ", " << dataStorage[i].rSpeed << ",";
+			outputFile << dataStorage[i].angle << ",\n";// << dataStorage[i].dur << ", ";
+			//outputFile << dataStorage[i].timeStamp << ",\n";
+		}
+		outputFile.close();
 	}
-	outputFile.close();
 
 	loop_thread.detach();
 }

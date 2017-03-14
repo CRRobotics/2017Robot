@@ -9,6 +9,7 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 #include "Commands/Drive/AutoDriveDistance.h"
+#include "Commands/Drive/AutoDriveSpeed.h"
 #include "Commands/Drive/AutoDriveTurn.h"
 #include "CommandBase.h"
 #include "Robot.h"
@@ -28,7 +29,6 @@ std::unique_ptr<frc::Command> autonomousCommand;
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
 	MrinalsControlLoop::InitializeValues();
-	SmartDashboard::PutBoolean("controller_left_side", true);
 	tMode = TestMode::NONE;
 	RobotMap::init();
 	oi.reset(new OI);
@@ -50,6 +50,7 @@ void Robot::RobotInit() {
 		break;
 		case TestMode::DRIVE_SPEED:
 			SmartDashboard::PutString("test_mode", "drive_speed");
+			SmartDashboard::PutData("test_drive_speed", new AutoDriveSpeed());
 		break;
 		case TestMode::DRIVE_TURN_SPEED:
 			SmartDashboard::PutString("test_mode", "drive_turn_speed");
@@ -76,7 +77,7 @@ void Robot::RobotInit() {
 		break;
 	}
 
-	bool cLeftSide = SmartDashboard::GetBoolean("controller_left_side", true);
+	bool cLeftSide = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
 	oi->SetControllerSide(cLeftSide);
 	oi->MapButtons();
 }
@@ -131,6 +132,7 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopPeriodic(){
+		SmartDashboard::PutNumber("rVoltage", RobotMap::driverDrive1->GetOutputVoltage());
 		frc::Scheduler::GetInstance()->Run();
 		if (!MrinalsControlLoop::running && Robot::oi->GetDrivePTOOff()){
 			MrinalsControlLoop::recording = false;

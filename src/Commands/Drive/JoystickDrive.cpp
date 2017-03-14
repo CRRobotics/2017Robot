@@ -1,4 +1,5 @@
 #include "JoystickDrive.h"
+#include "MrinalsControlLoop.h"
 
 JoystickDrive::JoystickDrive() {
 	// Use Requires() here to declare subsystem dependencies
@@ -15,7 +16,10 @@ void JoystickDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute() {
-	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), false);
+	if (!MrinalsControlLoop::runningMotionProfile)
+		Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), false);
+	SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
+	SmartDashboard::PutNumber("test_speed_speed", RobotMap::driverDrive1->GetSetpoint());
 
 }
 

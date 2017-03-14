@@ -1,4 +1,4 @@
-#ifndef ROBOTMAP_H
+	#ifndef ROBOTMAP_H
 #define ROBOTMAP_H
 
 #include "WPILib.h"
@@ -19,8 +19,8 @@
 
 //Pistons
 #define PCM_ID 61
-#define PTO_PISTON 0
-#define SHIFTERS 1
+#define PTO_PISTON 1
+#define SHIFTERS 0
 #define LFUEL_GATE 7
 #define RFUEL_GATE 6
 #define GEAR_PISTON 5
