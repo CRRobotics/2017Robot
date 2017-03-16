@@ -16,11 +16,13 @@ void JoystickDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute() {
-	if (!MrinalsControlLoop::runningMotionProfile)
+	if (MrinalsControlLoop::pMode == MrinalsControlLoop::PlayMode::NONE)
 		Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), false);
-	SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
-	SmartDashboard::PutNumber("test_speed_speed", RobotMap::driverDrive1->GetSetpoint());
-
+	if (Robot::tMode == Robot::TestMode::DRIVE_SPEED)
+	{
+		SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
+		SmartDashboard::PutNumber("test_speed_speed", RobotMap::driverDrive1->GetSetpoint());
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -126,19 +126,11 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopInit(){
-		MrinalsControlLoop::recording = true;
-		MrinalsControlLoop::runningMotionProfile = false;
-		MrinalsControlLoop::StartLoop();
+		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.csv");
 	}
 
 	void Robot::TeleopPeriodic(){
-		SmartDashboard::PutNumber("rVoltage", RobotMap::driverDrive1->GetOutputVoltage());
 		frc::Scheduler::GetInstance()->Run();
-		if (!MrinalsControlLoop::running && Robot::oi->GetDrivePTOOff()){
-			MrinalsControlLoop::recording = false;
-			MrinalsControlLoop::runningMotionProfile = true;
-			MrinalsControlLoop::StartLoop();
-		}
 	}
 
 	void Robot::TestPeriodic(){

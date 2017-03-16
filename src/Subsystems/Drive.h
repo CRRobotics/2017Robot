@@ -14,7 +14,6 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 #include "AHRS.h"
-#define MAX_ENC_VEL 5000
 #define ENC_PULSE_PER_IN 0
 
 /**
@@ -69,6 +68,7 @@ public:
 	double GetYaw();
 	int GetLEncoderRate();
 	int GetREncoderRate();
+	static double maxEncVel;
 };
 
 
