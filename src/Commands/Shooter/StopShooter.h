@@ -1,18 +1,17 @@
-#ifndef GEAR_TO_LIFT_H
-#define GEAR_TO_LIFT_H
+#ifndef STOP_SHOOTER_H
+#define STOP_SHOOTER_H
+
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
-
-class MoveGearOntoLift: public CommandBase {
+class StopShooter: public Command {
 public:
-	MoveGearOntoLift();
+	StopShooter();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	int ticker;
 };
 
 #endif  // EXAMPLE_COMMAND_H

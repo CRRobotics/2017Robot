@@ -1,18 +1,17 @@
-#ifndef GEAR_TO_LIFT_H
-#define GEAR_TO_LIFT_H
+#ifndef VOLT_PROFILE_Record_H
+#define VOLT_PROFILE_Record_H
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
 
-class MoveGearOntoLift: public CommandBase {
+class VoltProfileRecord: public CommandBase {
 public:
-	MoveGearOntoLift();
+	VoltProfileRecord();
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	int ticker;
 };
 
 #endif  // EXAMPLE_COMMAND_H

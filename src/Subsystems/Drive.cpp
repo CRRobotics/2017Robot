@@ -127,8 +127,8 @@ void Drive::SetControlMode(DriveControlMode cMode){
 				vDriveD = frc::SmartDashboard::GetNumber("test_dCons", 0.0);
 				vDriveF = frc::SmartDashboard::GetNumber("test_fCons", 0.0);
 			}
-			rDrive1->SetPID(0.0,0.4,0.0,0.0);//rDrive1->SetPID(vDriveP, vDriveI, vDriveD, vDriveF);
-			lDrive1->SetPID(0.32,0.0,0.12,0.5);//lDrive1->SetPID(vDriveP, vDriveI, vDriveD, vDriveF);
+			rDrive1->SetPID(vDriveP, vDriveI, vDriveD, vDriveF);
+			lDrive1->SetPID(vDriveP, vDriveI, vDriveD, vDriveF);
 		break;
 		case DriveControlMode::VelocityTurning:
 			rDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);

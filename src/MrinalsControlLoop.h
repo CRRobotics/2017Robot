@@ -10,12 +10,14 @@ class MrinalsControlLoop
 {
 	public:
 	enum class RecordMode{
-			FULL_PROFILE,
-			SPEED_PROFILE,
-			NONE
+		VOLT_PROFILE,
+		FULL_PROFILE,
+		SPEED_PROFILE,
+		NONE
 	};
 
 	enum class PlayMode{
+		VOLT_PROFILE,
 		FULL_PROFILE,
 		SPEED_PROFILE,
 		NONE

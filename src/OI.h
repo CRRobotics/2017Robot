@@ -14,7 +14,7 @@
 #define DRIVE_TO_GEAR 9 //Driver right
 
 //All controller buttons below
-#define TOGGLE_SHOOTER 6
+#define TOGGLE_SHOOTER 6 //controller left
 #define EXTEND_GEAR 5
 #define RETRACT_GEAR 4
 #define ACQ_IN 8

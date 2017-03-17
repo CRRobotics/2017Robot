@@ -7,17 +7,17 @@ FireBalls::FireBalls(bool shootHigh) {
 
 // Called just before this Command runs the first time
 void FireBalls::Initialize() {
-	Robot::shooter->ChangeControlMode(CANTalon::ControlMode::kPercentVbus);//kSpeed);
+	Robot::shooter->ChangeControlMode(CANTalon::ControlMode::kSpeed);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void FireBalls::Execute() {
-	Robot::shooter->RunFlywheel(1.0);//GetDesiredSpeed());
+	Robot::shooter->RunFlywheel(-3100);//GetDesiredSpeed());
 	Robot::shooter->SetAngle(high);
-	if (Robot::shooter->UpToSpeed()) //Is the shooter up to speed?
-		Robot::shooter->SetGatePosition(false); //TODO make the shooter alternate sides while held
-	else
-		Robot::shooter->SetGatePosition(true);
+	//if (Robot::shooter->UpToSpeed()) //Is the shooter up to speed?
+		Robot::shooter->SetGatePosition(false);
+	//else
+	//	Robot::shooter->SetGatePosition(true);
 }
 
 // Make this return true when this Command no longer needs to run execute()

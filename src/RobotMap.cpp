@@ -48,13 +48,22 @@ void RobotMap::init() {
     drivelDrive2.reset(new CANTalon(L_DRIVE_2));
     lw->AddActuator("Drive", "lDrive2", drivelDrive2);
     
+    driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
+    drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
+    driverDrive1->SetPIDSourceType(PIDSourceType::kRate);
+	drivelDrive1->SetPIDSourceType(PIDSourceType::kRate);
+
     driverDrive2->SetControlMode(CANTalon::ControlMode::kFollower);
     drivelDrive2->SetControlMode(CANTalon::ControlMode::kFollower);
     driverDrive2->Set(R_DRIVE_1);
     drivelDrive2->Set(L_DRIVE_1);
     
+
+    drivelDrive2->ConfigLimitMode(CANTalon::LimitMode::kLimitMode_SrxDisableSwitchInputs);
+
     shooterflywheel.reset(new CANTalon(FLYWHEEL));
     lw->AddActuator("Shooter", "flywheel1", shooterflywheel);
+    shooterflywheel->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
 
     shooterangleShift.reset(new Solenoid(PCM_ID,SHOOTER_PISTON));
     lw->AddActuator("Shooter", "angleShift", shooterangleShift);

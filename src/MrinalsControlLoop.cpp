@@ -45,6 +45,13 @@ struct FullDataPoint{
 	double timeStamp;
 };
 
+struct VoltPoint{
+	double lV;
+	double rV;
+	double angle;
+
+};
+
 void MrinalsControlLoop::InitializeValues(){
 	running = false;
 	time_interval = 10;
@@ -66,11 +73,13 @@ void MrinalsControlLoop::StartLoop(){
 void MrinalsControlLoop::Loop(){
 	std::vector<SpeedPoint> dataStorage (0);
 	std::vector<FullDataPoint> fDataStorage (0);
+	std::vector<VoltPoint> vDataStorage (0);
 	int time_start = std::chrono::system_clock::now().time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
 	std::chrono::system_clock::time_point current_time = std::chrono::system_clock::now();
 	std::chrono::system_clock::time_point stop_time = std::chrono::system_clock::now();
 	int lastPosL = Robot::drive->GetLEncoder();
 	int lastPosR = Robot::drive->GetREncoder();
+	double pause = 0.005;
 
 	if (pMode == PlayMode::SPEED_PROFILE){
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
@@ -81,19 +90,55 @@ void MrinalsControlLoop::Loop(){
 		std::string lString;
 		std::string rString;
 		std::string aString;
+		std::string lPosString;
+		std::string rPosString;
+		std::string durString;
+		std::string timeString;
 		while (std::getline(inputFile, lString, ',')){
 			std::getline(inputFile, rString, ',');
 			std::getline(inputFile, aString, ',');
+			std::getline(inputFile, lPosString, ',');
+			std::getline(inputFile, rPosString, ',');
+			std::getline(inputFile, durString, ',');
+			std::getline(inputFile, timeString, ',');
 			double lSpd = std::strtod(lString.c_str(), NULL);
 			double rSpd = std::strtod(rString.c_str(), NULL);
 			double angle = std::strtod(aString.c_str(), NULL);
+			double lPos = std::strtod(lPosString.c_str(), NULL);
+			double rPos = std::strtod(rPosString.c_str(), NULL);
+			double dur = std::strtod(durString.c_str(), NULL);
+			double timeStamp = std::strtod(timeString.c_str(), NULL);
 			SpeedPoint d;
 			d.lSpeed = lSpd;
 			d.rSpeed = rSpd;
 			d.angle = angle;
+			d.lPos = lPos;
+			d.rPos = rPos;
+			d.dur = dur;
+			d.timeStamp = timeStamp;
 			dataStorage.push_back(d);
 		}
 		inputFile.close();
+	} else if (pMode == PlayMode::VOLT_PROFILE){
+		RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+		RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+
+		std::ifstream inputFile;
+		inputFile.open(filePath.append(inputFileName));
+
+		std::string lVolt;
+		std::string rVolt;
+		std::string aString;
+
+		while (std::getline(inputFile, lVolt, ',')){
+			std::getline(inputFile, rVolt, ',');
+			std::getline(inputFile, aString, ',');
+			VoltPoint d;
+			d.lV = std::strtod(lVolt.c_str(), NULL);
+			d.rV = std::strtod(rVolt.c_str(), NULL);
+			d.angle = std::strtod(aString.c_str(), NULL);
+			vDataStorage.push_back(d);
+		}
 	}
 
 	while (running){
@@ -118,6 +163,14 @@ void MrinalsControlLoop::Loop(){
 			d.timeStamp = time_diff * 1.0;
 			dataStorage.push_back(d);
 		}
+		else if (rMode == RecordMode::VOLT_PROFILE){
+			VoltPoint d;
+			d.lV = RobotMap::drivelDrive1->GetOutputVoltage();
+			d.rV = RobotMap::driverDrive1->GetOutputVoltage();
+			d.angle = Robot::drive->GetYaw();
+			vDataStorage.push_back(d);
+		}
+
 
 		if (pMode == PlayMode::FULL_PROFILE){
 
@@ -128,6 +181,19 @@ void MrinalsControlLoop::Loop(){
 				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
 				double aCorr = 0;
 				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, dataStorage[ticker].rSpeed - aCorr);
+			}
+			else
+			{
+				Robot::drive->TankDrive(0, 0);
+				pMode = PlayMode::NONE;
+			}
+		}
+		else if (pMode == PlayMode::VOLT_PROFILE){
+			if (ticker < vDataStorage.size())
+			{
+				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
+				double aCorr = 0;
+				Robot::drive->TankDrive(vDataStorage[ticker].lV + aCorr, vDataStorage[ticker].rV - aCorr);
 			}
 			else
 			{
@@ -157,6 +223,14 @@ void MrinalsControlLoop::Loop(){
 	}
 	else if (rMode == RecordMode::FULL_PROFILE){
 
+	}
+	else if (rMode == RecordMode::VOLT_PROFILE){
+		std::ofstream outputFile;
+		outputFile.open(filePath.append(outputFileName));
+		for (unsigned int i = 0; i < vDataStorage.size(); i++){
+			outputFile << vDataStorage[i].lV << ", " << vDataStorage[i].rV << ", " << vDataStorage[i].angle << ",\n";
+		}
+		outputFile.close();
 	}
 
 	loop_thread.detach();

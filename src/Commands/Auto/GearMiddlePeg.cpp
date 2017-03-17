@@ -6,11 +6,11 @@
  */
 
 #include "GearMiddlePeg.h"
-#include "../Drive/AutoDriveDistance.h"
+#include "../Drive/VoltageSpeedDrive.h"
 #include "../Drive/MoveGearOntoLift.h"
 
 GearMiddlePeg::GearMiddlePeg() {
-	AddSequential(new AutoDriveDistance(-82));
+	AddSequential(new VoltageSpeedDrive(-7), 4);
 	AddSequential(new MoveGearOntoLift(), 5);
 }
 

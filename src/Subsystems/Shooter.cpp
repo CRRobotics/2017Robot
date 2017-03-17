@@ -14,7 +14,7 @@
 #include "Shooter.h"
 #include "../RobotMap.h"
 
-#define SHOOTER_ACCEPTABLE_ERROR 50
+#define SHOOTER_ACCEPTABLE_ERROR 1000
 
 Shooter::Shooter() : Subsystem("Shooter") {
     flywheel = RobotMap::shooterflywheel;

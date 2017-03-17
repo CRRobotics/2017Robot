@@ -6,15 +6,15 @@
 #include "CANTalon.h"
 
 #define R_DRIVE_1 3
-#define R_DRIVE_2 63//4
-#define L_DRIVE_1 1//1
-#define L_DRIVE_2 63//2
+#define R_DRIVE_2 4
+#define L_DRIVE_1 1
+#define L_DRIVE_2 2
 
-#define FLYWHEEL 2//5
+#define FLYWHEEL 5
 
 
-#define INTAKE_ROLLER 63//0 //Change
-#define STORAGE_ROLLER 0//6
+#define INTAKE_ROLLER 63
+#define STORAGE_ROLLER 6
 
 
 //Pistons

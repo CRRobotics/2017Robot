@@ -16,8 +16,8 @@ void AutoDriveSpeed::Initialize() {
 void AutoDriveSpeed::Execute() {
 	speed = SmartDashboard::GetNumber("test_setPoint", 0.0);
 	Robot::drive->TankDrive(speed, speed);
-	SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
-	SmartDashboard::PutNumber("test_speed_speed", RobotMap::driverDrive1->GetEncVel());
+	printf("%d\n",(RobotMap::drivelDrive1->GetEncVel()));
+
 }
 
 // Make this return true when this Command no longer needs to run execute()

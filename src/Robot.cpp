@@ -8,11 +8,15 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
+#include "Commands/Auto/VoltProfileReplay.h"
 #include "Commands/Drive/AutoDriveDistance.h"
 #include "Commands/Drive/AutoDriveSpeed.h"
 #include "Commands/Drive/AutoDriveTurn.h"
+#include "Commands/Shooter/FireBalls.h"
+#include "Commands/Auto/GearMiddlePeg.h"
 #include "CommandBase.h"
 #include "Robot.h"
+#include "Commands/Shooter/StopShooter.h"
 
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Drive> Robot::drive;
@@ -29,7 +33,7 @@ std::unique_ptr<frc::Command> autonomousCommand;
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
 	MrinalsControlLoop::InitializeValues();
-	tMode = TestMode::NONE;
+	tMode = TestMode::DRIVE_SPEED;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
@@ -38,6 +42,8 @@ void Robot::RobotInit() {
 	climbing.reset(new Climbing());
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
+	SmartDashboard::PutString("input_file_name", "recording.csv");
+	SmartDashboard::PutString("output_file_name", "recording.csv");
 	SmartDashboard::PutNumber("test_pCons", 0.0);
 	SmartDashboard::PutNumber("test_iCons", 0.0);
 	SmartDashboard::PutNumber("test_dCons", 0.0);
@@ -77,8 +83,9 @@ void Robot::RobotInit() {
 		break;
 	}
 
-	bool cLeftSide = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
-	oi->SetControllerSide(cLeftSide);
+	bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
+	int location = DriverStation::GetInstance().GetLocation();
+	oi->SetControllerSide(true);
 	oi->MapButtons();
 }
 
@@ -119,6 +126,9 @@ void Robot::RobotInit() {
 //		if (autonomousCommand.get() != nullptr) {
 ////			autonomousCommand->Start();
 //		}
+		//new FireBalls(false);
+		//(new GearMiddlePeg())->Start();
+		(new VoltProfileReplay(""))->Start();
 	}
 
 	void Robot::AutonomousPeriodic(){
@@ -126,10 +136,23 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopInit(){
-		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.csv");
+		//(new StopShooter())->Start();
+		MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
+		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
+		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::VOLT_PROFILE;
+		MrinalsControlLoop::StartLoop();
 	}
 
 	void Robot::TeleopPeriodic(){
+		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
+		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncVel());
+		//CANTalon::FeedbackDeviceStatus st;
+		SmartDashboard::PutNumber("l_enc_present", RobotMap::drivelDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
+		SmartDashboard::PutNumber("r_enc_present", RobotMap::driverDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
+		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncPosition());
+		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetEncVel());
+		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetEncVel());
+		SmartDashboard::PutBoolean("Profile recording", MrinalsControlLoop::rMode != MrinalsControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}
 

@@ -116,7 +116,7 @@ double OI::GetYDriverR(){
 }
 
 bool OI::GetAcquisition(){
-	return acqIn->Get() || toggleHopper->Get();//For testing
+	return acqIn->Get() || toggleHopper->Get();
 }
 
 bool OI::GetDrivePTOOn(){

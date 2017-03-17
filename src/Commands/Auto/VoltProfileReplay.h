@@ -1,18 +1,18 @@
-#ifndef GEAR_TO_LIFT_H
-#define GEAR_TO_LIFT_H
+#ifndef VOLT_PROFILE_REPLAY_H
+#define VOLT_PROFILE_REPLAY_H
 
 #include "../../CommandBase.h"
 #include "../../Robot.h"
 
-class MoveGearOntoLift: public CommandBase {
+class VoltProfileReplay: public CommandBase {
 public:
-	MoveGearOntoLift();
+	VoltProfileReplay(std::string replayName);
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	int ticker;
+	std::string rName;
 };
 
 #endif  // EXAMPLE_COMMAND_H

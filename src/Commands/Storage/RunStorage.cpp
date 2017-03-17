@@ -19,8 +19,8 @@ void RunStorage::Execute() {
 		Robot::storage->MoveStorage(1.0);
 	}
 	else if (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed()){
-		double speed = fabs (30.0 / Robot::shooter->GetSpeedError());
-		Robot::storage->MoveStorage(speed);
+		//double speed = fabs (30.0 / Robot::shooter->GetSpeedError());
+		Robot::storage->MoveStorage(-0.8);
 	}
 	else {
 		Robot::storage->MoveStorage(0.0);
