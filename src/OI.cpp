@@ -5,6 +5,7 @@
 
 #include <WPILib.h>
 #include "Robot.h"
+#include "Commands/Drive/AutoDriveTurn.h"
 #include "Commands/Acquisition/AcquisitionIn.h"
 #include "Commands/Acquisition/ToggleHopper.h"
 #include "Commands/Climbing/StartClimber.h"
@@ -35,13 +36,15 @@ void OI::MapButtons(){
 	std::shared_ptr<Joystick> controllerR;
 	std::shared_ptr<Joystick> driverL;
 	std::shared_ptr<Joystick> driverR;
-	if (controllerLeft){
+	if (controllerLeft)
+	{
 		controllerL = lJoystick1;
 		controllerR = lJoystick2;
 		driverL = rJoystick1;
 		driverR = rJoystick2;
 	}
-	else{
+	else
+	{
 		controllerL = rJoystick1;
 		controllerR = rJoystick2;
 		driverL = lJoystick1;
@@ -58,6 +61,9 @@ void OI::MapButtons(){
 
 	drivePTOOff.reset(new JoystickButton(driverL.get(), SHIFT_PTO_OFF));
 	drivePTOOff->WhenPressed(new StopClimber());
+
+	driveLoadingZone.reset(new JoystickButton(driverL.get(), DRIVE_TO_LOADING));
+	driveLoadingZone->WhenPressed(new AutoDriveTurn(-64.435));
 
 	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
 	toggleShooter->WhenPressed(new RunShooter());
@@ -85,6 +91,7 @@ void OI::MapButtons(){
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
 	shooterAngleShort->WhileHeld(new FireBalls(false));
+	Robot::oiMapped = true;
 }
 
 double OI::GetYControllerL(){

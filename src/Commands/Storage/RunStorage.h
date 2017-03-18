@@ -13,6 +13,7 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
+	double speedAtShooterError(double e);
 };
 
 #endif  // EXAMPLE_COMMAND_H

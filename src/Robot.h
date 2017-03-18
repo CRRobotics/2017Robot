@@ -42,6 +42,7 @@ public:
 		DRIVE_MOTION_PROFILE
 	};
 
+	static bool oiMapped;
 	static TestMode tMode;
 	std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<OI> oi;

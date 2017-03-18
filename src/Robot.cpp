@@ -28,13 +28,14 @@ std::shared_ptr<Acquisition> Robot::acquisition;
 std::shared_ptr<Storage> Robot::storage;
 Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
+bool Robot::oiMapped;
 
 std::unique_ptr<frc::Command> autonomousCommand;
 
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
 	MrinalsControlLoop::InitializeValues();
-	tMode = TestMode::NONE;
+	tMode = TestMode::DRIVE_TURN_SPEED;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
@@ -63,6 +64,7 @@ void Robot::RobotInit() {
 		case TestMode::DRIVE_TURN_SPEED:
 			SmartDashboard::PutString("test_mode", "drive_turn_speed");
 			SmartDashboard::PutNumber("test_max_speed", 0);
+			SmartDashboard::PutNumber("test_min_speed", 0);
 			SmartDashboard::PutNumber("test_slow_start", 0);
 			SmartDashboard::PutNumber("test_slow_end", 0);
 			SmartDashboard::PutData("test_turn_to_setPoint", new AutoDriveTurn(0));
@@ -88,8 +90,9 @@ void Robot::RobotInit() {
 	bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
 	int location = DriverStation::GetInstance().GetLocation();
 	bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
-	oi->SetControllerSide(cLeft);
-	oi->MapButtons();
+	oi->SetControllerSide(true);
+	oiMapped = false;
+	//oi->MapButtons();
 }
 
 	/**
@@ -139,7 +142,10 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopInit(){
-		//(new StopShooter())->Start();
+		if (!oiMapped){
+			oi->MapButtons();
+		}
+
 		MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
 		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::SPEED_PROFILE;

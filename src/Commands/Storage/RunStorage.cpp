@@ -27,6 +27,11 @@ void RunStorage::Execute() {
 	}
 }
 
+double speedAtShooterError(double e)
+{
+	return -1000 / ((fabs(e) + 2000) * 0.33333) ;
+}
+
 // Make this return true when this Command no longer needs to run execute()
 bool RunStorage::IsFinished() {
 	return false;

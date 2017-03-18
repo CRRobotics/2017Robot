@@ -13,10 +13,11 @@ void AutoDriveTurn::Initialize() {
 	{
 		desiredAngle = SmartDashboard::GetNumber("test_setPoint", 0);
 		maxSpeed = SmartDashboard::GetNumber("test_max_speed", 0);
+		minSpeed = SmartDashboard::GetNumber("test_min_speed", 0);
 		slowStart = SmartDashboard::GetNumber("test_slow_start", 0);
 		slowEnd = SmartDashboard::GetNumber("test_slow_end", 0);
 	}
-	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityTurning);
+	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -24,23 +25,23 @@ void AutoDriveTurn::Execute() {
 	double currentAngle = Robot::drive->GetYaw();
 	double error = angle_diff(desiredAngle, currentAngle);
 	double direction = 1;
-	if (error < 1)
+	if (error < 0)
 		direction = -1;
 	error = fabs(error);
 	if (error > slowStart)
 		Robot::drive->TankDrive(maxSpeed, direction * maxSpeed, true);
 	else if (error > slowEnd)
-		Robot::drive->TankDrive(0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd),
-								direction * (0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)));
+		Robot::drive->TankDrive(minSpeed + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd),
+								direction * (minSpeed + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)));
 	else
-		Robot::drive->TankDrive(0.15, direction * 0.15, true);
+		Robot::drive->TankDrive(minSpeed, direction * minSpeed, true);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDriveTurn::IsFinished() {
 	double currentAngle = Robot::drive->GetYaw();
 	double error = angle_diff(desiredAngle, currentAngle);
-	return fabs(error) < 1;
+	return fabs(error) < 2.5 || fabs(Robot::oi->GetYDriverL()) > 0.2 || fabs(Robot::oi->GetYDriverR()) > 0.2;
 }
 
 // Called once after isFinished returns true

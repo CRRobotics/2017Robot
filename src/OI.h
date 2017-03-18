@@ -12,6 +12,7 @@
 #define SHIFT_PTO_OFF 1 //driver left
 #define DRIVE_TO_BOILER 8 //Driver right
 #define DRIVE_TO_GEAR 9 //Driver right
+#define DRIVE_TO_LOADING 7//Drive left
 
 //All controller buttons below
 #define TOGGLE_SHOOTER 6 //controller left
@@ -46,6 +47,8 @@ private:
 	std::shared_ptr<Joystick> lJoystick1;
 	std::shared_ptr<Joystick> lJoystick2;
 
+
+	std::shared_ptr<JoystickButton> driveLoadingZone;
 	std::shared_ptr<JoystickButton> driveShiftHighGear;
 	std::shared_ptr<JoystickButton> driveShiftLowGear;
 	std::shared_ptr<JoystickButton> drivePTOOn;
