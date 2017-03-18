@@ -7,17 +7,16 @@ MoveGearOntoLift::MoveGearOntoLift() {
 
 // Called just before this Command runs the first time
 void MoveGearOntoLift::Initialize() {
-	RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
-	RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 	ticker = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveGearOntoLift::Execute() {
 	if (ticker % 20 < 10)
-		Robot::drive->TankDrive(-4.8, -5.2);
+		Robot::drive->TankDrive(0.2, 0.3);
 	else
-		Robot::drive->TankDrive(-5.2, -4.8);
+		Robot::drive->TankDrive(0.3, 0.2);
 	ticker++;
 }
 

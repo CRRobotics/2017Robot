@@ -9,6 +9,7 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 #include "Commands/Auto/VoltProfileReplay.h"
+#include "Commands/Auto/SpeedProfileReplay.h"
 #include "Commands/Drive/AutoDriveDistance.h"
 #include "Commands/Drive/AutoDriveSpeed.h"
 #include "Commands/Drive/AutoDriveTurn.h"
@@ -33,7 +34,7 @@ std::unique_ptr<frc::Command> autonomousCommand;
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
 	MrinalsControlLoop::InitializeValues();
-	tMode = TestMode::DRIVE_SPEED;
+	tMode = TestMode::NONE;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
@@ -42,6 +43,7 @@ void Robot::RobotInit() {
 	climbing.reset(new Climbing());
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
+	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay(""));
 	SmartDashboard::PutString("input_file_name", "recording.csv");
 	SmartDashboard::PutString("output_file_name", "recording.csv");
 	SmartDashboard::PutNumber("test_pCons", 0.0);
@@ -85,7 +87,8 @@ void Robot::RobotInit() {
 
 	bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
 	int location = DriverStation::GetInstance().GetLocation();
-	oi->SetControllerSide(true);
+	bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
+	oi->SetControllerSide(cLeft);
 	oi->MapButtons();
 }
 
@@ -128,7 +131,7 @@ void Robot::RobotInit() {
 //		}
 		//new FireBalls(false);
 		//(new GearMiddlePeg())->Start();
-		(new VoltProfileReplay(""))->Start();
+		(new GearMiddlePeg)->Start();
 	}
 
 	void Robot::AutonomousPeriodic(){
@@ -139,8 +142,11 @@ void Robot::RobotInit() {
 		//(new StopShooter())->Start();
 		MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
-		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::VOLT_PROFILE;
+		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::SPEED_PROFILE;
+		MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
 		MrinalsControlLoop::StartLoop();
+		RobotMap::leftGate->Set(true);
+		RobotMap::rightGate->Set(true);
 	}
 
 	void Robot::TeleopPeriodic(){
@@ -153,6 +159,7 @@ void Robot::RobotInit() {
 		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetEncVel());
 		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetEncVel());
 		SmartDashboard::PutBoolean("Profile recording", MrinalsControlLoop::rMode != MrinalsControlLoop::RecordMode::NONE);
+		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		frc::Scheduler::GetInstance()->Run();
 	}
 

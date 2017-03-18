@@ -34,6 +34,7 @@ void FireBalls::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void FireBalls::Interrupted() {
+	Robot::shooter->SetGatePosition(true);
 	Robot::shooter->RunFlywheel(0.0);
 }
 

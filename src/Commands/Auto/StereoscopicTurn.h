@@ -16,6 +16,15 @@ public:
 	double slowStart;
 	double slowEnd;
 	double desiredAngle;
+	int stage = 0;
+	double lastTicker;
+	double xAngle1;
+	double xAngle2;
+	double yaw1;
+	double yaw2;
+	double accurateXAngle1;
+	double distance;
+	int internalTicker = 0;
 };
 
 #endif  // EXAMPLE_COMMAND_H

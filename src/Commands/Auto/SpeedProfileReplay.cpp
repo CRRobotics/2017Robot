@@ -10,7 +10,7 @@ SpeedProfileReplay::SpeedProfileReplay(std::string replayName) {
 // Called just before this Command runs the first time
 void SpeedProfileReplay::Initialize() {
 	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::SPEED_PROFILE;
-	MrinalsControlLoop::inputFileName = rName;
+	MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
 	if (!MrinalsControlLoop::running)
 		MrinalsControlLoop::StartLoop();
 }

@@ -6,11 +6,11 @@
  */
 
 #include "GearMiddlePeg.h"
-#include "../Drive/VoltageSpeedDrive.h"
+#include "../Drive/DriveForwardAtSpeed.h"
 #include "../Drive/MoveGearOntoLift.h"
 
 GearMiddlePeg::GearMiddlePeg() {
-	AddSequential(new VoltageSpeedDrive(-7), 4);
-	AddSequential(new MoveGearOntoLift(), 5);
+	AddSequential(new DriveForwardAtSpeed(280), 2.8);
+	//AddSequential(new MoveGearOntoLift(), 2);
 }
 

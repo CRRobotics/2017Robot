@@ -38,5 +38,5 @@ double RunShooter::GetDesiredSpeed(){
 	if (Robot::tMode == Robot::TestMode::SHOOTER_SPEED)
 		return SmartDashboard::GetNumber("test_setPoint", 0);
 	else
-		return 600;
+		return -3100;
 }
