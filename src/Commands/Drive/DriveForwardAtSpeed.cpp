@@ -19,7 +19,7 @@ void DriveForwardAtSpeed::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DriveForwardAtSpeed::Execute() {
 	Robot::drive->TankDrive(speed, speed);
-	//printf("%d\n",(RobotMap::drivelDrive1->GetEncVel()));
+	//printf("%d\n",(RobotMap::drivelDrive1->GetSpeed()));
 
 }
 

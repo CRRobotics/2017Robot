@@ -16,7 +16,7 @@ void AutoDriveSpeed::Initialize() {
 void AutoDriveSpeed::Execute() {
 	speed = SmartDashboard::GetNumber("test_setPoint", 0.0);
 	Robot::drive->TankDrive(speed, speed);
-	printf("%d\n",(RobotMap::drivelDrive1->GetEncVel()));
+	printf("%d\n",(RobotMap::drivelDrive1->GetSpeed()));
 
 }
 

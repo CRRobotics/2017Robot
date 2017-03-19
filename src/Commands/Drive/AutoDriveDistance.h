@@ -15,7 +15,7 @@ public:
 	double maxSpeed;//Percentage from 0 to 1
 	double slowStart;
 	double slowEnd;
-	double desiredEncTick;
+	double desiredR;
 	double desiredDist;
 	double startAngle;
 	double kTurn = 0.0;

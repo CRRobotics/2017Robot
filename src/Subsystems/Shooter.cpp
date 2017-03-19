@@ -53,7 +53,7 @@ void Shooter::ChangeControlMode(CANTalon::ControlMode cMode)
 
 double Shooter::GetFlywheelSpeed()
 {
-	return flywheel->GetEncVel();
+	return flywheel->GetSpeed();
 }
 
 bool Shooter::UpToSpeed()

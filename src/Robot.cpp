@@ -168,13 +168,13 @@ void Robot::RobotInit() {
 	void Robot::TeleopPeriodic()
 {
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
-		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncVel());
+		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
 		//CANTalon::FeedbackDeviceStatus st;
 		SmartDashboard::PutNumber("l_enc_present", RobotMap::drivelDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
 		SmartDashboard::PutNumber("r_enc_present", RobotMap::driverDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
 		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncPosition());
-		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetEncVel());
-		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetEncVel());
+		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetSpeed());
+		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetSpeed());
 		SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}

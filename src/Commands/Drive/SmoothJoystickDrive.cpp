@@ -1,7 +1,7 @@
 #include <CustomControlLoop.h>
 #include "SmoothJoystickDrive.h"
 
-double SmoothJoystickDrive::acc_limit = 2000 * 0.05;
+double SmoothJoystickDrive::acc_limit = 1400 * 0.05;
 
 SmoothJoystickDrive::SmoothJoystickDrive() {
 	Requires(Robot::drive.get());
@@ -12,10 +12,10 @@ void SmoothJoystickDrive::Initialize() {
 }
 
 void SmoothJoystickDrive::Execute() {
-	double joystickL = Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()) * Drive::maxEncVel;
-	double joystickR = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()) * Drive::maxEncVel;
-	double currentL = Robot::drive->GetLEncoderRate();
-	double currentR = Robot::drive->GetREncoderRate();
+	double joystickL = Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()) * Drive::maxSpeed;
+	double joystickR = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()) * Drive::maxSpeed;
+	double currentL = Robot::drive->GetLSpeed();
+	double currentR = Robot::drive->GetRSpeed();
 	double dL = joystickL - currentL;
 	double dR = joystickR - currentR;
 	if (fabs(dL) > acc_limit)

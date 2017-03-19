@@ -15,7 +15,7 @@
 #include "WPILib.h"
 #include "AHRS.h"
 #define ENC_PULSE_PER_IN 0
-
+#define R_PER_IN 1 / 3.1415926535 / 3.94
 /**
  *
  *
@@ -65,10 +65,14 @@ public:
 	void InitDefaultCommand();
 	int GetLEncoder();
 	int GetREncoder();
+	double GetLPosition();
+	double GetRPosition();
 	double GetYaw();
 	int GetLEncoderRate();
 	int GetREncoderRate();
-	static double maxEncVel;
+	double GetLSpeed();
+	double GetRSpeed();
+	static double maxSpeed;
 };
 
 

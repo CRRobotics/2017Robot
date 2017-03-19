@@ -9,7 +9,7 @@ AutoDriveDistance::AutoDriveDistance(double dist) {
 	slowEnd = 400;
 	slowStart = 1600;
 	maxSpeed = 0.8;
-	desiredEncTick = 0;
+	desiredR = 0;
 }
 
 // Called just before this Command runs the first time
@@ -21,16 +21,16 @@ void AutoDriveDistance::Initialize() {
 		slowStart = SmartDashboard::GetNumber("test_slow_start", 0);
 		slowEnd = SmartDashboard::GetNumber("test_slow_end", 0);
 	}
-	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
-	desiredEncTick = avgEncTick + desiredDist * ENC_PULSE_PER_IN;
+	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
+	desiredR = avgR + desiredDist * R_PER_IN;
 	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 	startAngle = Robot::drive->GetYaw();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDriveDistance::Execute() {
-	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
-	double error = desiredEncTick - avgEncTick;
+	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
+	double error = desiredR - avgR;
 	int sign = 1;
 	if (error < 0)
 		sign = -1;
@@ -41,7 +41,7 @@ void AutoDriveDistance::Execute() {
 		Robot::drive->TankDrive((maxSpeed) * sign + aCorr, (maxSpeed) * sign - aCorr, true);
 	else if (error > slowEnd)
 		Robot::drive->TankDrive((0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)) * sign + aCorr,
-								(0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)) * sign - aCorr);
+								(0.15 + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)) * sign - aCorr, true);
 	else
 		Robot::drive->TankDrive((0.15) * sign + aCorr, (0.15) * sign - aCorr, true);
 
@@ -49,9 +49,9 @@ void AutoDriveDistance::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDriveDistance::IsFinished() {
-	double avgEncTick = (Robot::drive->GetLEncoder() + Robot::drive->GetREncoder()) / 2.0;
-	double error = desiredEncTick - avgEncTick;
-	return fabs(error) < 50;
+	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
+	double error = desiredR- avgR;
+	return fabs(error) < 0.5;
 }
 
 // Called once after isFinished returns true
