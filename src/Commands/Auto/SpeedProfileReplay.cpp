@@ -10,6 +10,7 @@ SpeedProfileReplay::SpeedProfileReplay(std::string replayName) {
 // Called just before this Command runs the first time
 void SpeedProfileReplay::Initialize() {
 	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::SPEED_PROFILE;
+	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
 	MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
 	if (!MrinalsControlLoop::running)
 		MrinalsControlLoop::StartLoop();
@@ -26,11 +27,13 @@ bool SpeedProfileReplay::IsFinished() {
 
 // Called once after isFinished returns true
 void SpeedProfileReplay::End() {
-	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
+	//MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
+	MrinalsControlLoop::running = false;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void SpeedProfileReplay::Interrupted() {
-	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
+	//MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
+	MrinalsControlLoop::running = false;
 }

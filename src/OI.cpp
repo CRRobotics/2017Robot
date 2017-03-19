@@ -123,16 +123,25 @@ double OI::GetYDriverR(){
 }
 
 bool OI::GetAcquisition(){
-	return acqIn->Get() || toggleHopper->Get();
+	if (acqIn != nullptr && toggleHopper != nullptr)
+		return acqIn->Get() || toggleHopper->Get();
+	else
+		return false;
 }
 
 bool OI::GetDrivePTOOn(){
-	return drivePTOOn->Get();
+	if (drivePTOOn != nullptr)
+		return drivePTOOn->Get();
+	return false;
 }
 
 bool OI::GetDrivePTOOff(){
-	return drivePTOOff->Get();
+	if (drivePTOOff != nullptr)
+		return drivePTOOff->Get();
+	return false;
 }
 bool OI::GetFiring(){
-	return shooterAngleFar->Get() || shooterAngleShort->Get();
+	if (shooterAngleFar != nullptr && shooterAngleShort != nullptr)
+		return shooterAngleFar->Get() || shooterAngleShort->Get();
+	return false;
 }

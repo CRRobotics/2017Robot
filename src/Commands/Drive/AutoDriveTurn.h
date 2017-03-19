@@ -12,10 +12,10 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	double maxSpeed = 400;
-	double minSpeed = 100;
-	double slowStart = 50;
-	double slowEnd = 10;
+	double maxSpeed = 90;
+	double minSpeed = 60;
+	double slowStart = 15;
+	double slowEnd = 9;
 	double desiredAngle;
 };
 

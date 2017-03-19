@@ -10,6 +10,7 @@
 
 #include "Commands/Auto/VoltProfileReplay.h"
 #include "Commands/Auto/SpeedProfileReplay.h"
+#include "Commands/Auto/SpeedProfileRecord.h"
 #include "Commands/Drive/AutoDriveDistance.h"
 #include "Commands/Drive/AutoDriveSpeed.h"
 #include "Commands/Drive/AutoDriveTurn.h"
@@ -45,8 +46,9 @@ void Robot::RobotInit() {
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
 	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay(""));
-	SmartDashboard::PutString("input_file_name", "recording.csv");
-	SmartDashboard::PutString("output_file_name", "recording.csv");
+	SmartDashboard::PutData("Create speed recording", new SpeedProfileRecord());
+	SmartDashboard::PutString("input_file_name", "paulsucks.csv");
+	SmartDashboard::PutString("output_file_name", "paulsucks.csv");
 	SmartDashboard::PutNumber("test_pCons", 0.0);
 	SmartDashboard::PutNumber("test_iCons", 0.0);
 	SmartDashboard::PutNumber("test_dCons", 0.0);
@@ -87,12 +89,16 @@ void Robot::RobotInit() {
 		break;
 	}
 
-	bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
-	int location = DriverStation::GetInstance().GetLocation();
-	bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
+	//bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
+	//int location = DriverStation::GetInstance().GetLocation();
+	//bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
+
 	oi->SetControllerSide(true);
 	oiMapped = false;
 	//oi->MapButtons();
+	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
+	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
+	MrinalsControlLoop::running = false;
 }
 
 	/**
@@ -134,6 +140,7 @@ void Robot::RobotInit() {
 //		}
 		//new FireBalls(false);
 		//(new GearMiddlePeg())->Start();
+		MrinalsControlLoop::running = false;
 		(new GearMiddlePeg)->Start();
 	}
 
@@ -148,9 +155,9 @@ void Robot::RobotInit() {
 
 		MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
-		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::SPEED_PROFILE;
+		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
 		MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
-		MrinalsControlLoop::StartLoop();
+		//MrinalsControlLoop::StartLoop();
 		RobotMap::leftGate->Set(true);
 		RobotMap::rightGate->Set(true);
 	}
@@ -165,7 +172,6 @@ void Robot::RobotInit() {
 		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetEncVel());
 		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetEncVel());
 		SmartDashboard::PutBoolean("Profile recording", MrinalsControlLoop::rMode != MrinalsControlLoop::RecordMode::NONE);
-		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		frc::Scheduler::GetInstance()->Run();
 	}
 

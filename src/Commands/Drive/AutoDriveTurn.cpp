@@ -23,18 +23,21 @@ void AutoDriveTurn::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AutoDriveTurn::Execute() {
 	double currentAngle = Robot::drive->GetYaw();
+	SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 	double error = angle_diff(desiredAngle, currentAngle);
+	printf("%f %f\n", currentAngle, desiredAngle);
+	SmartDashboard::PutNumber("angle error", error);
 	double direction = 1;
 	if (error < 0)
 		direction = -1;
 	error = fabs(error);
 	if (error > slowStart)
-		Robot::drive->TankDrive(maxSpeed, direction * maxSpeed, true);
+		Robot::drive->TankDrive(-1 * direction * maxSpeed, direction * maxSpeed, true);
 	else if (error > slowEnd)
-		Robot::drive->TankDrive(minSpeed + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd),
+		Robot::drive->TankDrive(-1 * direction * minSpeed + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd),
 								direction * (minSpeed + (maxSpeed - 0.15) * (error - slowEnd) / (slowStart - slowEnd)));
 	else
-		Robot::drive->TankDrive(minSpeed, direction * minSpeed, true);
+		Robot::drive->TankDrive(-1 * direction * minSpeed, direction * minSpeed, true);
 }
 
 // Make this return true when this Command no longer needs to run execute()

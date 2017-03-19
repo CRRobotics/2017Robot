@@ -9,13 +9,17 @@ DriveForwardAtSpeed::DriveForwardAtSpeed(double s) {
 
 // Called just before this Command runs the first time
 void DriveForwardAtSpeed::Initialize() {
-	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	//Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+	RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
+	RobotMap::drivelDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
+	RobotMap::driverDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveForwardAtSpeed::Execute() {
 	Robot::drive->TankDrive(speed, speed);
-	printf("%d\n",(RobotMap::drivelDrive1->GetEncVel()));
+	//printf("%d\n",(RobotMap::drivelDrive1->GetEncVel()));
 
 }
 

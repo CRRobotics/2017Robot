@@ -65,7 +65,6 @@ void MrinalsControlLoop::InitializeValues(){
 //record lSpeed, rSpeed, angle, time interval, time
 void MrinalsControlLoop::StartLoop(){
 	running = true;
-	ticker = 0;
 	loop_thread = std::thread (Loop);
 }
 
@@ -80,13 +79,16 @@ void MrinalsControlLoop::Loop(){
 	int lastPosL = Robot::drive->GetLEncoder();
 	int lastPosR = Robot::drive->GetREncoder();
 	double pause = 0.005;
+	ticker = 0;
 
 	if (pMode == PlayMode::SPEED_PROFILE){
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
+		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
 
 		std::ifstream inputFile;
-		inputFile.open(filePath.append(inputFileName));
-
+		inputFile.open(filePath + inputFileName);
+		printf("%s\n", (filePath + inputFileName).c_str());
 		std::string lString;
 		std::string rString;
 		std::string aString;
@@ -124,7 +126,7 @@ void MrinalsControlLoop::Loop(){
 		RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
 
 		std::ifstream inputFile;
-		inputFile.open(filePath.append(inputFileName));
+		inputFile.open(filePath + inputFileName);
 
 		std::string lVolt;
 		std::string rVolt;
@@ -151,8 +153,9 @@ void MrinalsControlLoop::Loop(){
 		}
 		else if (rMode == RecordMode::SPEED_PROFILE){
 			SpeedPoint d;
-			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//(currentLSpeed + lastLSpeed) / 2.0;
-			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//(currentRSpeed + lastRSpeed) / 2.0;
+
+			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//RobotMap::drivelDrive1->GetEncVel() / 5;//(currentLSpeed + lastLSpeed) / 2.0;
+			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//RobotMap::driverDrive1->GetEncVel() / 5;//(currentRSpeed + lastRSpeed) / 2.0;
 			d.lPos = RobotMap::drivelDrive1->GetEncPosition() - lastPosL;
 			d.rPos = RobotMap::driverDrive1->GetEncPosition() - lastPosR;
 			lastPosL += d.lPos;
@@ -180,7 +183,7 @@ void MrinalsControlLoop::Loop(){
 			{
 				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
 				double aCorr = 0;
-				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, dataStorage[ticker].rSpeed - aCorr);
+				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, -1 * dataStorage[ticker].rSpeed - aCorr);
 			}
 			else
 			{
@@ -212,7 +215,8 @@ void MrinalsControlLoop::Loop(){
 
 	if (rMode == RecordMode::SPEED_PROFILE){
 		std::ofstream outputFile;
-		outputFile.open(filePath.append(outputFileName));
+		outputFile.open(filePath + outputFileName);
+		SmartDashboard::PutString("FILEPATH:", filePath + outputFileName );
 		for (unsigned int i = 0; i < dataStorage.size(); i++)
 		{
 			outputFile << dataStorage[i].lSpeed << ", " << dataStorage[i].rSpeed << ",";
@@ -226,7 +230,7 @@ void MrinalsControlLoop::Loop(){
 	}
 	else if (rMode == RecordMode::VOLT_PROFILE){
 		std::ofstream outputFile;
-		outputFile.open(filePath.append(outputFileName));
+		outputFile.open(filePath + outputFileName);
 		for (unsigned int i = 0; i < vDataStorage.size(); i++){
 			outputFile << vDataStorage[i].lV << ", " << vDataStorage[i].rV << ", " << vDataStorage[i].angle << ",\n";
 		}

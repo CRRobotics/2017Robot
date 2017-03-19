@@ -30,6 +30,8 @@ Drive::Drive() : Subsystem("Drive") {
     lDrive2 = RobotMap::drivelDrive2;
     gearShift = RobotMap::drivegearShift;
     ahrs = RobotMap::driveahrs;
+    ahrs->ZeroYaw();
+    ahrs->ResetDisplacement();
     //rDrive1->SetSensorDirection(true);
     //lDrive1->SetSensorDirection(true);
 }

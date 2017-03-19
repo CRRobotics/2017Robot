@@ -8,6 +8,7 @@ SpeedProfileRecord::SpeedProfileRecord() {
 // Called just before this Command runs the first time
 void SpeedProfileRecord::Initialize() {
 	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::SPEED_PROFILE;
+	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
 	MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 	if (!MrinalsControlLoop::running)
 		MrinalsControlLoop::StartLoop();
@@ -24,11 +25,13 @@ bool SpeedProfileRecord::IsFinished() {
 
 // Called once after isFinished returns true
 void SpeedProfileRecord::End() {
-	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
+	//MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
+	MrinalsControlLoop::running = false;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void SpeedProfileRecord::Interrupted() {
-	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
+	//MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
+	MrinalsControlLoop::running = false;
 }

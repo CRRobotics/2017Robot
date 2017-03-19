@@ -11,12 +11,15 @@ void JoystickDrive::Initialize() {
 	//if (Robot::tMode == Robot::TestMode::DRIVE_SPEED)
 	//	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 	//else
-		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
+		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute() {
-	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), false);
+	SmartDashboard::PutNumber("fudgefactor", RobotMap::driverDrive1->GetSetpoint() / Robot::drive->GetREncoderRate());
+	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()) * 800, Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()) * 800, false);
 	//if (Robot::tMode == Robot::TestMode::DRIVE_SPEED)
 	//{
 	//	SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
