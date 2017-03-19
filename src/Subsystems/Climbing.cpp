@@ -40,7 +40,8 @@ void Climbing::UnLockMotor()
 	driveShiftPiston->Set(false);
 }
 
-bool Climbing::IsMotorLocked(){
+bool Climbing::IsMotorLocked()
+{
 	return driveShiftPiston->Get();
 }
 

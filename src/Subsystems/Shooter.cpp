@@ -26,7 +26,8 @@ void Shooter::InitDefaultCommand() {
 }
 
 
-void Shooter::RunFlywheel(double speed){
+void Shooter::RunFlywheel(double speed)
+{
 	flywheel->Set(speed);
 	if (speed == 0) 
 		isRunning = false;
@@ -34,7 +35,8 @@ void Shooter::RunFlywheel(double speed){
 		isRunning = true;
 }
 
-void Shooter::ChangeControlMode(CANTalon::ControlMode cMode){
+void Shooter::ChangeControlMode(CANTalon::ControlMode cMode)
+{
 	flywheel->SetControlMode(cMode);
 	if (Robot::tMode == Robot::TestMode::SHOOTER_SPEED)
 	{
@@ -49,15 +51,18 @@ void Shooter::ChangeControlMode(CANTalon::ControlMode cMode){
 	}
 }
 
-double Shooter::GetFlywheelSpeed(){
+double Shooter::GetFlywheelSpeed()
+{
 	return flywheel->GetEncVel();
 }
 
-bool Shooter::UpToSpeed(){
+bool Shooter::UpToSpeed()
+{
 	return abs(flywheel->GetClosedLoopError()) < SHOOTER_ACCEPTABLE_ERROR;
 }
 
-int Shooter::GetSpeedError(){
+int Shooter::GetSpeedError()
+{
 	return flywheel->GetClosedLoopError();
 }
 
@@ -79,7 +84,8 @@ void Shooter::SetLGatePosition(bool pos) {
 	RobotMap::leftGate->Set(pos);
 }
 
-void Shooter::SetAngle(bool high){
+void Shooter::SetAngle(bool high)
+{
 	angleShift->Set(high);
 }
 

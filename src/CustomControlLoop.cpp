@@ -1,58 +1,31 @@
-#include "MrinalsControlLoop.h"
+#include "CustomControlLoop.h"
 #include "RobotMap.h"
 #include "Robot.h"
 #include <fstream>
 #include <iostream>
 
-bool MrinalsControlLoop::running;
-int MrinalsControlLoop::time_interval;
-int MrinalsControlLoop::ticker;
+bool CustomControlLoop::running;
+int CustomControlLoop::time_interval;
+int CustomControlLoop::ticker;
 
-double MrinalsControlLoop::kTurn;
-double MrinalsControlLoop::kP;
-double MrinalsControlLoop::kI;
-double MrinalsControlLoop::kD;
-double MrinalsControlLoop::kF;
-MrinalsControlLoop::PlayMode MrinalsControlLoop::pMode;
-MrinalsControlLoop::RecordMode MrinalsControlLoop::rMode;
+double CustomControlLoop::kTurn;
+double CustomControlLoop::kP;
+double CustomControlLoop::kI;
+double CustomControlLoop::kD;
+double CustomControlLoop::kF;
+CustomControlLoop::PlayMode CustomControlLoop::pMode;
+CustomControlLoop::RecordMode CustomControlLoop::rMode;
 
-std::string MrinalsControlLoop::motionProfileName;
-std::thread MrinalsControlLoop::loop_thread;
-std::string MrinalsControlLoop::inputFileName;
-std::string MrinalsControlLoop::outputFileName;
-std::string MrinalsControlLoop::filePath = "/home/lvuser/MatchData/";
-struct SpeedPoint
+std::string CustomControlLoop::motionProfileName;
+std::thread CustomControlLoop::loop_thread;
+std::string CustomControlLoop::inputFileName;
+std::string CustomControlLoop::outputFileName;
+std::string CustomControlLoop::filePath = "/home/lvuser/MatchData/";
+
+
+
+void CustomControlLoop::InitializeValues()
 {
-	double lSpeed;
-	double rSpeed;
-	int lPos;
-	int rPos;
-	double angle;
-	double dur;
-	double timeStamp;
-};
-
-struct FullDataPoint{
-	double lSpeed;
-	double rSpeed;
-	double angle;
-	double shooterSpeed;
-	double storageVoltage;
-	bool acqOpen;
-	bool highGear;
-	bool shooterHigh;
-	double dur;
-	double timeStamp;
-};
-
-struct VoltPoint{
-	double lV;
-	double rV;
-	double angle;
-
-};
-
-void MrinalsControlLoop::InitializeValues(){
 	running = false;
 	time_interval = 10;
 	kTurn = 0;
@@ -62,14 +35,16 @@ void MrinalsControlLoop::InitializeValues(){
 	kF = 0;
 }
 
-//record lSpeed, rSpeed, angle, time interval, time
-void MrinalsControlLoop::StartLoop(){
+//Start the control loop (is separate from Loop() to avoid giving direct access to the loop, which could cause problems).
+void CustomControlLoop::StartLoop()
+{
 	running = true;
 	loop_thread = std::thread (Loop);
 }
 
 
-void MrinalsControlLoop::Loop(){
+void CustomControlLoop::Loop()
+{
 	std::vector<SpeedPoint> dataStorage (0);
 	std::vector<FullDataPoint> fDataStorage (0);
 	std::vector<VoltPoint> vDataStorage (0);
@@ -81,7 +56,8 @@ void MrinalsControlLoop::Loop(){
 	double pause = 0.005;
 	ticker = 0;
 
-	if (pMode == PlayMode::SPEED_PROFILE){
+	if (pMode == PlayMode::SPEED_PROFILE)//Set proper control mode and constants, load up speed profile from path,
+	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
 		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
@@ -96,7 +72,8 @@ void MrinalsControlLoop::Loop(){
 		std::string rPosString;
 		std::string durString;
 		std::string timeString;
-		while (std::getline(inputFile, lString, ',')){
+		while (std::getline(inputFile, lString, ','))
+{
 			std::getline(inputFile, rString, ',');
 			std::getline(inputFile, aString, ',');
 			std::getline(inputFile, lPosString, ',');
@@ -121,7 +98,9 @@ void MrinalsControlLoop::Loop(){
 			dataStorage.push_back(d);
 		}
 		inputFile.close();
-	} else if (pMode == PlayMode::VOLT_PROFILE){
+	}
+	else if (pMode == PlayMode::VOLT_PROFILE)//Load up voltage profile from path
+	{
 		RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
 		RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
 
@@ -132,7 +111,8 @@ void MrinalsControlLoop::Loop(){
 		std::string rVolt;
 		std::string aString;
 
-		while (std::getline(inputFile, lVolt, ',')){
+		while (std::getline(inputFile, lVolt, ','))
+{
 			std::getline(inputFile, rVolt, ',');
 			std::getline(inputFile, aString, ',');
 			VoltPoint d;
@@ -143,15 +123,18 @@ void MrinalsControlLoop::Loop(){
 		}
 	}
 
-	while (running){
+	while (running)
+	{
 		current_time = std::chrono::system_clock::now();
 		int current_time_ms = current_time.time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
 		int time_diff = current_time_ms - time_start;
 
-		if (rMode == RecordMode::FULL_PROFILE){
+		if (rMode == RecordMode::FULL_PROFILE)
+{
 
 		}
-		else if (rMode == RecordMode::SPEED_PROFILE){
+		else if (rMode == RecordMode::SPEED_PROFILE)
+{
 			SpeedPoint d;
 
 			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//RobotMap::drivelDrive1->GetEncVel() / 5;//(currentLSpeed + lastLSpeed) / 2.0;
@@ -166,7 +149,8 @@ void MrinalsControlLoop::Loop(){
 			d.timeStamp = time_diff * 1.0;
 			dataStorage.push_back(d);
 		}
-		else if (rMode == RecordMode::VOLT_PROFILE){
+		else if (rMode == RecordMode::VOLT_PROFILE)
+{
 			VoltPoint d;
 			d.lV = RobotMap::drivelDrive1->GetOutputVoltage();
 			d.rV = RobotMap::driverDrive1->GetOutputVoltage();
@@ -175,10 +159,12 @@ void MrinalsControlLoop::Loop(){
 		}
 
 
-		if (pMode == PlayMode::FULL_PROFILE){
+		if (pMode == PlayMode::FULL_PROFILE)
+{
 
 		}
-		else if (pMode == PlayMode::SPEED_PROFILE){
+		else if (pMode == PlayMode::SPEED_PROFILE)
+{
 			if (ticker < dataStorage.size())
 			{
 				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
@@ -191,7 +177,8 @@ void MrinalsControlLoop::Loop(){
 				pMode = PlayMode::NONE;
 			}
 		}
-		else if (pMode == PlayMode::VOLT_PROFILE){
+		else if (pMode == PlayMode::VOLT_PROFILE)
+{
 			if (ticker < vDataStorage.size())
 			{
 				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
@@ -213,7 +200,8 @@ void MrinalsControlLoop::Loop(){
 			running = false;
 	}
 
-	if (rMode == RecordMode::SPEED_PROFILE){
+	if (rMode == RecordMode::SPEED_PROFILE)
+{
 		std::ofstream outputFile;
 		outputFile.open(filePath + outputFileName);
 		SmartDashboard::PutString("FILEPATH:", filePath + outputFileName );
@@ -225,13 +213,16 @@ void MrinalsControlLoop::Loop(){
 		}
 		outputFile.close();
 	}
-	else if (rMode == RecordMode::FULL_PROFILE){
+	else if (rMode == RecordMode::FULL_PROFILE)
+{
 
 	}
-	else if (rMode == RecordMode::VOLT_PROFILE){
+	else if (rMode == RecordMode::VOLT_PROFILE)
+{
 		std::ofstream outputFile;
 		outputFile.open(filePath + outputFileName);
-		for (unsigned int i = 0; i < vDataStorage.size(); i++){
+		for (unsigned int i = 0; i < vDataStorage.size(); i++)
+{
 			outputFile << vDataStorage[i].lV << ", " << vDataStorage[i].rV << ", " << vDataStorage[i].angle << ",\n";
 		}
 		outputFile.close();
@@ -242,7 +233,7 @@ void MrinalsControlLoop::Loop(){
 
 
 
-/*void MrinalsControlLoop::Loop()
+/*void CustomControlLoop::Loop()
 {
 	std::vector<SpeedPoint> dataStorage (0);
 	int time_start = std::chrono::system_clock::now().time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
@@ -257,7 +248,8 @@ void MrinalsControlLoop::Loop(){
 		std::string lString;
 		std::string rString;
 		std::string aString;
-		while (std::getline(inputFile, lString, ',')){
+		while (std::getline(inputFile, lString, ','))
+{
 			std::getline(inputFile, rString, ',');
 			std::getline(inputFile, aString, ',');
 			double lSpd = std::strtod(lString.c_str(), NULL);

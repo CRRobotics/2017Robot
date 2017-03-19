@@ -40,7 +40,8 @@ void RunVisionShooter::Interrupted() {
 
 }
 
-double RunVisionShooter::GetDesiredSpeed(){
+double RunVisionShooter::GetDesiredSpeed()
+{
 	if (Robot::table != nullptr)
 		lastDistance = Robot::table->GetNumber("DistanceToBoiler", lastDistance);
 	return lastDistance;

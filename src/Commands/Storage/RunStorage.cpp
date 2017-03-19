@@ -14,11 +14,13 @@ void RunStorage::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RunStorage::Execute() {
 	//Either Acquisition is running or the shooter is sunning and ready to fire
-	if (Robot::oi->GetAcquisition()){
+	if (Robot::oi->GetAcquisition())
+{
 		printf("Storage running\n");
 		Robot::storage->MoveStorage(-1.0);
 	}
-	else if (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed()){
+	else if (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed())
+{
 		//double speed = fabs (30.0 / Robot::shooter->GetSpeedError());
 		Robot::storage->MoveStorage(-1.0);
 	}
@@ -29,7 +31,12 @@ void RunStorage::Execute() {
 
 double speedAtShooterError(double e)
 {
-	return -1000 / ((fabs(e) + 2000) * 0.33333) ;
+	if (fabs(e) > 2000)
+		return -0.0;
+	else if (fabs(e) < 1000)
+		return -1.0;
+	else
+		return -1000 / ((fabs(e) + 2000) * 0.33333);
 }
 
 // Make this return true when this Command no longer needs to run execute()

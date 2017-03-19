@@ -24,7 +24,8 @@ void Storage::InitDefaultCommand() {
 	SetDefaultCommand(new RunStorage());
 }
 
-void Storage::SetControlMode(CANTalon::ControlMode cMode){
+void Storage::SetControlMode(CANTalon::ControlMode cMode)
+{
 	ballControlMotor->SetControlMode(cMode);
 	if (cMode == CANTalon::ControlMode::kSpeed)
 	{

@@ -19,7 +19,8 @@
 
 bool OI::controllerLeft;
 
-OI::OI(){
+OI::OI()
+{
 	rJoystick1.reset(new Joystick(RJOYSTICK_INNER));
 	rJoystick2.reset(new Joystick(RJOYSTICK_OUTER));
 	lJoystick1.reset(new Joystick(LJOYSTICK_OUTER));
@@ -27,11 +28,13 @@ OI::OI(){
 	controllerLeft = false;
 }
 
-void OI::SetControllerSide(bool left){
+void OI::SetControllerSide(bool left)
+{
 	controllerLeft = left;
 }
 
-void OI::MapButtons(){
+void OI::MapButtons()
+{
 	std::shared_ptr<Joystick> controllerL;
 	std::shared_ptr<Joystick> controllerR;
 	std::shared_ptr<Joystick> driverL;
@@ -94,53 +97,61 @@ void OI::MapButtons(){
 	Robot::oiMapped = true;
 }
 
-double OI::GetYControllerL(){
+double OI::GetYControllerL()
+{
 	if (controllerLeft)
 		return lJoystick1->GetY();
 	else
 		return rJoystick1->GetY();
 }
 
-double OI::GetYControllerR(){
+double OI::GetYControllerR()
+{
 	if (controllerLeft)
 		return lJoystick2->GetY();
 	else
 		return rJoystick2->GetY();
 }
 
-double OI::GetYDriverL(){
+double OI::GetYDriverL()
+{
 	if (controllerLeft)
 		return rJoystick1->GetY();
 	else
 		return lJoystick1->GetY();
 }
 
-double OI::GetYDriverR(){
+double OI::GetYDriverR()
+{
 	if (controllerLeft)
 		return rJoystick2->GetY();
 	else
 		return lJoystick2->GetY();
 }
 
-bool OI::GetAcquisition(){
+bool OI::GetAcquisition()
+{
 	if (acqIn != nullptr && toggleHopper != nullptr)
 		return acqIn->Get() || toggleHopper->Get();
 	else
 		return false;
 }
 
-bool OI::GetDrivePTOOn(){
+bool OI::GetDrivePTOOn()
+{
 	if (drivePTOOn != nullptr)
 		return drivePTOOn->Get();
 	return false;
 }
 
-bool OI::GetDrivePTOOff(){
+bool OI::GetDrivePTOOff()
+{
 	if (drivePTOOff != nullptr)
 		return drivePTOOff->Get();
 	return false;
 }
-bool OI::GetFiring(){
+bool OI::GetFiring()
+{
 	if (shooterAngleFar != nullptr && shooterAngleShort != nullptr)
 		return shooterAngleFar->Get() || shooterAngleShort->Get();
 	return false;

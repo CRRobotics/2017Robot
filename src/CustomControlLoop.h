@@ -1,12 +1,12 @@
-#ifndef SRC_MrinalsControlLoop_H_
-#define SRC_MrinalsControlLoop_H_
+#ifndef SRC_CustomControlLoop_H_
+#define SRC_CustomControlLoop_H_
 
 #include <chrono>
 #include <future>
 #include <vector>
 
 
-class MrinalsControlLoop
+class CustomControlLoop
 {
 	public:
 	enum class RecordMode{
@@ -50,7 +50,39 @@ class MrinalsControlLoop
 	static double kD;
 	static double kF;
 
+	struct SpeedPoint
+	{
+		double lSpeed;
+		double rSpeed;
+		int lPos;
+		int rPos;
+		double angle;
+		double dur;
+		double timeStamp;
+	};
+
+	struct FullDataPoint{
+		double lSpeed;
+		double rSpeed;
+		double angle;
+		double shooterSpeed;
+		double storageVoltage;
+		bool acqOpen;
+		bool highGear;
+		bool shooterHigh;
+		double dur;
+		double timeStamp;
+	};
+
+	struct VoltPoint{
+		double lV;
+		double rV;
+		double angle;
+
+	};
+
+
 };
 
 
-#endif /* SRC_MRINALSMrinalsControlLoop_H_ */
+#endif /* SRC_MRINALSCustomControlLoop_H_ */

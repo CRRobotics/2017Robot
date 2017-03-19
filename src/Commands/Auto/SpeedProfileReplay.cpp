@@ -1,5 +1,5 @@
+#include <CustomControlLoop.h>
 #include "SpeedProfileReplay.h"
-#include "../../MrinalsControlLoop.h"
 
 SpeedProfileReplay::SpeedProfileReplay(std::string replayName) {
 	// Use Requires() here to declare subsystem dependencies
@@ -9,11 +9,11 @@ SpeedProfileReplay::SpeedProfileReplay(std::string replayName) {
 
 // Called just before this Command runs the first time
 void SpeedProfileReplay::Initialize() {
-	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::SPEED_PROFILE;
-	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
-	MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
-	if (!MrinalsControlLoop::running)
-		MrinalsControlLoop::StartLoop();
+	CustomControlLoop::pMode = CustomControlLoop::PlayMode::SPEED_PROFILE;
+	CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
+	CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
+	if (!CustomControlLoop::running)
+		CustomControlLoop::StartLoop();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -22,18 +22,18 @@ void SpeedProfileReplay::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool SpeedProfileReplay::IsFinished() {
-	return !MrinalsControlLoop::running || MrinalsControlLoop::pMode != MrinalsControlLoop::PlayMode::SPEED_PROFILE;
+	return !CustomControlLoop::running || CustomControlLoop::pMode != CustomControlLoop::PlayMode::SPEED_PROFILE;
 }
 
 // Called once after isFinished returns true
 void SpeedProfileReplay::End() {
-	//MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
-	MrinalsControlLoop::running = false;
+	//CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
+	CustomControlLoop::running = false;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void SpeedProfileReplay::Interrupted() {
-	//MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
-	MrinalsControlLoop::running = false;
+	//CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
+	CustomControlLoop::running = false;
 }

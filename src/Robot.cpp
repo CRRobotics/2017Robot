@@ -1,8 +1,8 @@
 #include <memory>
 
-#include "MrinalsControlLoop.h"
 #include <Commands/Command.h>
 #include <Commands/Scheduler.h>
+#include <CustomControlLoop.h>
 #include <IterativeRobot.h>
 #include <LiveWindow/LiveWindow.h>
 #include <SmartDashboard/SendableChooser.h>
@@ -35,7 +35,7 @@ std::unique_ptr<frc::Command> autonomousCommand;
 
 void Robot::RobotInit() {
 	table = NetworkTable::GetTable("vision");
-	MrinalsControlLoop::InitializeValues();
+	CustomControlLoop::InitializeValues();
 	tMode = TestMode::DRIVE_TURN_SPEED;
 	RobotMap::init();
 	oi.reset(new OI);
@@ -96,9 +96,9 @@ void Robot::RobotInit() {
 	oi->SetControllerSide(true);
 	oiMapped = false;
 	//oi->MapButtons();
-	MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
-	MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
-	MrinalsControlLoop::running = false;
+	CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
+	CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
+	CustomControlLoop::running = false;
 }
 
 	/**
@@ -140,29 +140,33 @@ void Robot::RobotInit() {
 //		}
 		//new FireBalls(false);
 		//(new GearMiddlePeg())->Start();
-		MrinalsControlLoop::running = false;
+		CustomControlLoop::running = false;
 		(new GearMiddlePeg)->Start();
 	}
 
-	void Robot::AutonomousPeriodic(){
+	void Robot::AutonomousPeriodic()
+{
 		frc::Scheduler::GetInstance()->Run();
 	}
 
-	void Robot::TeleopInit(){
-		if (!oiMapped){
+	void Robot::TeleopInit()
+{
+		if (!oiMapped)
+{
 			oi->MapButtons();
 		}
 
-		MrinalsControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
-		MrinalsControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
-		MrinalsControlLoop::rMode = MrinalsControlLoop::RecordMode::NONE;
-		MrinalsControlLoop::pMode = MrinalsControlLoop::PlayMode::NONE;
-		//MrinalsControlLoop::StartLoop();
+		CustomControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
+		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
+		CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
+		CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
+		//CustomControlLoop::StartLoop();
 		RobotMap::leftGate->Set(true);
 		RobotMap::rightGate->Set(true);
 	}
 
-	void Robot::TeleopPeriodic(){
+	void Robot::TeleopPeriodic()
+{
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncVel());
 		//CANTalon::FeedbackDeviceStatus st;
@@ -171,11 +175,12 @@ void Robot::RobotInit() {
 		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncPosition());
 		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetEncVel());
 		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetEncVel());
-		SmartDashboard::PutBoolean("Profile recording", MrinalsControlLoop::rMode != MrinalsControlLoop::RecordMode::NONE);
+		SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}
 
-	void Robot::TestPeriodic(){
+	void Robot::TestPeriodic()
+{
 		frc::LiveWindow::GetInstance()->Run();
 	}
 

@@ -33,14 +33,17 @@ void Gear::InitDefaultCommand() {
 }
 
 
-void Gear::ExtendGear(){
+void Gear::ExtendGear()
+{
 	piston->Set(true);
 }
 
-void Gear::RetractGear(){
+void Gear::RetractGear()
+{
 	piston->Set(false);
 }
 
-bool Gear::GetExtended(){
+bool Gear::GetExtended()
+{
 	return piston->Get();
 }

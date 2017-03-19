@@ -6,12 +6,14 @@
  */
 #include <cmath>
 
-double mod(double a, int n){
+double mod(double a, int n)
+{
 	return a - floor(a/n) * n;
 //	return a % n;
 }
 
-double angle_diff(double a, double b){
+double angle_diff(double a, double b)
+{
 	return mod((a-b) + 180, 360) - 180;
 }
 

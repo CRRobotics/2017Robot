@@ -29,7 +29,8 @@ void StereoscopicTurn::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void StereoscopicTurn::Execute() {
-	if (Robot::table != nullptr){
+	if (Robot::table != nullptr)
+{
 		if (stage == 0) // grab first frame
 		{
 			if (Robot::table->GetNumber("ticker") != lastTicker)

@@ -39,7 +39,8 @@ void FireBalls::Interrupted() {
 }
 
 
-double FireBalls::GetDesiredSpeed(){
+double FireBalls::GetDesiredSpeed()
+{
 	if (Robot::table != nullptr)
 		lastDistance = Robot::table->GetNumber("DistanceToBoiler", lastDistance);
 	return lastDistance;
