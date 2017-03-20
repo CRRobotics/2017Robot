@@ -15,6 +15,7 @@
 #include "Commands/Gear/GearIn.h"
 #include "Commands/Gear/GearOut.h"
 #include "Commands/Storage/RunStorage.h"
+#include "Commands/Storage/EjectFuel.h"
 #include "Commands/Shooter/RunShooter.h"
 
 bool OI::controllerLeft;
@@ -94,6 +95,10 @@ void OI::MapButtons()
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
 	shooterAngleShort->WhileHeld(new FireBalls(false));
+
+	ejectFuel.reset(new JoystickButton(controllerL.get(), EJECT_FUEL));
+	ejectFuel->WhileHeld(new EjectFuel());
+
 	Robot::oiMapped = true;
 }
 

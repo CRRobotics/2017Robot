@@ -43,6 +43,7 @@ public:
 	};
 
 	static bool oiMapped;
+	static bool yawReset;
 	static TestMode tMode;
 	std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<OI> oi;
@@ -54,6 +55,7 @@ public:
     static std::shared_ptr<Acquisition> acquisition;
     static std::shared_ptr<Storage> storage;
     static std::shared_ptr<NetworkTable> table;
+    static void PrintOrResetYaw();
 	virtual void RobotInit();
 	virtual void DisabledInit();
 	virtual void DisabledPeriodic();

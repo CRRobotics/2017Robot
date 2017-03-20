@@ -30,6 +30,7 @@ std::shared_ptr<Storage> Robot::storage;
 Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
 bool Robot::oiMapped;
+bool Robot::yawReset;
 
 std::unique_ptr<frc::Command> autonomousCommand;
 
@@ -83,6 +84,7 @@ void Robot::RobotInit() {
 		break;
 		case TestMode::SHOOTER_SPEED:
 			SmartDashboard::PutString("test_mode", "shooter_speed");
+			SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetSpeed());
 		break;
 		case TestMode::STORAGE_SPEED:
 			SmartDashboard::PutString("test_mode", "storage_speed");
@@ -95,7 +97,9 @@ void Robot::RobotInit() {
 
 	oi->SetControllerSide(true);
 	oiMapped = false;
-	//oi->MapButtons();
+	oi->MapButtons();
+	yawReset = false;
+	PrintOrResetYaw();
 	CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
 	CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
 	CustomControlLoop::running = false;
@@ -125,7 +129,9 @@ void Robot::RobotInit() {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the if-else structure below with additional strings & commands.
 	 */
-	void Robot::AutonomousInit() {
+	void Robot::AutonomousInit()
+	{
+		PrintOrResetYaw();
 		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
 		if (autoSelected == "My Auto") {
 			autonomousCommand.reset(new MyAutoCommand());
@@ -133,28 +139,22 @@ void Robot::RobotInit() {
 		else {
 			autonomousCommand.reset(new ExampleCommand());
 		} */
-
-
 //		if (autonomousCommand.get() != nullptr) {
 ////			autonomousCommand->Start();
 //		}
-		//new FireBalls(false);
-		//(new GearMiddlePeg())->Start();
 		CustomControlLoop::running = false;
 		(new GearMiddlePeg)->Start();
 	}
 
 	void Robot::AutonomousPeriodic()
-{
+	{
+
 		frc::Scheduler::GetInstance()->Run();
 	}
 
 	void Robot::TeleopInit()
-{
-		if (!oiMapped)
-{
-			oi->MapButtons();
-		}
+	{
+		PrintOrResetYaw();
 
 		CustomControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
@@ -166,21 +166,31 @@ void Robot::RobotInit() {
 	}
 
 	void Robot::TeleopPeriodic()
-{
+	{
+		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
+
 		//CANTalon::FeedbackDeviceStatus st;
-		SmartDashboard::PutNumber("l_enc_present", RobotMap::drivelDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
-		SmartDashboard::PutNumber("r_enc_present", RobotMap::driverDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative));
-		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetEncPosition());
-		//SmartDashboard::PutNumber("r_test_speed", RobotMap::drivelDrive1->GetSpeed());
-		SmartDashboard::PutNumber("shooter_speed", RobotMap::shooterflywheel->GetSpeed());
-		SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
+		//SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}
 
+	void Robot::PrintOrResetYaw(){
+		if (!RobotMap::driveahrs->IsCalibrating())
+		{
+			if (!yawReset)
+			{
+				Robot::drive->ResetYaw();
+				yawReset = true;
+			}
+			else
+				SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
+		}
+	}
+
 	void Robot::TestPeriodic()
-{
+	{
 		frc::LiveWindow::GetInstance()->Run();
 	}
 

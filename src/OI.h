@@ -18,8 +18,9 @@
 #define TOGGLE_SHOOTER 6 //controller left
 #define EXTEND_GEAR 5
 #define RETRACT_GEAR 4
-#define ACQ_IN 8
-#define TOGGLE_HOPPER 2
+#define ACQ_IN 11
+#define TOGGLE_HOPPER 10
+#define EJECT_FUEL 2
 #define SHOOT_FAR 3
 #define SHOOT_SHORT 1
 #define TOGGLE_VISION_SHOOTER 7
@@ -48,6 +49,7 @@ private:
 	std::shared_ptr<Joystick> lJoystick2;
 
 
+	std::shared_ptr<JoystickButton> ejectFuel;
 	std::shared_ptr<JoystickButton> driveLoadingZone;
 	std::shared_ptr<JoystickButton> driveShiftHighGear;
 	std::shared_ptr<JoystickButton> driveShiftLowGear;

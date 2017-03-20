@@ -23,14 +23,14 @@
  */
 class Drive: public Subsystem {
 private:
-	// It's desirable that everything possible is private except
-	// for methods that implement subsystem capabilities
 	std::shared_ptr<CANTalon> rDrive1;
 	std::shared_ptr<CANTalon> rDrive2;
 	std::shared_ptr<CANTalon> lDrive1;
 	std::shared_ptr<CANTalon> lDrive2;
 	std::shared_ptr<Solenoid> gearShift;
 	std::shared_ptr<AHRS> ahrs;
+
+	double closedLoopRampRate;
 
 	double vTurnP = 0.0;
 	double vTurnI = 0.0;
@@ -61,6 +61,8 @@ public:
 	};
 	void SetControlMode(DriveControlMode cMode);
 	void ChangeGear(bool high);
+	void SetDriveRampRate(double rampRate);
+	double GetDriveRampRate();
 	bool GetGear();
 	void InitDefaultCommand();
 	int GetLEncoder();
@@ -68,10 +70,12 @@ public:
 	double GetLPosition();
 	double GetRPosition();
 	double GetYaw();
+	void ResetYaw();
 	int GetLEncoderRate();
 	int GetREncoderRate();
 	double GetLSpeed();
 	double GetRSpeed();
+	void SetPIDF(double kp, double ki, double kd, double kf);
 	static double maxSpeed;
 };
 

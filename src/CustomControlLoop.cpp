@@ -9,10 +9,7 @@ int CustomControlLoop::time_interval;
 int CustomControlLoop::ticker;
 
 double CustomControlLoop::kTurn;
-double CustomControlLoop::kP;
-double CustomControlLoop::kI;
-double CustomControlLoop::kD;
-double CustomControlLoop::kF;
+double CustomControlLoop::kPos;
 CustomControlLoop::PlayMode CustomControlLoop::pMode;
 CustomControlLoop::RecordMode CustomControlLoop::rMode;
 
@@ -29,10 +26,6 @@ void CustomControlLoop::InitializeValues()
 	running = false;
 	time_interval = 10;
 	kTurn = 0;
-	kP = 0;
-	kI = 0;
-	kD = 0;
-	kF = 0;
 }
 
 //Start the control loop (is separate from Loop() to avoid giving direct access to the loop, which could cause problems).
@@ -56,71 +49,141 @@ void CustomControlLoop::Loop()
 	double pause = 0.005;
 	ticker = 0;
 
-	if (pMode == PlayMode::SPEED_PROFILE)//Set proper control mode and constants, load up speed profile from path,
+	try
 	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
-		RobotMap::driverDrive1->SetCloseLoopRampRate(2.5);
-
 		std::ifstream inputFile;
 		inputFile.open(filePath + inputFileName);
-		printf("%s\n", (filePath + inputFileName).c_str());
-		std::string lString;
-		std::string rString;
-		std::string aString;
-		std::string lPosString;
-		std::string rPosString;
-		std::string durString;
-		std::string timeString;
-		while (std::getline(inputFile, lString, ','))
-{
-			std::getline(inputFile, rString, ',');
-			std::getline(inputFile, aString, ',');
-			std::getline(inputFile, lPosString, ',');
-			std::getline(inputFile, rPosString, ',');
-			std::getline(inputFile, durString, ',');
-			std::getline(inputFile, timeString, ',');
-			double lSpd = std::strtod(lString.c_str(), NULL);
-			double rSpd = std::strtod(rString.c_str(), NULL);
-			double angle = std::strtod(aString.c_str(), NULL);
-			double lPos = std::strtod(lPosString.c_str(), NULL);
-			double rPos = std::strtod(rPosString.c_str(), NULL);
-			double dur = std::strtod(durString.c_str(), NULL);
-			double timeStamp = std::strtod(timeString.c_str(), NULL);
-			SpeedPoint d;
-			d.lSpeed = lSpd;
-			d.rSpeed = rSpd;
-			d.angle = angle;
-			d.lPos = lPos;
-			d.rPos = rPos;
-			d.dur = dur;
-			d.timeStamp = timeStamp;
-			dataStorage.push_back(d);
+		if (pMode == PlayMode::FULL_PROFILE)
+		{
+			Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+
+			std::string kPString;
+			std::string kIString;
+			std::string kDString;
+			std::string kFString;
+			std::string rampString;
+			std::getline(inputFile, kPString, ',');
+			std::getline(inputFile, kIString, ',');
+			std::getline(inputFile, kDString, ',');
+			std::getline(inputFile, kFString, ',');
+			std::getline(inputFile, rampString, ',');
+			Robot::drive->SetPIDF(std::strtod(kPString.c_str(), NULL), std::strtod(kIString.c_str(), NULL),
+									std::strtod(kDString.c_str(), NULL), std::strtod(kFString.c_str(), NULL));
+			Robot::drive->SetDriveRampRate(std::strtod(rampString.c_str(), NULL));
+
+			std::string lString;
+			std::string rString;
+			std::string aString;
+			std::string lPosString;
+			std::string rPosString;
+			std::string durString;
+			std::string timeString;
+			while (std::getline(inputFile, lString, ','))
+			{
+				std::getline(inputFile, rString, ',');
+				std::getline(inputFile, aString, ',');
+				std::getline(inputFile, lPosString, ',');
+				std::getline(inputFile, rPosString, ',');
+				std::getline(inputFile, durString, ',');
+				std::getline(inputFile, timeString, ',');
+
+				double lSpd = std::strtod(lString.c_str(), NULL);
+				double rSpd = std::strtod(rString.c_str(), NULL);
+				double angle = std::strtod(aString.c_str(), NULL);
+				double lPos = std::strtod(lPosString.c_str(), NULL);
+				double rPos = std::strtod(rPosString.c_str(), NULL);
+				double dur = std::strtod(durString.c_str(), NULL);
+				double timeStamp = std::strtod(timeString.c_str(), NULL);
+				SpeedPoint d;
+				d.lSpeed = lSpd;
+				d.rSpeed = rSpd;
+				d.angle = angle;
+				d.lPos = lPos;
+				d.rPos = rPos;
+				d.dur = dur;
+				d.timeStamp = timeStamp;
+				dataStorage.push_back(d);
+				inputFile.close();
+			}
 		}
-		inputFile.close();
+		else if (pMode == PlayMode::SPEED_PROFILE)//Set proper control mode and constants, load up speed profile from path,
+		{
+			Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+
+			std::string kPString;
+			std::string kIString;
+			std::string kDString;
+			std::string kFString;
+			std::string rampString;
+			std::getline(inputFile, kPString, ',');
+			std::getline(inputFile, kIString, ',');
+			std::getline(inputFile, kDString, ',');
+			std::getline(inputFile, kFString, ',');
+			std::getline(inputFile, rampString, ',');
+			Robot::drive->SetPIDF(std::strtod(kPString.c_str(), NULL), std::strtod(kIString.c_str(), NULL),
+									std::strtod(kDString.c_str(), NULL), std::strtod(kFString.c_str(), NULL));
+			Robot::drive->SetDriveRampRate(std::strtod(rampString.c_str(), NULL));
+
+			std::string lString;
+			std::string rString;
+			std::string aString;
+			std::string lPosString;
+			std::string rPosString;
+			std::string durString;
+			std::string timeString;
+			while (std::getline(inputFile, lString, ','))
+			{
+				std::getline(inputFile, rString, ',');
+				std::getline(inputFile, aString, ',');
+				std::getline(inputFile, lPosString, ',');
+				std::getline(inputFile, rPosString, ',');
+				std::getline(inputFile, durString, ',');
+				std::getline(inputFile, timeString, ',');
+
+				double lSpd = std::strtod(lString.c_str(), NULL);
+				double rSpd = std::strtod(rString.c_str(), NULL);
+				double angle = std::strtod(aString.c_str(), NULL);
+				double lPos = std::strtod(lPosString.c_str(), NULL);
+				double rPos = std::strtod(rPosString.c_str(), NULL);
+				double dur = std::strtod(durString.c_str(), NULL);
+				double timeStamp = std::strtod(timeString.c_str(), NULL);
+				SpeedPoint d;
+				d.lSpeed = lSpd;
+				d.rSpeed = rSpd;
+				d.angle = angle;
+				d.lPos = lPos;
+				d.rPos = rPos;
+				d.dur = dur;
+				d.timeStamp = timeStamp;
+				dataStorage.push_back(d);
+				inputFile.close();
+			}
+		}
+		else if (pMode == PlayMode::VOLT_PROFILE)//Load up voltage profile from path
+		{
+			RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+			RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
+
+			std::string lVolt;
+			std::string rVolt;
+			std::string aString;
+
+			while (std::getline(inputFile, lVolt, ','))
+			{
+				std::getline(inputFile, rVolt, ',');
+				std::getline(inputFile, aString, ',');
+				VoltPoint d;
+				d.lV = std::strtod(lVolt.c_str(), NULL);
+				d.rV = std::strtod(rVolt.c_str(), NULL);
+				d.angle = std::strtod(aString.c_str(), NULL);
+				vDataStorage.push_back(d);
+			}
+		}
 	}
-	else if (pMode == PlayMode::VOLT_PROFILE)//Load up voltage profile from path
+	catch(...)
 	{
-		RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
-		RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kVoltage);
-
-		std::ifstream inputFile;
-		inputFile.open(filePath + inputFileName);
-
-		std::string lVolt;
-		std::string rVolt;
-		std::string aString;
-
-		while (std::getline(inputFile, lVolt, ','))
-{
-			std::getline(inputFile, rVolt, ',');
-			std::getline(inputFile, aString, ',');
-			VoltPoint d;
-			d.lV = std::strtod(lVolt.c_str(), NULL);
-			d.rV = std::strtod(rVolt.c_str(), NULL);
-			d.angle = std::strtod(aString.c_str(), NULL);
-			vDataStorage.push_back(d);
-		}
+		running = false;
+		DriverStation::ReportWarning("Could not load motion profile...");
 	}
 
 	while (running)
@@ -137,10 +200,10 @@ void CustomControlLoop::Loop()
 		{
 			SpeedPoint d;
 
-			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//RobotMap::drivelDrive1->GetSpeed() / 5;//(currentLSpeed + lastLSpeed) / 2.0;
-			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//RobotMap::driverDrive1->GetSpeed() / 5;//(currentRSpeed + lastRSpeed) / 2.0;
-			d.lPos = RobotMap::drivelDrive1->GetEncPosition() - lastPosL;
-			d.rPos = RobotMap::driverDrive1->GetEncPosition() - lastPosR;
+			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//RobotMap::drivelDrive1->GetSpeed();
+			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//RobotMap::driverDrive1->GetSpeed();
+			d.lPos = Robot::drive->GetLPosition() - lastPosL;
+			d.rPos = Robot::drive->GetRPosition() - lastPosR;
 			lastPosL += d.lPos;
 			lastPosR += d.rPos;
 
@@ -205,6 +268,11 @@ void CustomControlLoop::Loop()
 		std::ofstream outputFile;
 		outputFile.open(filePath + outputFileName);
 		SmartDashboard::PutString("FILEPATH:", filePath + outputFileName );
+		outputFile << RobotMap::driverDrive1->GetP() << ", ";
+		outputFile << RobotMap::driverDrive1->GetI() << ", ";
+		outputFile << RobotMap::driverDrive1->GetD() << ", ";
+		outputFile << RobotMap::driverDrive1->GetF() << ", ";
+		outputFile << Robot::drive->GetDriveRampRate() << ",\n";
 		for (unsigned int i = 0; i < dataStorage.size(); i++)
 		{
 			outputFile << dataStorage[i].lSpeed << ", " << dataStorage[i].rSpeed << ",";

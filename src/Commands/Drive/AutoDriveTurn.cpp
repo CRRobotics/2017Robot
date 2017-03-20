@@ -23,7 +23,7 @@ void AutoDriveTurn::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AutoDriveTurn::Execute() {
 	double currentAngle = Robot::drive->GetYaw();
-	SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
+	//SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 	double error = angle_diff(desiredAngle, currentAngle);
 	printf("%f %f\n", currentAngle, desiredAngle);
 	SmartDashboard::PutNumber("angle error", error);

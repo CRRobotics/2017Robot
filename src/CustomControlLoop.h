@@ -45,10 +45,7 @@ class CustomControlLoop
 
 	private:
 	static double kTurn;
-	static double kP;
-	static double kI;
-	static double kD;
-	static double kF;
+	static double kPos;
 
 	struct SpeedPoint
 	{
@@ -67,7 +64,7 @@ class CustomControlLoop
 		double angle;
 		double shooterSpeed;
 		double storageVoltage;
-		bool acqOpen;
+		bool hopperOpen;
 		bool highGear;
 		bool shooterHigh;
 		double dur;
