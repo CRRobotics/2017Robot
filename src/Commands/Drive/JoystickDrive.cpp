@@ -23,12 +23,18 @@ void JoystickDrive::Initialize()
 void JoystickDrive::Execute()
 {
 	SmartDashboard::PutNumber("fudgefactor", RobotMap::driverDrive1->GetSetpoint() / Robot::drive->GetREncoderRate());
-	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), true);
-	//if (Robot::tMode == Robot::TestMode::DRIVE_SPEED)
-	//{
-	//	SmartDashboard::PutNumber("test_speed_error", RobotMap::driverDrive1->GetClosedLoopError());
-	//	SmartDashboard::PutNumber("test_speed_speed", RobotMap::driverDrive1->GetSetpoint());
-	//}
+	bool encodersPresent = Robot::drive->BothEncodersPresent();
+	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
+	{
+		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+	}
+	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage)
+	{
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+		Robot::drive->SetDriveRampRate(3.0);
+	}
+
+	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), encodersPresent);
 }
 
 // Make this return true when this Command no longer needs to run execute()

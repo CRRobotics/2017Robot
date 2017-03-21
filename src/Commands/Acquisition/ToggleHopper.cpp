@@ -14,7 +14,7 @@ void ToggleHopper::Initialize()
 void ToggleHopper::Execute()
 {
 	if(RobotMap::doorPiston->Get() == true)
-{
+	{
 		Robot::acquisition->CloseHopper();
 	}
 	else
