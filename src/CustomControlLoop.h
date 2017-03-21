@@ -65,8 +65,10 @@ class CustomControlLoop
 		double shooterSpeed;
 		double storageVoltage;
 		bool hopperOpen;
+		bool gearMech;
 		bool highGear;
 		bool shooterHigh;
+		bool shooterGates;
 		double dur;
 		double timeStamp;
 	};
