@@ -1,18 +1,21 @@
 #include "RunStorage.h"
 
-RunStorage::RunStorage() {
+RunStorage::RunStorage()
+{
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
 	Requires(Robot::storage.get());
 }
 
 // Called just before this Command runs the first time
-void RunStorage::Initialize() {
+void RunStorage::Initialize()
+{
 	Robot::storage->SetControlMode(CANTalon::ControlMode::kPercentVbus);//TODO change to kSpeed
 }
 
 // Called repeatedly when this Command is scheduled to run
-void RunStorage::Execute() {
+void RunStorage::Execute()
+{
 	//Either Acquisition is running or the shooter is sunning and ready to fire
 	if (Robot::oi->GetAcquisition())
 {
@@ -40,17 +43,20 @@ double speedAtShooterError(double e)
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool RunStorage::IsFinished() {
+bool RunStorage::IsFinished()
+{
 	return false;
 }
 
 // Called once after isFinished returns true
-void RunStorage::End() {
+void RunStorage::End()
+{
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void RunStorage::Interrupted() {
+void RunStorage::Interrupted()
+{
 
 }

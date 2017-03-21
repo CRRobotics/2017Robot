@@ -2,14 +2,16 @@
 #include "../../AngleMethods.h"
 #define CAMERA_R 10
 
-StereoscopicTurn::StereoscopicTurn(double angle) {
+StereoscopicTurn::StereoscopicTurn(double angle)
+{
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	desiredAngle = angle;
 }
 
 // Called just before this Command runs the first time
-void StereoscopicTurn::Initialize() {
+void StereoscopicTurn::Initialize()
+{
 //	if (Robot::tMode == Robot::TestMode::DRIVE_TURN_SPEED)
 //	{
 //		desiredAngle = SmartDashboard::GetNumber("test_setPoint", 0);
@@ -19,7 +21,8 @@ void StereoscopicTurn::Initialize() {
 //	}
 //	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityTurning);
 
-	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	if (Robot::drive->BothEncodersPresent())
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 	internalTicker = 0;
 	xAngle1 = 0;
 	xAngle2 = 0;
@@ -28,9 +31,10 @@ void StereoscopicTurn::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void StereoscopicTurn::Execute() {
-	if (Robot::table != nullptr)
+void StereoscopicTurn::Execute()
 {
+	if (Robot::table != nullptr && Robot::drive->BothEncodersPresent())
+	{
 		if (stage == 0) // grab first frame
 		{
 			if (Robot::table->GetNumber("ticker") != lastTicker)
@@ -88,19 +92,24 @@ void StereoscopicTurn::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool StereoscopicTurn::IsFinished() {
+bool StereoscopicTurn::IsFinished()
+{
 	double currentAngle = Robot::drive->GetYaw();
 	double error = angle_diff(desiredAngle, currentAngle);
+	if (!Robot::drive->BothEncodersPresent())
+		return true;
 	return fabs(error) < 1;
 }
 
 // Called once after isFinished returns true
-void StereoscopicTurn::End() {
+void StereoscopicTurn::End()
+{
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void StereoscopicTurn::Interrupted() {
+void StereoscopicTurn::Interrupted()
+{
 
 }

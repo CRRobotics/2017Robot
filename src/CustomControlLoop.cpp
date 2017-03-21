@@ -38,6 +38,8 @@ void CustomControlLoop::StartLoop()
 
 void CustomControlLoop::Loop()
 {
+	if (!Robot::drive->BothEncodersPresent())
+		return;
 	std::vector<SpeedPoint> dataStorage (0);
 	std::vector<FullDataPoint> fDataStorage (0);
 	std::vector<VoltPoint> vDataStorage (0);

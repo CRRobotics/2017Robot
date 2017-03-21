@@ -34,7 +34,8 @@ bool Robot::yawReset;
 
 std::unique_ptr<frc::Command> autonomousCommand;
 
-void Robot::RobotInit() {
+void Robot::RobotInit()
+{
 	table = NetworkTable::GetTable("vision");
 	CustomControlLoop::InitializeValues();
 	tMode = TestMode::DRIVE_TURN_SPEED;
@@ -110,11 +111,13 @@ void Robot::RobotInit() {
 	 * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
 	 */
-	void Robot::DisabledInit() {
+	void Robot::DisabledInit()
+	{
 
 	}
 
-	void Robot::DisabledPeriodic() {
+	void Robot::DisabledPeriodic()
+	{
 		frc::Scheduler::GetInstance()->Run();
 	}
 
@@ -133,13 +136,14 @@ void Robot::RobotInit() {
 	{
 		PrintOrResetYaw();
 		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-		if (autoSelected == "My Auto") {
+		if (autoSelected == "My Auto")
+{
 			autonomousCommand.reset(new MyAutoCommand());
 		}
 		else {
 			autonomousCommand.reset(new ExampleCommand());
 		} */
-//		if (autonomousCommand.get() != nullptr) {
+//		if (autonomousCommand.get() != nullptr){
 ////			autonomousCommand->Start();
 //		}
 		CustomControlLoop::running = false;
@@ -148,7 +152,6 @@ void Robot::RobotInit() {
 
 	void Robot::AutonomousPeriodic()
 	{
-
 		frc::Scheduler::GetInstance()->Run();
 	}
 
@@ -171,13 +174,12 @@ void Robot::RobotInit() {
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
 
-		//CANTalon::FeedbackDeviceStatus st;
 		//SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}
 
 	void Robot::PrintOrResetYaw(){
-		if (!RobotMap::driveahrs->IsCalibrating())
+		if (RobotMap::driveahrs->IsConnected() && !RobotMap::driveahrs->IsCalibrating())
 		{
 			if (!yawReset)
 			{

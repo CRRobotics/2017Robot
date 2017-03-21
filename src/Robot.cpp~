@@ -44,7 +44,8 @@ public:
 	 */
 	void AutonomousInit() override {
 		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-		if (autoSelected == "My Auto") {
+		if (autoSelected == "My Auto")
+{
 			autonomousCommand.reset(new MyAutoCommand());
 		}
 		else {
@@ -53,7 +54,8 @@ public:
 
 		autonomousCommand.reset(chooser.GetSelected());
 
-		if (autonomousCommand.get() != nullptr) {
+		if (autonomousCommand.get() != nullptr)
+{
 			autonomousCommand->Start();
 		}
 	}
@@ -67,7 +69,8 @@ public:
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != nullptr) {
+		if (autonomousCommand != nullptr)
+{
 			autonomousCommand->Cancel();
 		}
 	}

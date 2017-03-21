@@ -3,15 +3,18 @@
 
 double SmoothJoystickDrive::acc_limit = 1400 * 0.05;
 
-SmoothJoystickDrive::SmoothJoystickDrive() {
+SmoothJoystickDrive::SmoothJoystickDrive()
+{
 	Requires(Robot::drive.get());
 }
 
-void SmoothJoystickDrive::Initialize() {
+void SmoothJoystickDrive::Initialize()
+{
 	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 }
 
-void SmoothJoystickDrive::Execute() {
+void SmoothJoystickDrive::Execute()
+{
 	double joystickL = Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()) * Drive::maxSpeed;
 	double joystickR = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()) * Drive::maxSpeed;
 	double currentL = Robot::drive->GetLSpeed();
@@ -25,14 +28,17 @@ void SmoothJoystickDrive::Execute() {
 	Robot::drive->TankDrive(currentL + dL, currentR + dR, false);
 }
 
-bool SmoothJoystickDrive::IsFinished() {
+bool SmoothJoystickDrive::IsFinished()
+{
 	return false;
 }
 
-void SmoothJoystickDrive::End() {
+void SmoothJoystickDrive::End()
+{
 
 }
 
-void SmoothJoystickDrive::Interrupted() {
+void SmoothJoystickDrive::Interrupted()
+{
 
 }

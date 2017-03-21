@@ -1,17 +1,20 @@
 #include <Commands/Shooter/FireBalls.h>
 
-FireBalls::FireBalls(bool shootHigh) {
+FireBalls::FireBalls(bool shootHigh)
+{
 	high = shootHigh;
 	Requires(Robot::shooter.get());
 }
 
 // Called just before this Command runs the first time
-void FireBalls::Initialize() {
+void FireBalls::Initialize()
+{
 	Robot::shooter->ChangeControlMode(CANTalon::ControlMode::kSpeed);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void FireBalls::Execute() {
+void FireBalls::Execute()
+{
 	Robot::shooter->RunFlywheel(-3100);//GetDesiredSpeed());
 	Robot::shooter->SetAngle(high);
 	//if (Robot::shooter->UpToSpeed()) //Is the shooter up to speed?
@@ -21,19 +24,22 @@ void FireBalls::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool FireBalls::IsFinished() {
+bool FireBalls::IsFinished()
+{
 	return false;
 }
 
 // Called once after isFinished returns true
-void FireBalls::End() {
+void FireBalls::End()
+{
 	Robot::shooter->SetGatePosition(true);
 	Robot::shooter->RunFlywheel(0.0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void FireBalls::Interrupted() {
+void FireBalls::Interrupted()
+{
 	Robot::shooter->SetGatePosition(true);
 	Robot::shooter->RunFlywheel(0.0);
 }

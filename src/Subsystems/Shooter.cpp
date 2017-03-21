@@ -16,12 +16,14 @@
 
 #define SHOOTER_ACCEPTABLE_ERROR 1250
 
-Shooter::Shooter() : Subsystem("Shooter") {
+Shooter::Shooter() : Subsystem("Shooter")
+{
     flywheel = RobotMap::shooterflywheel;
     angleShift = RobotMap::shooterangleShift;
 }
 
-void Shooter::InitDefaultCommand() {
+void Shooter::InitDefaultCommand()
+{
 
 }
 
@@ -71,16 +73,19 @@ bool Shooter::IsRunning()
 	return isRunning;
 }
 
-void Shooter::SetGatePosition(bool pos) {
+void Shooter::SetGatePosition(bool pos)
+{
 	RobotMap::leftGate->Set(pos);
 	RobotMap::rightGate->Set(pos);
 }
 
-void Shooter::SetRGatePosition(bool pos) {
+void Shooter::SetRGatePosition(bool pos)
+{
 	RobotMap::rightGate->Set(pos);
 }
 
-void Shooter::SetLGatePosition(bool pos) {
+void Shooter::SetLGatePosition(bool pos)
+{
 	RobotMap::leftGate->Set(pos);
 }
 

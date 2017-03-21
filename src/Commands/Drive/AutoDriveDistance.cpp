@@ -1,7 +1,8 @@
 #include "AutoDriveDistance.h"
 #include "Robot.h"
 
-AutoDriveDistance::AutoDriveDistance(double dist) {
+AutoDriveDistance::AutoDriveDistance(double dist)
+{
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	desiredDist = dist;
@@ -13,7 +14,8 @@ AutoDriveDistance::AutoDriveDistance(double dist) {
 }
 
 // Called just before this Command runs the first time
-void AutoDriveDistance::Initialize() {
+void AutoDriveDistance::Initialize()
+{
 	if (Robot::tMode == Robot::TestMode::DRIVE_POSITION)
 	{
 		desiredDist = SmartDashboard::GetNumber("test_setPoint", 0);
@@ -23,12 +25,14 @@ void AutoDriveDistance::Initialize() {
 	}
 	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
 	desiredR = avgR + desiredDist * R_PER_IN;
-	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	if (Robot::drive->BothEncodersPresent())
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 	startAngle = Robot::drive->GetYaw();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void AutoDriveDistance::Execute() {
+void AutoDriveDistance::Execute()
+{
 	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
 	double error = desiredR - avgR;
 	int sign = 1;
@@ -48,19 +52,24 @@ void AutoDriveDistance::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool AutoDriveDistance::IsFinished() {
+bool AutoDriveDistance::IsFinished()
+{
+	if (!Robot::drive->BothEncodersPresent())
+		return true;
 	double avgR = (Robot::drive->GetLPosition() + Robot::drive->GetRPosition()) / 2.0;
 	double error = desiredR- avgR;
 	return fabs(error) < 0.5;
 }
 
 // Called once after isFinished returns true
-void AutoDriveDistance::End() {
+void AutoDriveDistance::End()
+{
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void AutoDriveDistance::Interrupted() {
+void AutoDriveDistance::Interrupted()
+{
 
 }

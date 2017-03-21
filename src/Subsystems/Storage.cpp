@@ -16,11 +16,13 @@
 #include "RobotMap.h"
 #include "Commands/Storage/RunStorage.h"
 
-Storage::Storage() : Subsystem("Storage") {
+Storage::Storage() : Subsystem("Storage")
+{
     ballControlMotor = RobotMap::storageballControlMotor;
 }
 
-void Storage::InitDefaultCommand() {
+void Storage::InitDefaultCommand()
+{
 	SetDefaultCommand(new RunStorage());
 }
 

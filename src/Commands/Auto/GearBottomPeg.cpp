@@ -10,7 +10,8 @@
 #include "../Drive/AutoDriveTurn.h"
 #include "../Drive/MoveGearOntoLift.h"
 
-GearBottomPeg::GearBottomPeg() {
+GearBottomPeg::GearBottomPeg()
+{
 	AddSequential(new AutoDriveDistance(-70.75));
 	if (DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed)
 		AddSequential(new AutoDriveTurn(60));

@@ -9,7 +9,8 @@
 #include "../Drive/DriveForwardAtSpeed.h"
 #include "../Drive/MoveGearOntoLift.h"
 
-GearMiddlePeg::GearMiddlePeg() {
+GearMiddlePeg::GearMiddlePeg()
+{
 	AddSequential(new DriveForwardAtSpeed(280), 2.8);
 	//AddSequential(new MoveGearOntoLift(), 2);
 }

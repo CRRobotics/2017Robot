@@ -1,14 +1,16 @@
 #include "AutoDriveTurn.h"
 #include "../../AngleMethods.h"
 
-AutoDriveTurn::AutoDriveTurn(double angle) {
+AutoDriveTurn::AutoDriveTurn(double angle)
+{
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	desiredAngle = angle;
 }
 
 // Called just before this Command runs the first time
-void AutoDriveTurn::Initialize() {
+void AutoDriveTurn::Initialize()
+{
 	if (Robot::tMode == Robot::TestMode::DRIVE_TURN_SPEED)
 	{
 		desiredAngle = SmartDashboard::GetNumber("test_setPoint", 0);
@@ -17,11 +19,15 @@ void AutoDriveTurn::Initialize() {
 		slowStart = SmartDashboard::GetNumber("test_slow_start", 0);
 		slowEnd = SmartDashboard::GetNumber("test_slow_end", 0);
 	}
-	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	if (Robot::drive->BothEncodersPresent())
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	else
+		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void AutoDriveTurn::Execute() {
+void AutoDriveTurn::Execute()
+{
 	double currentAngle = Robot::drive->GetYaw();
 	//SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 	double error = angle_diff(desiredAngle, currentAngle);
@@ -41,19 +47,24 @@ void AutoDriveTurn::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool AutoDriveTurn::IsFinished() {
+bool AutoDriveTurn::IsFinished()
+{
+	if (!Robot::drive->BothEncodersPresent())
+		return true;
 	double currentAngle = Robot::drive->GetYaw();
 	double error = angle_diff(desiredAngle, currentAngle);
 	return fabs(error) < 2.5 || fabs(Robot::oi->GetYDriverL()) > 0.2 || fabs(Robot::oi->GetYDriverR()) > 0.2;
 }
 
 // Called once after isFinished returns true
-void AutoDriveTurn::End() {
+void AutoDriveTurn::End()
+{
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void AutoDriveTurn::Interrupted() {
+void AutoDriveTurn::Interrupted()
+{
 
 }

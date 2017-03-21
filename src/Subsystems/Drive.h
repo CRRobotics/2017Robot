@@ -22,33 +22,6 @@
  * @author ExampleAuthor
  */
 class Drive: public Subsystem {
-private:
-	std::shared_ptr<CANTalon> rDrive1;
-	std::shared_ptr<CANTalon> rDrive2;
-	std::shared_ptr<CANTalon> lDrive1;
-	std::shared_ptr<CANTalon> lDrive2;
-	std::shared_ptr<Solenoid> gearShift;
-	std::shared_ptr<AHRS> ahrs;
-
-	double closedLoopRampRate;
-
-	double vTurnP = 0.0;
-	double vTurnI = 0.0;
-	double vTurnD = 0.0;
-	double vTurnF = 0.0;
-	double vDriveP = 0.7;
-	double vDriveI = 0.0;
-	double vDriveD = 0.0;
-	double vDriveF = 0.0;
-	double motionP = 0.0;
-	double motionI = 0.0;
-	double motionD = 0.0;
-	double motionF = 0.0;
-//	double posP = 0.0;
-//	double posI = 0.0;
-//	double posD = 0.0;
-//	double posF = 0.0;
-
 public:
 	Drive();
 	void TankDrive(double lSpeed, double rSpeed, bool speedClosed = false);
@@ -57,9 +30,12 @@ public:
 		VelocityDriving,
 		Voltage,
 		MotionProfile
-//		Position
 	};
+
+	bool BothEncodersPresent();
+	bool NavXPresent();
 	void SetControlMode(DriveControlMode cMode);
+	DriveControlMode GetControlMode();
 	void ChangeGear(bool high);
 	void SetDriveRampRate(double rampRate);
 	double GetDriveRampRate();
@@ -77,6 +53,31 @@ public:
 	double GetRSpeed();
 	void SetPIDF(double kp, double ki, double kd, double kf);
 	static double maxSpeed;
+
+private:
+	std::shared_ptr<CANTalon> rDrive1;
+	std::shared_ptr<CANTalon> rDrive2;
+	std::shared_ptr<CANTalon> lDrive1;
+	std::shared_ptr<CANTalon> lDrive2;
+	std::shared_ptr<Solenoid> gearShift;
+	std::shared_ptr<AHRS> ahrs;
+
+	double closedLoopRampRate;
+	DriveControlMode currentControlMode;
+
+	double vTurnP = 0.0;
+	double vTurnI = 0.0;
+	double vTurnD = 0.0;
+	double vTurnF = 0.0;
+	double vDriveP = 0.7;
+	double vDriveI = 0.0;
+	double vDriveD = 0.0;
+	double vDriveF = 0.0;
+	double motionP = 0.0;
+	double motionI = 0.0;
+	double motionD = 0.0;
+	double motionF = 0.0;
+
 };
 
 
