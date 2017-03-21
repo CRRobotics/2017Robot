@@ -38,7 +38,7 @@ class CustomControlLoop
 	static std::thread loop_thread;
 	static bool running;
 	static int time_interval;
-	static int ticker;
+	static unsigned int ticker;
 	static RecordMode rMode;
 	static PlayMode pMode;
 

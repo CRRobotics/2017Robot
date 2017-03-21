@@ -8,7 +8,7 @@
 
 bool CustomControlLoop::running;
 int CustomControlLoop::time_interval;
-int CustomControlLoop::ticker;
+unsigned int CustomControlLoop::ticker;
 
 double CustomControlLoop::kTurn;
 double CustomControlLoop::kPos;
@@ -106,11 +106,11 @@ void CustomControlLoop::Loop()
 				double angle = std::strtod(aString.c_str(), NULL);
 				double flywheel = std::strtod(flywheelString.c_str(), NULL);
 				double storage = std::strtod(storageString.c_str(), NULL);
-				bool hopper = hopperString.c_str() == "true";
-				bool gearMech = gearMechString.c_str() == "true";
-				bool highGear = highGearString.c_str() == "true";
-				bool shooterAngle = shooterAngleString.c_str() == "true";
-				bool shooterGates = shooterGatesString.c_str() == "true";
+				bool hopper = hopperString == "true";
+				bool gearMech = gearMechString == "true";
+				bool highGear = highGearString == "true";
+				bool shooterAngle = shooterAngleString == "true";
+				bool shooterGates = shooterGatesString == "true";
 				double dur = std::strtod(durString.c_str(), NULL);
 				double timeStamp = std::strtod(timeString.c_str(), NULL);
 
@@ -298,10 +298,22 @@ void CustomControlLoop::Loop()
 		{
 			if (ticker < dataStorage.size())
 			{
-				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
-				double aCorr = 0;
-				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, -1 * (dataStorage[ticker].rSpeed - aCorr));
-				time_interval = (int)(dataStorage[ticker].dur * 1000000);
+				SpeedPoint d = dataStorage[ticker];
+				double angleError = Robot::drive->GetYaw() - d.angle;
+				double aCorr = 0 * angleError;
+				double lPosError = 0;
+				double rPosError = 0;
+				if (ticker > 0)
+				{
+					double dl = Robot::drive->GetLPosition() - lastPosL;
+					double dr = Robot::drive->GetRPosition() - lastPosR;
+					lastPosL += dl;
+					lastPosR += dr;
+					lPosError = d.lPos - dl;
+					rPosError = d.rPos - dr;
+				}
+				Robot::drive->TankDrive(d.lSpeed + aCorr, -1 * (d.rSpeed - aCorr));
+				time_interval = (int)(d.dur * 1000000);
 			}
 			else
 			{
@@ -352,7 +364,23 @@ void CustomControlLoop::Loop()
 	}
 	else if (rMode == RecordMode::FULL_PROFILE)
 	{
-
+		std::ofstream outputFile;
+		outputFile.open(filePath + outputFileName);
+		SmartDashboard::PutString("FILEPATH:", filePath + outputFileName);
+		outputFile << RobotMap::driverDrive1->GetP() << ", ";
+		outputFile << RobotMap::driverDrive1->GetI() << ", ";
+		outputFile << RobotMap::driverDrive1->GetD() << ", ";
+		outputFile << RobotMap::driverDrive1->GetF() << ", ";
+		outputFile << Robot::drive->GetDriveRampRate() << ",\n";
+		for (unsigned int i = 0; i < fDataStorage.size(); i++)
+		{
+			FullDataPoint f = fDataStorage[i];
+			outputFile << f.lSpeed << ", " << f.rSpeed << ", " << f.angle << ", ";
+			outputFile << f.shooterSpeed << ", " << f.storageVoltage << ", " << f.hopperOpen << ", ";
+			outputFile << f.gearMech << ", " << f.highGear << ", " << f.shooterHigh << ", " << f.shooterGates << ", ";
+			outputFile << f.dur << ", " << f.timeStamp << ",\n";
+		}
+		outputFile.close();
 	}
 	else if (rMode == RecordMode::VOLT_PROFILE)
 	{
