@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#define DEFAULT_INTERVAL 5000
+
 bool CustomControlLoop::running;
 int CustomControlLoop::time_interval;
 int CustomControlLoop::ticker;
@@ -24,7 +26,7 @@ std::string CustomControlLoop::filePath = "/home/lvuser/MatchData/";
 void CustomControlLoop::InitializeValues()
 {
 	running = false;
-	time_interval = 5000;
+	time_interval = DEFAULT_INTERVAL;
 	kTurn = 0;
 }
 
@@ -48,9 +50,8 @@ void CustomControlLoop::Loop()
 	std::chrono::system_clock::time_point stop_time = std::chrono::system_clock::now();
 	int lastPosL = Robot::drive->GetLPosition();
 	int lastPosR = Robot::drive->GetRPosition();
-	double pause = 0.005;
 	ticker = 0;
-
+	time_interval = DEFAULT_INTERVAL;
 	try
 	{
 		std::ifstream inputFile;
@@ -285,7 +286,7 @@ void CustomControlLoop::Loop()
 					RobotMap::leftGate->Set(f.shooterGates);
 					RobotMap::rightGate->Set(f.shooterGates);
 				}
-				time_interval = f.dur * 1000000;
+				time_interval = (int)(f.dur * 1000000);
 			}
 			else
 			{
@@ -300,7 +301,7 @@ void CustomControlLoop::Loop()
 				double angleError = Robot::drive->GetYaw() - dataStorage[ticker].angle;
 				double aCorr = 0;
 				Robot::drive->TankDrive(dataStorage[ticker].lSpeed + aCorr, -1 * (dataStorage[ticker].rSpeed - aCorr));
-				time_interval = dataStorage[ticker].dur * 1000000;
+				time_interval = (int)(dataStorage[ticker].dur * 1000000);
 			}
 			else
 			{
