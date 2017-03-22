@@ -20,7 +20,7 @@ void GearOut::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool GearOut::IsFinished()
 {
-	return Robot::gear->GetExtended();
+	return false;//Robot::gear->GetExtended();
 }
 
 // Called once after isFinished returns true

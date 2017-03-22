@@ -3,6 +3,7 @@
 FireBalls::FireBalls(bool shootHigh)
 {
 	high = shootHigh;
+	lastDistance = 0;
 	Requires(Robot::shooter.get());
 }
 

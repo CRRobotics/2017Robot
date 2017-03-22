@@ -5,6 +5,7 @@ AutoDriveSpeed::AutoDriveSpeed()
 {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
+	speed = 0;
 }
 
 // Called just before this Command runs the first time
@@ -20,7 +21,7 @@ void AutoDriveSpeed::Execute()
 {
 	speed = SmartDashboard::GetNumber("test_setPoint", 0.0);
 	Robot::drive->TankDrive(speed, speed);
-	printf("%d\n",(RobotMap::drivelDrive1->GetSpeed()));
+	printf("%f\n",(RobotMap::drivelDrive1->GetSpeed()));
 
 }
 

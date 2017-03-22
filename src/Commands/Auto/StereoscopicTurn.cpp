@@ -7,6 +7,13 @@ StereoscopicTurn::StereoscopicTurn(double angle)
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	desiredAngle = angle;
+	xAngle1 = 0;
+	xAngle2 = 0;
+	yaw1 = 0;
+	yaw2 = 0;
+	accurateXAngle1 = 0;
+	distance = 0;
+	lastTicker = 0;
 }
 
 // Called just before this Command runs the first time
@@ -37,10 +44,10 @@ void StereoscopicTurn::Execute()
 	{
 		if (stage == 0) // grab first frame
 		{
-			if (Robot::table->GetNumber("ticker") != lastTicker)
+			if (Robot::table->GetNumber("ticker", -1) != lastTicker)
 			{
 				xAngle1 = Robot::table->GetNumber("XAngleToTarget", 0);
-				lastTicker = Robot::table->GetNumber("ticker");
+				lastTicker = Robot::table->GetNumber("ticker", -1);
 				yaw1 = Robot::drive->GetYaw();
 				stage++;
 			}
@@ -68,7 +75,7 @@ void StereoscopicTurn::Execute()
 			{
 				xAngle2 = SmartDashboard::GetNumber("XAngleToTarget", 0);
 				yaw2 = Robot::drive->GetYaw();
-				double dYaw = angle_diff(Robot::drive->GetYaw(), dYaw);
+				double dYaw = angle_diff(Robot::drive->GetYaw(), yaw2);
 				lastTicker = Robot::table->GetNumber("ticker", 0);
 				stage++;
 				//Perform spectroscopic analysis

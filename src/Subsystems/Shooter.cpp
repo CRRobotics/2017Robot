@@ -20,6 +20,7 @@ Shooter::Shooter() : Subsystem("Shooter")
 {
     flywheel = RobotMap::shooterflywheel;
     angleShift = RobotMap::shooterangleShift;
+    visionMode = false;
 }
 
 void Shooter::InitDefaultCommand()

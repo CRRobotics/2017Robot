@@ -12,9 +12,10 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	double maxSpeed;//0 to 1
-	double slowStart;
-	double slowEnd;
+	double maxSpeed = 90;
+	double minSpeed = 60;
+	double slowStart = 15;
+	double slowEnd = 9;
 	double desiredAngle;
 	int stage = 0;
 	double lastTicker;

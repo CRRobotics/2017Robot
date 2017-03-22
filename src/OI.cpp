@@ -14,6 +14,7 @@
 #include "Commands/Drive/ShiftLow.h"
 #include "Commands/Gear/GearIn.h"
 #include "Commands/Gear/GearOut.h"
+#include "Commands/Gear/DropOffGear.h"
 #include "Commands/Storage/RunStorage.h"
 #include "Commands/Storage/EjectFuel.h"
 #include "Commands/Shooter/RunShooter.h"
@@ -98,6 +99,9 @@ void OI::MapButtons()
 
 	ejectFuel.reset(new JoystickButton(controllerL.get(), EJECT_FUEL));
 	ejectFuel->WhileHeld(new EjectFuel());
+
+	dropOffGear.reset(new JoystickButton(controllerL.get(), DROP_GEAR));
+	dropOffGear->WhenPressed(new DropOffGear());
 
 	Robot::oiMapped = true;
 }

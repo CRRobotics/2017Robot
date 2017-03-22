@@ -5,8 +5,7 @@ double RunVisionShooter::lastDistance = 0;
 
 RunVisionShooter::RunVisionShooter()
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
+	Requires(Robot::shooter.get());
 	running = false;
 
 }
