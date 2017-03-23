@@ -96,7 +96,7 @@ void Robot::RobotInit()
 	//int location = DriverStation::GetInstance().GetLocation();
 	//bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
 
-	oi->SetControllerSide(true);
+	oi->SetControllerSide(false);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
@@ -147,7 +147,7 @@ void Robot::RobotInit()
 ////			autonomousCommand->Start();
 //		}
 		CustomControlLoop::running = false;
-		(new GearMiddlePeg)->Start();
+		(new GearMiddlePeg())->Start();
 	}
 
 	void Robot::AutonomousPeriodic()

@@ -2,6 +2,7 @@
 
 ToggleHopper::ToggleHopper()
 {
+	Requires(Robot::acquisition.get());
 }
 
 // Called just before this Command runs the first time

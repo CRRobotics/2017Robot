@@ -3,17 +3,19 @@
 GearOut::GearOut()
 {
 	Requires(Robot::gear.get()); //Don't let controller confuse the robot by mashing both buttons
+	Requires(Robot::acquisition.get());
 }
 
 // Called just before this Command runs the first time
 void GearOut::Initialize()
 {
-
+	Robot::acquisition->CloseHopper();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void GearOut::Execute()
 {
+	Robot::acquisition->CloseHopper();
 	Robot::gear->ExtendGear();
 }
 

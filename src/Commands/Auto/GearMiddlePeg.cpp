@@ -11,7 +11,9 @@
 
 GearMiddlePeg::GearMiddlePeg()
 {
-	AddSequential(new DriveForwardAtSpeed(280), 2.8);
+	AddSequential(new DriveForwardAtSpeed(70), 2.8);
+
+	//AddSequential(new DriveForwardAtSpeed(280), 2.8);
 	//AddSequential(new MoveGearOntoLift(), 2);
 }
 

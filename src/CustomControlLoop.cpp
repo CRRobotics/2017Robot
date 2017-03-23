@@ -240,8 +240,10 @@ void CustomControlLoop::Loop()
 		{
 			SpeedPoint d;
 
-			d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();//Robot::drive->GetSpeed();
-			d.rSpeed = RobotMap::driverDrive1->GetSetpoint();//Robot::drive->GetSpeed();
+			//d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();
+			d.lSpeed = Robot::drive->GetLSpeed();
+			//d.rSpeed = RobotMap::driverDrive1->GetSetpoint();
+			d.rSpeed = Robot::drive->GetRSpeed();
 			d.lPos = Robot::drive->GetLPosition() - lastPosL;
 			d.rPos = Robot::drive->GetRPosition() - lastPosR;
 			lastPosL += d.lPos;

@@ -10,7 +10,7 @@ JoystickDrive::JoystickDrive()
 // Called just before this Command runs the first time
 void JoystickDrive::Initialize()
 {
-	if (Robot::drive->BothEncodersPresent())
+	if (true)//Robot::drive->BothEncodersPresent())
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 		Robot::drive->SetDriveRampRate(3.0);

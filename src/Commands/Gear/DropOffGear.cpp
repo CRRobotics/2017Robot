@@ -11,7 +11,7 @@
 
 DropOffGear::DropOffGear()
 {
-	AddSequential(new GearOut(), 2.5);
+	AddSequential(new GearOut(), 1.25);
 	AddSequential(new GearIn());
 }
 
