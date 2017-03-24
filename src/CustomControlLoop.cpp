@@ -41,6 +41,7 @@ void CustomControlLoop::StartLoop()
 
 void CustomControlLoop::Loop()
 {
+	double totalError = 0.0;
 	if (!Robot::drive->BothEncodersPresent())
 		return;
 	std::vector<SpeedPoint> dataStorage (0);
@@ -243,10 +244,10 @@ void CustomControlLoop::Loop()
 
 			if (Robot::side)
 			{
-				//d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();
-				d.lSpeed = Robot::drive->GetLSpeed();
-				//d.rSpeed = RobotMap::driverDrive1->GetSetpoint();
-				d.rSpeed = Robot::drive->GetRSpeed();
+				d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();
+				//d.lSpeed = Robot::drive->GetLSpeed();
+				d.rSpeed = RobotMap::driverDrive1->GetSetpoint();
+				//d.rSpeed = Robot::drive->GetRSpeed();
 				d.lPos = Robot::drive->GetLPosition() - lastPosL;
 				d.rPos = Robot::drive->GetRPosition() - lastPosR;
 				lastPosL += d.lPos;
@@ -255,10 +256,10 @@ void CustomControlLoop::Loop()
 			}
 			else
 			{
-				//d.rSpeed = RobotMap::drivelDrive1->GetSetpoint();
-				d.rSpeed = Robot::drive->GetLSpeed();
-				//d.lSpeed = RobotMap::driverDrive1->GetSetpoint();
-				d.lSpeed = Robot::drive->GetRSpeed();
+				d.rSpeed = RobotMap::drivelDrive1->GetSetpoint();
+				//d.rSpeed = Robot::drive->GetLSpeed();
+				d.lSpeed = RobotMap::driverDrive1->GetSetpoint();
+				//d.lSpeed = Robot::drive->GetRSpeed();
 				d.rPos = Robot::drive->GetLPosition() - lastPosL;
 				d.lPos = Robot::drive->GetRPosition() - lastPosR;
 				lastPosL += d.lPos;
@@ -329,8 +330,8 @@ void CustomControlLoop::Loop()
 				}
 				else
 				{
-					lSpeed = d.rSpeed;
-					rSpeed = d.lSpeed;
+					lSpeed = -1 * d.rSpeed;
+					rSpeed = -1 * d.lSpeed;
 					yawAngle = -1 * d.angle;
 				}
 				double angleError = angle_diff(Robot::drive->GetYaw(), yawAngle);
@@ -349,6 +350,7 @@ void CustomControlLoop::Loop()
 				}
 				Robot::drive->TankDrive(d.lSpeed + aCorr, -1 * (d.rSpeed - aCorr));
 				time_interval = (int)(d.dur * 1000000);
+				totalError += RobotMap::driverDrive1->GetClosedLoopError() * d.dur * 10;
 			}
 			else
 			{
@@ -378,6 +380,8 @@ void CustomControlLoop::Loop()
 		if (DriverStation::GetInstance().IsDisabled() || (rMode == RecordMode::NONE && pMode == PlayMode::NONE))
 			running = false;
 	}
+
+	SmartDashboard::PutNumber("TOTAL PROFILE ERROR ", totalError);
 
 	if (rMode == RecordMode::SPEED_PROFILE)
 	{

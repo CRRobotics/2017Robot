@@ -10,7 +10,7 @@ StartClimber::StartClimber()
 // Called just before this Command runs the first time
 void StartClimber::Initialize()
 {
-
+	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 }
 
 // Called repeatedly when this Command is scheduled to run

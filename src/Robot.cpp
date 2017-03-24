@@ -8,6 +8,7 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
+#include "Commands/Auto/GearTopPeg.h"
 #include "Commands/Auto/VoltProfileReplay.h"
 #include "Commands/Auto/SpeedProfileReplay.h"
 #include "Commands/Auto/SpeedProfileRecord.h"
@@ -46,7 +47,8 @@ void Robot::RobotInit()
 	autoSelection.reset(new frc::SendableChooser<std::string>());
 	autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", "gear_middle");
 	autoSelection->AddObject("Gear Bottom", "gear_bot.csv");
-	autoSelection->AddObject("Gear Top", "gear_top.csv");
+	autoSelection->AddObject("Gear Top", "gear_top");
+	autoSelection->AddObject("None", "none");
 	//autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", *(new GearMiddlePeg()));
 	//autoSelection->AddObject("Gear Bottom", *(new SpeedProfileReplay("gear_bot.csv", false)));
 	//autoSelection->AddObject("Gear Top", *(new SpeedProfileReplay("gear_top.csv", false)));
@@ -71,6 +73,8 @@ void Robot::RobotInit()
 	SmartDashboard::PutNumber("test_dCons", 0.0);
 	SmartDashboard::PutNumber("test_fCons", 0.0);
 	SmartDashboard::PutNumber("test_setPoint", 0.0);
+	SmartDashboard::PutData("Side Selection", sideSelection.get());
+	SmartDashboard::PutData("Auto Selection", autoSelection.get());
 	switch (tMode)
 	{
 		case TestMode::NONE:
@@ -108,7 +112,7 @@ void Robot::RobotInit()
 	}
 
 	side = true;//TRUE = RED, FALSE = BLUE
-	oi->SetControllerSide(false);
+	oi->SetControllerSide(true);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
@@ -149,9 +153,17 @@ void Robot::RobotInit()
 		PrintOrResetYaw();
 		side = sideSelection->GetSelected() == "r";
 		std::string auto_mode = autoSelection->GetSelected();
-		if (auto_mode == "gear_middle")
+		if (auto_mode == "none")
+		{
+
+		}
+		else if (auto_mode == "gear_middle")
 		{
 			autonomousCommand.reset(new GearMiddlePeg());
+		}
+		else if (auto_mode == "gear_top")
+		{
+			autonomousCommand.reset(new GearTopPeg());
 		}
 		else
 		{
@@ -184,7 +196,7 @@ void Robot::RobotInit()
 
 	void Robot::TeleopPeriodic()
 	{
-		//SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
+		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
 		//SmartDashboard::PutBoolean("NavX Callibrating", RobotMap::driveahrs->IsCalibrating());

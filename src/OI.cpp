@@ -68,7 +68,7 @@ void OI::MapButtons()
 	drivePTOOff->WhenPressed(new StopClimber());
 
 	driveLoadingZone.reset(new JoystickButton(driverL.get(), DRIVE_TO_LOADING));
-	driveLoadingZone->WhenPressed(new AutoDriveTurn(-64.435));
+	driveLoadingZone->WhenPressed(new AutoDriveTurn(64.435));
 
 	toggleShooter.reset(new JoystickButton(controllerL.get(), TOGGLE_SHOOTER));
 	toggleShooter->WhenPressed(new RunShooter());

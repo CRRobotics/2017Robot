@@ -13,7 +13,7 @@ void JoystickDrive::Initialize()
 	if (Robot::drive->BothEncodersPresent())
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(3.0);
+		Robot::drive->SetDriveRampRate(1.1);
 	}
 	else
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
@@ -28,13 +28,13 @@ void JoystickDrive::Execute()
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 	}
-	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage)
+	/*else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage)
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 		Robot::drive->SetDriveRampRate(3.0);
-	}
+	}*/
 
-	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), encodersPresent);
+	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving);
 }
 
 // Make this return true when this Command no longer needs to run execute()

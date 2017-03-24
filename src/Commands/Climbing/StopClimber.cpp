@@ -27,7 +27,7 @@ bool StopClimber::IsFinished()
 // Called once after isFinished returns true
 void StopClimber::End()
 {
-
+	return Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 }
 
 // Called when another command which requires one or more of the same
