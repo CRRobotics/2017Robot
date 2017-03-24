@@ -33,10 +33,24 @@ bool Robot::oiMapped;
 bool Robot::yawReset;
 bool Robot::side;
 
-std::unique_ptr<frc::Command> autonomousCommand;
+std::unique_ptr<frc::SendableChooser<std::string>> Robot::sideSelection;
+std::unique_ptr<frc::SendableChooser<std::string>> Robot::autoSelection;
+std::unique_ptr<frc::Command> Robot::autonomousCommand;
 
 void Robot::RobotInit()
 {
+	sideSelection.reset(new frc::SendableChooser<std::string>());
+	sideSelection->AddDefault("red", "r");
+	sideSelection->AddObject("blue", "b");
+
+	autoSelection.reset(new frc::SendableChooser<std::string>());
+	autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", "gear_middle");
+	autoSelection->AddObject("Gear Bottom", "gear_bot.csv");
+	autoSelection->AddObject("Gear Top", "gear_top.csv");
+	//autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", *(new GearMiddlePeg()));
+	//autoSelection->AddObject("Gear Bottom", *(new SpeedProfileReplay("gear_bot.csv", false)));
+	//autoSelection->AddObject("Gear Top", *(new SpeedProfileReplay("gear_top.csv", false)));
+
 	table = NetworkTable::GetTable("vision");
 	CustomControlLoop::InitializeValues();
 	tMode = TestMode::DRIVE_TURN_SPEED;
@@ -133,19 +147,21 @@ void Robot::RobotInit()
 	void Robot::AutonomousInit()
 	{
 		PrintOrResetYaw();
-		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-		if (autoSelected == "My Auto")
-{
-			autonomousCommand.reset(new MyAutoCommand());
+		side = sideSelection->GetSelected() == "r";
+		std::string auto_mode = autoSelection->GetSelected();
+		if (auto_mode == "gear_middle")
+		{
+			autonomousCommand.reset(new GearMiddlePeg());
 		}
-		else {
-			autonomousCommand.reset(new ExampleCommand());
-		} */
-//		if (autonomousCommand.get() != nullptr){
-////			autonomousCommand->Start();
-//		}
-		CustomControlLoop::running = false;
-		(new GearMiddlePeg())->Start();
+		else
+		{
+			autonomousCommand.reset(new SpeedProfileReplay(auto_mode, false));
+		}
+
+
+		if (autonomousCommand != nullptr)
+			autonomousCommand->Start();
+
 	}
 
 	void Robot::AutonomousPeriodic()

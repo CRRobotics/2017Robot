@@ -44,7 +44,9 @@ public:
 	static bool oiMapped;
 	static bool yawReset;
 	static TestMode tMode;
-	std::unique_ptr<Command> autonomousCommand;
+	static std::unique_ptr<frc::SendableChooser<std::string>> sideSelection;
+	static std::unique_ptr<frc::SendableChooser<std::string>> autoSelection;
+	static std::unique_ptr<Command> autonomousCommand;
 	static std::shared_ptr<OI> oi;
 	LiveWindow *lw = LiveWindow::GetInstance();
 	static std::shared_ptr<Drive> drive;
