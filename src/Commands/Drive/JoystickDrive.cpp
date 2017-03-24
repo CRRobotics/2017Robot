@@ -22,7 +22,7 @@ void JoystickDrive::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
-	SmartDashboard::PutNumber("fudgefactor", RobotMap::driverDrive1->GetSetpoint() / Robot::drive->GetREncoderRate());
+	//SmartDashboard::PutNumber("fudgefactor", RobotMap::driverDrive1->GetSetpoint() / Robot::drive->GetREncoderRate());
 	bool encodersPresent = Robot::drive->BothEncodersPresent();
 	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
 	{

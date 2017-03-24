@@ -9,6 +9,7 @@ RunShooter::RunShooter()
 void RunShooter::Initialize()
 {
 	Robot::shooter->ChangeControlMode(CANTalon::ControlMode::kSpeed);
+	Robot::shooter->SetGatePosition(true);
 }
 
 // Called repeatedly when this Command is scheduled to run

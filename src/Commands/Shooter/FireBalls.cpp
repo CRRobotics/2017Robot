@@ -1,9 +1,10 @@
 #include <Commands/Shooter/FireBalls.h>
 
-FireBalls::FireBalls(bool shootHigh)
+FireBalls::FireBalls(bool shootHigh, double speed)
 {
 	high = shootHigh;
 	lastDistance = 0;
+	desiredSpeed = speed;
 	Requires(Robot::shooter.get());
 }
 
@@ -16,7 +17,7 @@ void FireBalls::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void FireBalls::Execute()
 {
-	Robot::shooter->RunFlywheel(-3100);//GetDesiredSpeed());
+	Robot::shooter->RunFlywheel(-1 * desiredSpeed);//GetDesiredSpeed());
 	Robot::shooter->SetAngle(high);
 	//if (Robot::shooter->UpToSpeed()) //Is the shooter up to speed?
 		Robot::shooter->SetGatePosition(false);

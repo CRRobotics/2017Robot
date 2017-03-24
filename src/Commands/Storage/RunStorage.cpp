@@ -18,12 +18,12 @@ void RunStorage::Execute()
 {
 	//Either Acquisition is running or the shooter is sunning and ready to fire
 	if (Robot::oi->GetAcquisition())
-{
+	{
 		printf("Storage running\n");
 		Robot::storage->MoveStorage(-1.0);
 	}
-	else if (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed())
-{
+	else if ((Robot::oi->GetFiring() || !RobotMap::leftGate->Get() || !RobotMap::rightGate->Get()) && Robot::shooter->UpToSpeed())
+	{
 		//double speed = fabs (30.0 / Robot::shooter->GetSpeedError());
 		Robot::storage->MoveStorage(-1.0);
 	}

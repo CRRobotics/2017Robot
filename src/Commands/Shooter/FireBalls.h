@@ -12,7 +12,7 @@
 #include "../../Robot.h"
 class FireBalls: public Command {
 public:
-	FireBalls(bool shootHigh);
+	FireBalls(bool shootHigh, double speed);
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
@@ -21,6 +21,7 @@ public:
 	bool high;
 	double GetDesiredSpeed();
 	double lastDistance;
+	double desiredSpeed;
 };
 
 

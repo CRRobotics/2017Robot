@@ -92,10 +92,10 @@ void OI::MapButtons()
 	turnToGear.reset(new JoystickButton(driverR.get(), DRIVE_TO_GEAR));
 
 	shooterAngleFar.reset(new JoystickButton(controllerL.get(), SHOOT_FAR));
-	shooterAngleFar->WhileHeld(new FireBalls(true));
+	shooterAngleFar->WhileHeld(new FireBalls(true, 4000));
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
-	shooterAngleShort->WhileHeld(new FireBalls(false));
+	shooterAngleShort->WhileHeld(new FireBalls(false, 3000));
 
 	ejectFuel.reset(new JoystickButton(controllerL.get(), EJECT_FUEL));
 	ejectFuel->WhileHeld(new EjectFuel());
