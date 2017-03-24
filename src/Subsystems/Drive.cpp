@@ -194,7 +194,6 @@ void Drive::SetPIDF(double kp, double ki, double kd, double kf)
 
 bool Drive::BothEncodersPresent()
 {
-	return true;
 	CANTalon::FeedbackDeviceStatus lStatus = lDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
 	CANTalon::FeedbackDeviceStatus rStatus = rDrive1->IsSensorPresent(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
 	if (lStatus == CANTalon::FeedbackDeviceStatus::FeedbackStatusPresent && rStatus == CANTalon::FeedbackDeviceStatus::FeedbackStatusPresent)

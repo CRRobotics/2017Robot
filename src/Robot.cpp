@@ -170,10 +170,10 @@ void Robot::RobotInit()
 
 	void Robot::TeleopPeriodic()
 	{
-		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
+		//SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
-
+		//SmartDashboard::PutBoolean("NavX Callibrating", RobotMap::driveahrs->IsCalibrating());
 		//SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();
 	}
@@ -184,7 +184,9 @@ void Robot::RobotInit()
 			if (!yawReset)
 			{
 				Robot::drive->ResetYaw();
-				yawReset = true;
+				//SmartDashboard::PutBoolean("Reset Yaw!", true);
+				if (fabs(Robot::drive->GetYaw()) < 2)
+					yawReset = true;
 			}
 			else
 				SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
