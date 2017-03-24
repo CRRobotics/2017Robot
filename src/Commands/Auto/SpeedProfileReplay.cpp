@@ -1,11 +1,12 @@
 #include <CustomControlLoop.h>
 #include "SpeedProfileReplay.h"
 
-SpeedProfileReplay::SpeedProfileReplay(std::string replayName)
+SpeedProfileReplay::SpeedProfileReplay(std::string replayName, bool smartdash)
 {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
 	rName = replayName;
+	loadSD = smartdash;
 }
 
 // Called just before this Command runs the first time
@@ -13,7 +14,11 @@ void SpeedProfileReplay::Initialize()
 {
 	CustomControlLoop::pMode = CustomControlLoop::PlayMode::SPEED_PROFILE;
 	CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
-	CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
+	if (loadSD)
+		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");//rName;
+	else
+		CustomControlLoop::inputFileName = rName;
+
 	if (!CustomControlLoop::running)
 		CustomControlLoop::StartLoop();
 }

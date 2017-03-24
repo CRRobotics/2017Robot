@@ -240,16 +240,31 @@ void CustomControlLoop::Loop()
 		{
 			SpeedPoint d;
 
-			//d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();
-			d.lSpeed = Robot::drive->GetLSpeed();
-			//d.rSpeed = RobotMap::driverDrive1->GetSetpoint();
-			d.rSpeed = Robot::drive->GetRSpeed();
-			d.lPos = Robot::drive->GetLPosition() - lastPosL;
-			d.rPos = Robot::drive->GetRPosition() - lastPosR;
-			lastPosL += d.lPos;
-			lastPosR += d.rPos;
+			if (Robot::side)
+			{
+				//d.lSpeed = RobotMap::drivelDrive1->GetSetpoint();
+				d.lSpeed = Robot::drive->GetLSpeed();
+				//d.rSpeed = RobotMap::driverDrive1->GetSetpoint();
+				d.rSpeed = Robot::drive->GetRSpeed();
+				d.lPos = Robot::drive->GetLPosition() - lastPosL;
+				d.rPos = Robot::drive->GetRPosition() - lastPosR;
+				lastPosL += d.lPos;
+				lastPosR += d.rPos;
+				d.angle = RobotMap::driveahrs->GetYaw();
+			}
+			else
+			{
+				//d.rSpeed = RobotMap::drivelDrive1->GetSetpoint();
+				d.rSpeed = Robot::drive->GetLSpeed();
+				//d.lSpeed = RobotMap::driverDrive1->GetSetpoint();
+				d.lSpeed = Robot::drive->GetRSpeed();
+				d.rPos = Robot::drive->GetLPosition() - lastPosL;
+				d.lPos = Robot::drive->GetRPosition() - lastPosR;
+				lastPosL += d.lPos;
+				lastPosR += d.rPos;
+				d.angle = -1 * RobotMap::driveahrs->GetYaw();
+			}
 
-			d.angle = RobotMap::driveahrs->GetYaw();
 			d.dur = time_interval / 1000000.0;
 			d.timeStamp = time_diff * 1.0;
 			dataStorage.push_back(d);
@@ -300,8 +315,24 @@ void CustomControlLoop::Loop()
 		{
 			if (ticker < dataStorage.size())
 			{
+				double lSpeed;
+				double rSpeed;
+				double yawAngle;
+
 				SpeedPoint d = dataStorage[ticker];
-				double angleError = Robot::drive->GetYaw() - d.angle;
+				if (Robot::side)
+				{
+					lSpeed = d.lSpeed;
+					rSpeed = d.rSpeed;
+					yawAngle = d.angle;
+				}
+				else
+				{
+					lSpeed = d.rSpeed;
+					rSpeed = d.lSpeed;
+					yawAngle = -1 * d.angle;
+				}
+				double angleError = angle_diff(Robot::drive->GetYaw(), yawAngle);
 				SmartDashboard::PutNumber("Angle Error", angleError);
 				double aCorr = 0 * angleError;
 				double lPosError = 0;

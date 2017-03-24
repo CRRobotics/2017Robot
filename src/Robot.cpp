@@ -31,6 +31,7 @@ Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
 bool Robot::oiMapped;
 bool Robot::yawReset;
+bool Robot::side;
 
 std::unique_ptr<frc::Command> autonomousCommand;
 
@@ -47,7 +48,7 @@ void Robot::RobotInit()
 	climbing.reset(new Climbing());
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
-	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay(""));
+	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay("", true));
 	SmartDashboard::PutData("Create speed recording", new SpeedProfileRecord());
 	SmartDashboard::PutString("input_file_name", "paulsucks.csv");
 	SmartDashboard::PutString("output_file_name", "paulsucks.csv");
@@ -92,10 +93,7 @@ void Robot::RobotInit()
 		break;
 	}
 
-	//bool redAlliance = DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed;
-	//int location = DriverStation::GetInstance().GetLocation();
-	//bool cLeft = (!redAlliance && (location == 2 || location == 3)) || (redAlliance && (location == 3));
-
+	side = true;//TRUE = RED, FALSE = BLUE
 	oi->SetControllerSide(false);
 	oiMapped = false;
 	oi->MapButtons();

@@ -6,13 +6,14 @@
 
 class SpeedProfileReplay: public CommandBase {
 public:
-	SpeedProfileReplay(std::string replayName);
+	SpeedProfileReplay(std::string replayName, bool smartdash);
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
 	std::string rName;
+	bool loadSD;
 };
 
 #endif  // EXAMPLE_COMMAND_H
