@@ -302,6 +302,7 @@ void CustomControlLoop::Loop()
 			{
 				SpeedPoint d = dataStorage[ticker];
 				double angleError = Robot::drive->GetYaw() - d.angle;
+				SmartDashboard::PutNumber("Angle Error", angleError);
 				double aCorr = 0 * angleError;
 				double lPosError = 0;
 				double rPosError = 0;
