@@ -9,7 +9,6 @@
 #define MiddlePegAndShootRecorded_H_
 
 #include <Commands/CommandGroup.h>
-#include "Wait.h"
 
 class MiddlePegAndShootRecorded: public frc::CommandGroup {
 public:
