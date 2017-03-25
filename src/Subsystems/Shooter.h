@@ -27,7 +27,7 @@ private:
 	std::shared_ptr<Solenoid> angleShift;
 	double shootP = 0.1;
 	double shootI = -0.00005;
-	double shootD = 0.0;
+	double shootD = -0.00005;
 	double shootF = 0.03;
 	bool isRunning = false;
 

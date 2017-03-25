@@ -59,7 +59,7 @@ void Robot::RobotInit()
 
 	table = NetworkTable::GetTable("vision");
 	CustomControlLoop::InitializeValues();
-	tMode = TestMode::DRIVE_TURN_SPEED;
+	tMode = TestMode::NONE;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
@@ -116,7 +116,7 @@ void Robot::RobotInit()
 	}
 
 	side = true;//TRUE = RED, FALSE = BLUE
-	oi->SetControllerSide(false);
+	oi->SetControllerSide(true);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
@@ -200,6 +200,7 @@ void Robot::RobotInit()
 	{
 		PrintOrResetYaw();
 
+
 		CustomControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
 		CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
@@ -211,6 +212,8 @@ void Robot::RobotInit()
 
 	void Robot::TeleopPeriodic()
 	{
+		SmartDashboard::PutNumber("shooter_error", Robot::shooter->GetSpeedError());
+
 		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());

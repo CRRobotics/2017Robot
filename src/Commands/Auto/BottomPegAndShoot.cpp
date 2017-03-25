@@ -16,7 +16,7 @@
 
 BottomPegAndShoot::BottomPegAndShoot()
 {
-	AddSequential(new SpeedProfileReplay("gear_bot.csv", false), 8);
+	AddSequential(new SpeedProfileReplay("gear_bot.csv", false), 9.65);
 	AddParallel(new GearOut(), 0.25);
 	AddParallel(new RunShooter());
 	AddSequential(new Delay(), 0.5);

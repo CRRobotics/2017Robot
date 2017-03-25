@@ -15,7 +15,7 @@
 
 GearBottomPeg::GearBottomPeg()
 {
-	AddSequential (new SpeedProfileReplay("gear_bot.csv",false), 9.5);
+	AddSequential (new SpeedProfileReplay("gear_bot.csv",false), 9.65);
 	AddSequential (new GearOut(), 0.25);
 	AddSequential (new Delay(), 1);
 	AddSequential (new DriveForwardAtSpeed(-50), 3);

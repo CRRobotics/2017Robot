@@ -13,7 +13,7 @@ void JoystickDrive::Initialize()
 	if (Robot::drive->BothEncodersPresent())
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(1.0);
+		Robot::drive->SetDriveRampRate(1.4);
 	}
 	else
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
