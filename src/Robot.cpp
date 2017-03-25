@@ -9,6 +9,8 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 #include "Commands/Auto/GearTopPeg.h"
+#include "Commands/Auto/MiddlePegAndShootRecorded.h"
+#include "Commands/Auto/BottomPegAndShoot.h"
 #include "Commands/Auto/VoltProfileReplay.h"
 #include "Commands/Auto/SpeedProfileReplay.h"
 #include "Commands/Auto/SpeedProfileRecord.h"
@@ -49,6 +51,8 @@ void Robot::RobotInit()
 	autoSelection->AddObject("Gear Bottom", "gear_bot.csv");
 	autoSelection->AddObject("Gear Top", "gear_top");
 	autoSelection->AddObject("None", "none");
+	autoSelection->AddObject("Gear Middle Peg Recorded", "mpegrecorded");
+	autoSelection->AddObject("BottomPegAndShoot", "bpegshoot");
 	//autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", *(new GearMiddlePeg()));
 	//autoSelection->AddObject("Gear Bottom", *(new SpeedProfileReplay("gear_bot.csv", false)));
 	//autoSelection->AddObject("Gear Top", *(new SpeedProfileReplay("gear_top.csv", false)));
@@ -112,7 +116,7 @@ void Robot::RobotInit()
 	}
 
 	side = true;//TRUE = RED, FALSE = BLUE
-	oi->SetControllerSide(true);
+	oi->SetControllerSide(false);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
@@ -150,6 +154,9 @@ void Robot::RobotInit()
 	 */
 	void Robot::AutonomousInit()
 	{
+		RobotMap::leftGate->Set(true);
+		RobotMap::rightGate->Set(true);
+		Robot::gear->RetractGear();
 		PrintOrResetYaw();
 		side = sideSelection->GetSelected() == "r";
 		std::string auto_mode = autoSelection->GetSelected();
@@ -164,6 +171,14 @@ void Robot::RobotInit()
 		else if (auto_mode == "gear_top")
 		{
 			autonomousCommand.reset(new GearTopPeg());
+		}
+		else if (auto_mode == "mpegrecorded")
+		{
+			autonomousCommand.reset(new MiddlePegAndShootRecorded());
+		}
+		else if (auto_mode == "bpegshoot")
+		{
+			autonomousCommand.reset(new BottomPegAndShoot());
 		}
 		else
 		{

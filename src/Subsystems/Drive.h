@@ -69,7 +69,7 @@ private:
 	double vTurnI = 0.0;
 	double vTurnD = 0.0;
 	double vTurnF = 0.0;
-	double vDriveP = 0.7;
+	double vDriveP = 0.90;
 	double vDriveI = 0.0;
 	double vDriveD = 0.0;
 	double vDriveF = 0.0;

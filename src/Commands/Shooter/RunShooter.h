@@ -7,12 +7,15 @@
 class RunShooter: public Command {
 public:
 	RunShooter();
+	RunShooter(double withSpeed);
 	void Initialize() override;
 	void Execute() override;
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	static double GetDesiredSpeed();
+	double GetDesiredSpeed();
+private:
+	double desiredSpeed;
 };
 
 #endif  // EXAMPLE_COMMAND_H

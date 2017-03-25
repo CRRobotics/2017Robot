@@ -6,22 +6,20 @@
  */
 
 #include "GearBottomPeg.h"
-#include "../Drive/AutoDriveDistance.h"
+#include "SpeedProfileReplay.h"
+#include "../Drive/DriveForwardAtSpeed.h"
 #include "../Drive/AutoDriveTurn.h"
-#include "../Drive/MoveGearOntoLift.h"
+#include "Delay.h"
+#include "../Gear/GearOut.h"
+#include "../Gear/GearIn.h"
 
 GearBottomPeg::GearBottomPeg()
 {
-	//AddSequential (new SpeedProfileReplay("gear_bot.csv",false), 8);
-	//AddSequential (new GearOut());
-	//AddSequential (new DriveForwardAtSpeed(0), 1);
-	//AddSequential (new DriveForwardAtSpeed(-50), 3);
-	//AddSequential(new AutoDriveDistance(-70.75));
-	//if (DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed)
-	//	AddSequential(new AutoDriveTurn(60));
-	//else
-	//	AddSequential(new AutoDriveTurn(-60));
-	//AddSequential(new AutoDriveDistance(-73.5));
-	//AddSequential(new MoveGearOntoLift(), 5);
+	AddSequential (new SpeedProfileReplay("gear_bot.csv",false), 9.5);
+	AddSequential (new GearOut(), 0.25);
+	AddSequential (new Delay(), 1);
+	AddSequential (new DriveForwardAtSpeed(-50), 3);
+	AddSequential (new GearIn());
+
 }
 

@@ -3,6 +3,13 @@
 RunShooter::RunShooter()
 {
 	Requires(Robot::shooter.get());
+	desiredSpeed = 3100;
+}
+
+RunShooter::RunShooter(double withSpeed)
+{
+	Requires(Robot::shooter.get());
+	desiredSpeed = withSpeed;
 }
 
 // Called just before this Command runs the first time
@@ -45,5 +52,5 @@ double RunShooter::GetDesiredSpeed()
 	if (Robot::tMode == Robot::TestMode::SHOOTER_SPEED)
 		return SmartDashboard::GetNumber("test_setPoint", 0);
 	else
-		return -3100;
+		return -1 * desiredSpeed;
 }

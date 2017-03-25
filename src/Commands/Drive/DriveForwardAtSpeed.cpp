@@ -14,8 +14,8 @@ void DriveForwardAtSpeed::Initialize()
 	//Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 	RobotMap::drivelDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
 	RobotMap::driverDrive1->SetControlMode(CANTalon::ControlMode::kSpeed);
-	RobotMap::drivelDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
-	RobotMap::driverDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
+	RobotMap::drivelDrive1->SetPID(1.05, 0.0, 0.0, 0.0);
+	RobotMap::driverDrive1->SetPID(1.05, 0.0, 0.0, 0.0);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -35,6 +35,8 @@ bool DriveForwardAtSpeed::IsFinished()
 // Called once after isFinished returns true
 void DriveForwardAtSpeed::End()
 {
+	RobotMap::drivelDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
+	RobotMap::driverDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
 
 }
 
@@ -42,5 +44,7 @@ void DriveForwardAtSpeed::End()
 // subsystems is scheduled to run
 void DriveForwardAtSpeed::Interrupted()
 {
+	RobotMap::drivelDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
+	RobotMap::driverDrive1->SetPID(0.7, 0.0, 0.0, 0.0);
 
 }

@@ -95,7 +95,7 @@ void OI::MapButtons()
 	shooterAngleFar->WhileHeld(new FireBalls(true, 4000));
 
 	shooterAngleShort.reset(new JoystickButton(controllerL.get(), SHOOT_SHORT));
-	shooterAngleShort->WhileHeld(new FireBalls(false, 3000));
+	shooterAngleShort->WhileHeld(new FireBalls(false, 2800));
 
 	ejectFuel.reset(new JoystickButton(controllerL.get(), EJECT_FUEL));
 	ejectFuel->WhileHeld(new EjectFuel());

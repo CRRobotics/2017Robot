@@ -72,7 +72,7 @@ void RobotMap::init()
     shooterflywheel.reset(new CANTalon(FLYWHEEL));
     lw->AddActuator("Shooter", "flywheel1", shooterflywheel);
     shooterflywheel->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
-    shooterflywheel->SetAllowableClosedLoopErr(600.0);
+    shooterflywheel->SetAllowableClosedLoopErr(300.0);
 
     shooterangleShift.reset(new Solenoid(PCM_ID,SHOOTER_PISTON));
     lw->AddActuator("Shooter", "angleShift", shooterangleShift);

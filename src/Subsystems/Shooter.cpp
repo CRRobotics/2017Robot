@@ -14,7 +14,7 @@
 #include "Shooter.h"
 #include "../RobotMap.h"
 
-#define SHOOTER_ACCEPTABLE_ERROR 1250
+#define SHOOTER_ACCEPTABLE_ERROR 1400
 
 Shooter::Shooter() : Subsystem("Shooter")
 {
