@@ -116,7 +116,7 @@ void Robot::RobotInit()
 	}
 
 	side = true;//TRUE = RED, FALSE = BLUE
-	oi->SetControllerSide(true);
+	oi->SetControllerSide(false);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
