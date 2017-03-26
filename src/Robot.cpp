@@ -19,6 +19,7 @@
 #include "Commands/Drive/AutoDriveTurn.h"
 #include "Commands/Shooter/FireBalls.h"
 #include "Commands/Auto/GearMiddlePeg.h"
+#include "Commands/Auto/HopperAndShoot.h"
 #include "CommandBase.h"
 #include "Robot.h"
 #include "Commands/Shooter/StopShooter.h"
@@ -53,6 +54,7 @@ void Robot::RobotInit()
 	autoSelection->AddObject("None", "none");
 	autoSelection->AddObject("Gear Middle Peg Recorded", "mpegrecorded");
 	autoSelection->AddObject("BottomPegAndShoot", "bpegshoot");
+	autoSelection->AddObject("HopperAndShoot", "hshoot");
 	//autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", *(new GearMiddlePeg()));
 	//autoSelection->AddObject("Gear Bottom", *(new SpeedProfileReplay("gear_bot.csv", false)));
 	//autoSelection->AddObject("Gear Top", *(new SpeedProfileReplay("gear_top.csv", false)));
@@ -163,6 +165,10 @@ void Robot::RobotInit()
 		if (auto_mode == "none")
 		{
 
+		}
+		else if(auto_mode == "hshoot")
+		{
+			autonomousCommand.reset(new HopperAndShoot());
 		}
 		else if (auto_mode == "gear_middle")
 		{
