@@ -21,7 +21,7 @@ void ToggleHopper::Execute()
 	else
 	{
 		Robot::acquisition->OpenHopper();
-		Robot::gear->ExtendGear();
+		Robot::gear->RetractGear();
 	}
 }
 

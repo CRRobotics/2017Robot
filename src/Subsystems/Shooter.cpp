@@ -92,6 +92,6 @@ void Shooter::SetLGatePosition(bool pos)
 
 void Shooter::SetAngle(bool high)
 {
-	angleShift->Set(high);
+	angleShift->Set(!high);
 }
 

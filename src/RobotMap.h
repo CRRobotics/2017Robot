@@ -20,11 +20,11 @@
 //Pistons
 #define PCM_ID 61
 #define PTO_PISTON 1
-#define SHIFTERS 0
+#define SHIFTERS 4
 #define LFUEL_GATE 7
 #define RFUEL_GATE 6
 #define GEAR_PISTON 5
-#define SHOOTER_PISTON 4
+#define SHOOTER_PISTON 0//4 -- intentionally fake
 #define PASSIVE_ACQ 2
 //anthony is a pretty guy i guess
 

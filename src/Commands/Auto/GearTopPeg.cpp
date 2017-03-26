@@ -19,10 +19,10 @@ GearTopPeg::GearTopPeg()
 {
 	AddSequential(new SpeedProfileReplay("gear_top.csv", false), 9.65);
 	AddSequential(new GearOut(), 0.5);
-	AddSequential(new Delay(),0.5);
-	AddSequential(new DriveForwardAtSpeed(-120), 2.0);
-	//AddParallel(new GearIn(), 0.5);
-	//AddSequential(new AutoDriveTurn(0), 4.0);
+	AddSequential(new Delay(),0.4);
+	AddSequential(new DriveForwardAtSpeed(-150), 3.0);
+	AddParallel(new GearIn(), 0.5);
+	AddSequential(new AutoDriveTurn(0), 4.0);
 	//AddSequential(new DriveForwardAtSpeed(60), 5.0);
 	/*AddSequential(new AutoDriveDistance(-70.75));
 	if (DriverStation::GetInstance().GetAlliance() == DriverStation::Alliance::kRed)

@@ -9,6 +9,7 @@
 #include <SmartDashboard/SmartDashboard.h>
 
 #include "Commands/Auto/GearTopPeg.h"
+#include "Commands/Auto/GearBottomPeg.h"
 #include "Commands/Auto/MiddlePegAndShootRecorded.h"
 #include "Commands/Auto/BottomPegAndShoot.h"
 #include "Commands/Auto/VoltProfileReplay.h"
@@ -49,7 +50,7 @@ void Robot::RobotInit()
 
 	autoSelection.reset(new frc::SendableChooser<std::string>());
 	autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", "gear_middle");
-	autoSelection->AddObject("Gear Bottom", "gear_bot.csv");
+	autoSelection->AddObject("Gear Bottom", "gear_bot");
 	autoSelection->AddObject("Gear Top", "gear_top");
 	autoSelection->AddObject("None", "none");
 	autoSelection->AddObject("Gear Middle Peg Recorded", "mpegrecorded");
@@ -118,7 +119,7 @@ void Robot::RobotInit()
 	}
 
 	side = true;//TRUE = RED, FALSE = BLUE
-	oi->SetControllerSide(false);
+	oi->SetControllerSide(true);
 	oiMapped = false;
 	oi->MapButtons();
 	yawReset = false;
@@ -178,6 +179,10 @@ void Robot::RobotInit()
 		{
 			autonomousCommand.reset(new GearTopPeg());
 		}
+		else if (auto_mode == "gear_bot")
+		{
+			autonomousCommand.reset(new GearBottomPeg());
+		}
 		else if (auto_mode == "mpegrecorded")
 		{
 			autonomousCommand.reset(new MiddlePegAndShootRecorded());
@@ -212,8 +217,8 @@ void Robot::RobotInit()
 		CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
 		CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
 		//CustomControlLoop::StartLoop();
-		RobotMap::leftGate->Set(true);
-		RobotMap::rightGate->Set(true);
+		//RobotMap::leftGate->Set(true);
+		//RobotMap::rightGate->Set(true);
 	}
 
 	void Robot::TeleopPeriodic()
