@@ -38,6 +38,8 @@ public:
 	double GetYControllerR();
 	double GetYDriverL();
 	double GetYDriverR();
+	double GetXDriverL();
+	double GetXDriverR();
 	bool GetAcquisition();
 	bool GetFiring();
 	bool GetDrivePTOOn();

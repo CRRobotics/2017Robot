@@ -122,6 +122,23 @@ double OI::GetYControllerR()
 		return rJoystick2->GetY();
 }
 
+double OI::GetXDriverL()
+{
+	if (controllerLeft)
+		return rJoystick1->GetX();
+	else
+		return lJoystick1->GetX();
+}
+
+double OI::GetXDriverR()
+{
+	if (controllerLeft)
+		return rJoystick2->GetX();
+	else
+		return lJoystick2->GetX();
+}
+
+
 double OI::GetYDriverL()
 {
 	if (controllerLeft)
