@@ -42,8 +42,8 @@ void CustomControlLoop::StartLoop()
 void CustomControlLoop::Loop()
 {
 	double totalError = 0.0;
-	if (!Robot::drive->BothEncodersPresent())
-		return;
+	//if (!Robot::drive->BothEncodersPresent())
+	//	return;
 	std::vector<SpeedPoint> dataStorage (0);
 	std::vector<FullDataPoint> fDataStorage (0);
 	std::vector<VoltPoint> vDataStorage (0);
@@ -317,6 +317,8 @@ void CustomControlLoop::Loop()
 		{
 			if (ticker < dataStorage.size())
 			{
+				SmartDashboard::PutNumber("drive_speed_error_r", RobotMap::driverDrive1->GetClosedLoopError());
+				SmartDashboard::PutNumber("drive_speed_error_l", RobotMap::drivelDrive1->GetClosedLoopError());
 				double lSpeed;
 				double rSpeed;
 				double yawAngle;
@@ -326,17 +328,17 @@ void CustomControlLoop::Loop()
 				{
 					lSpeed = d.lSpeed;
 					rSpeed = d.rSpeed;
-					yawAngle = d.angle;
+					yawAngle = -1 *  d.angle;
 				}
 				else
 				{
 					lSpeed = -1 * d.rSpeed;
 					rSpeed = -1 * d.lSpeed;
-					yawAngle = -1 * d.angle;
+					yawAngle = d.angle;
 				}
-				double angleError = angle_diff(Robot::drive->GetYaw(), yawAngle);
+				double angleError = Robot::drive->GetYaw() - yawAngle;//angle_diff(Robot::drive->GetYaw(), yawAngle);
 				SmartDashboard::PutNumber("Angle Error", angleError);
-				double aCorr = 0 * angleError;
+				double aCorr = 1.0 + angleError / 22.5;
 				double lPosError = 0;
 				double rPosError = 0;
 				if (ticker > 0)
@@ -348,15 +350,25 @@ void CustomControlLoop::Loop()
 					lPosError = d.lPos - dl;
 					rPosError = d.rPos - dr;
 				}
-				Robot::drive->TankDrive(d.lSpeed + aCorr, -1 * (d.rSpeed - aCorr));
+				totalError += std::min(fabs(RobotMap::driverDrive1->GetClosedLoopError() * d.dur * 10), 2.5);
+				if (lSpeed > 0)
+					Robot::drive->TankDrive(lSpeed / aCorr, -1 * (rSpeed * aCorr));
+				else
+					Robot::drive->TankDrive(lSpeed * aCorr, -1 * (rSpeed / aCorr));
 				time_interval = (int)(d.dur * 1000000);
-				totalError += RobotMap::driverDrive1->GetClosedLoopError() * d.dur * 10;
+
 			}
 			else
 			{
+				SmartDashboard::PutNumber("drive_speed_error_r", 0);
+				SmartDashboard::PutNumber("drive_speed_error_l", 0);
+
+				RobotMap::drivelDrive1->ClearIaccum();
+				RobotMap::driverDrive1->ClearIaccum();
 				Robot::drive->TankDrive(0, 0);
 				pMode = PlayMode::NONE;
 			}
+
 		}
 		else if (pMode == PlayMode::VOLT_PROFILE)
 		{
@@ -380,9 +392,10 @@ void CustomControlLoop::Loop()
 		if (DriverStation::GetInstance().IsDisabled() || (rMode == RecordMode::NONE && pMode == PlayMode::NONE))
 			running = false;
 	}
-
+	DriverStation::GetInstance().ReportError("DONE WITH LOOP");
 	SmartDashboard::PutNumber("TOTAL PROFILE ERROR ", totalError);
-
+	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+	Robot::drive->TankDrive(0,0,false);
 	if (rMode == RecordMode::SPEED_PROFILE)
 	{
 		std::ofstream outputFile;
@@ -432,6 +445,9 @@ void CustomControlLoop::Loop()
 		outputFile.close();
 	}
 
+	dataStorage.clear();
+	fDataStorage.clear();
+	vDataStorage.clear();
 	loop_thread.detach();
 }
 

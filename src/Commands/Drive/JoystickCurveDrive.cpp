@@ -11,37 +11,49 @@ JoystickCurveDrive::JoystickCurveDrive()
 // Called just before this Command runs the first time
 void JoystickCurveDrive::Initialize()
 {
-	if (Robot::drive->BothEncodersPresent())
-	{
+//	if (Robot::drive->BothEncodersPresent())
+//	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(1.4);
-	}
-	else
-		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+		Robot::drive->SetDriveRampRate(0.25);
+//	}
+//	else
+//		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickCurveDrive::Execute()
 {
-	bool encodersPresent = Robot::drive->BothEncodersPresent();
-	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
-	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
-	}
-	double lSpeed = 0;
-	double rSpeed = 0;
-	double turnAmount = 0;
+//	bool encodersPresent = true;//Robot::drive->BothEncodersPresent();
+//	//if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
+//	//{
+//	//	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+//	//}
+//	double lSpeed = 0;
+//	double rSpeed = 0;
+//	double turnAmount = 1;
+//	double dirL = 1;
+//	double dirR = 1;
+//	if (Robot::oi->GetYDriverL() < 0.05)
+//		dirL = -1;
+//	if (Robot::oi->GetYDriverR() < 0.05)
+//		dirR = -1;
+//
+//
+//	if (fabs(Robot::oi->GetYDriverL()) > 0.05)
+//		lSpeed = Robot::oi->GetYDriverL() * Robot::oi->GetYDriverL() * dirL;
+//	if (fabs(Robot::oi->GetYDriverR()) > 0.05)
+//		rSpeed = Robot::oi->GetYDriverR() * Robot::oi->GetYDriverR() * dirR;
+//
+//	if (fabs(Robot::oi->GetXDriverL()) > 0.2)
+//		turnAmount *= (1 + Robot::oi->GetXDriverL() * kCurveEffect * dirL * -1);
+//	if (fabs(Robot::oi->GetXDriverR()) > 0.2)
+//		turnAmount *= (1 + Robot::oi->GetXDriverR() * kCurveEffect * dirR * -1);
+//	printf("%f\n", turnAmount);
+//	Robot::drive->TankDrive(lSpeed * turnAmount, rSpeed / turnAmount, encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving);
 
-	if (fabs(Robot::oi->GetYDriverL()) > 0.05)
-		lSpeed = Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL());
-	if (fabs(Robot::oi->GetYDriverR()) > 0.05)
-		rSpeed = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR());
-
-	if (fabs(Robot::oi->GetYDriverL()) > 0.1)
-		turnAmount += Robot::oi->GetXDriverL() * kCurveEffect ;
-	if (fabs(Robot::oi->GetYDriverR()) > 0.1)
-		turnAmount += Robot::oi->GetXDriverR() * kCurveEffect;
-	Robot::drive->TankDrive(lSpeed + turnAmount, rSpeed - turnAmount, encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving);
+	double speed = Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR());
+	double turnAmount = 1 + Robot::oi->GetXDriverR() * -1;
+	Robot::drive->TankDrive(speed * turnAmount, speed / turnAmount, true);
 }
 
 // Make this return true when this Command no longer needs to run execute()

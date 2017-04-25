@@ -5,35 +5,40 @@ JoystickDrive::JoystickDrive()
 {
 	// Use Requires() here to declare subsystem dependencies
 	Requires(Robot::drive.get());
+	SmartDashboard::PutNumber("max_lSpeed", 0.0);
+	SmartDashboard::PutNumber("max_rSpeed", 0.0);
 }
 
 // Called just before this Command runs the first time
 void JoystickDrive::Initialize()
 {
-	if (Robot::drive->BothEncodersPresent())
-	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(1.4);
-	}
-	else
+	//if (Robot::drive->BothEncodersPresent())
+	//{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+
+	//Robot::drive->SetDriveRampRate(0.25);
+	//}
+	//else
+	//	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
-	//SmartDashboard::PutNumber("fudgefactor", RobotMap::driverDrive1->GetSetpoint() / Robot::drive->GetREncoderRate());
-	bool encodersPresent = Robot::drive->BothEncodersPresent();
-	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
-	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
-	}
+	bool encodersPresent = true;//Robot::drive->BothEncodersPresent();
+	//if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
+	//{
+		//Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+	//}
 	/*else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage)
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 		Robot::drive->SetDriveRampRate(3.0);
 	}*/
-
+	if (fabs(RobotMap::driverDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_rSpeed", 0.0))
+		SmartDashboard::PutNumber("max_rSpeed", fabs(RobotMap::driverDrive1->GetEncVel()));
+	if (fabs(RobotMap::drivelDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_lSpeed", 0.0))
+		SmartDashboard::PutNumber("max_lSpeed", fabs(RobotMap::drivelDrive1->GetEncVel()));
 	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving);
 }
 

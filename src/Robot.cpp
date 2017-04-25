@@ -8,6 +8,8 @@
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
 
+#include "Commands/KitbotTesting/PositionTracker.h"
+#include "Commands/KitbotTesting/PegTest.h"
 #include "Commands/Auto/GearTopPeg.h"
 #include "Commands/Auto/GearBottomPeg.h"
 #include "Commands/Auto/MiddlePegAndShootRecorded.h"
@@ -15,6 +17,7 @@
 #include "Commands/Auto/VoltProfileReplay.h"
 #include "Commands/Auto/SpeedProfileReplay.h"
 #include "Commands/Auto/SpeedProfileRecord.h"
+#include "Commands/Auto/VisionGearPlacement/VisionGearPlacement.h"
 #include "Commands/Drive/AutoDriveDistance.h"
 #include "Commands/Drive/AutoDriveSpeed.h"
 #include "Commands/Drive/AutoDriveTurn.h"
@@ -32,6 +35,7 @@ std::shared_ptr<Gear> Robot::gear;
 std::shared_ptr<Climbing> Robot::climbing;
 std::shared_ptr<Acquisition> Robot::acquisition;
 std::shared_ptr<Storage> Robot::storage;
+std::shared_ptr<LEDs> Robot::leds;
 Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
 bool Robot::oiMapped;
@@ -62,7 +66,7 @@ void Robot::RobotInit()
 
 	table = NetworkTable::GetTable("vision");
 	CustomControlLoop::InitializeValues();
-	tMode = TestMode::NONE;
+	tMode = TestMode::AUTO_GEAR;
 	RobotMap::init();
 	oi.reset(new OI);
 	drive.reset(new Drive());
@@ -71,6 +75,7 @@ void Robot::RobotInit()
 	climbing.reset(new Climbing());
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
+	leds.reset(new LEDs(30));
 	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay("", true));
 	SmartDashboard::PutData("Create speed recording", new SpeedProfileRecord());
 	SmartDashboard::PutString("input_file_name", "paulsucks.csv");
@@ -115,6 +120,11 @@ void Robot::RobotInit()
 		break;
 		case TestMode::STORAGE_SPEED:
 			SmartDashboard::PutString("test_mode", "storage_speed");
+		break;
+		case TestMode::AUTO_GEAR:
+			SmartDashboard::PutNumber("target_gear_angle", 0.0);
+			SmartDashboard::PutNumber("target_gear_dist", 0.0);
+			SmartDashboard::PutData("Auto Gear Placement", new VisionGearPlacement());
 		break;
 	}
 
@@ -165,7 +175,7 @@ void Robot::RobotInit()
 		std::string auto_mode = autoSelection->GetSelected();
 		if (auto_mode == "none")
 		{
-
+			autonomousCommand.reset(new PegTest());
 		}
 		else if(auto_mode == "hshoot")
 		{
@@ -196,7 +206,6 @@ void Robot::RobotInit()
 			autonomousCommand.reset(new SpeedProfileReplay(auto_mode, false));
 		}
 
-
 		if (autonomousCommand != nullptr)
 			autonomousCommand->Start();
 
@@ -209,8 +218,9 @@ void Robot::RobotInit()
 
 	void Robot::TeleopInit()
 	{
+		(new PositionTracker())->Start();
 		PrintOrResetYaw();
-
+		side = sideSelection->GetSelected().c_str() == "r";
 
 		CustomControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
@@ -223,11 +233,11 @@ void Robot::RobotInit()
 
 	void Robot::TeleopPeriodic()
 	{
-		SmartDashboard::PutNumber("shooter_error", Robot::shooter->GetSpeedError());
+		//SmartDashboard::PutNumber("shooter_error", Robot::shooter->GetSpeedError());
 
 		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
-		SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
-		SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
+		//SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
+		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());
 		//SmartDashboard::PutBoolean("NavX Callibrating", RobotMap::driveahrs->IsCalibrating());
 		//SmartDashboard::PutBoolean("Profile recording", CustomControlLoop::rMode != CustomControlLoop::RecordMode::NONE);
 		frc::Scheduler::GetInstance()->Run();

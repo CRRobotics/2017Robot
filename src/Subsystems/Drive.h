@@ -65,14 +65,14 @@ private:
 	double closedLoopRampRate;
 	DriveControlMode currentControlMode;
 
-	double vTurnP = 0.0;
-	double vTurnI = 0.0;
-	double vTurnD = 0.0;
-	double vTurnF = 0.0;
-	double vDriveP = 0.90;
-	double vDriveI = 0.0;
+	double vTurnP = 0.65;
+	double vTurnI = 0.01;
+	double vTurnD = 0.5;
+	double vTurnF = 0.14;
+	double vDriveP = 1.4;//0.90;
+	double vDriveI = 0.005;
 	double vDriveD = 0.0;
-	double vDriveF = 0.0;
+	double vDriveF = 0.9;
 	double motionP = 0.0;
 	double motionI = 0.0;
 	double motionD = 0.0;

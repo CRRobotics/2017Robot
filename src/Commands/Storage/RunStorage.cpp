@@ -22,10 +22,12 @@ void RunStorage::Execute()
 		printf("Storage running\n");
 		Robot::storage->MoveStorage(-1.0);
 	}
-	else if (Robot::oi->GetFiring() && Robot::shooter->UpToSpeed())//!RobotMap::leftGate->Get() || !RobotMap::rightGate->Get()
+	else if (Robot::oi->GetFiring())//!RobotMap::leftGate->Get() || !RobotMap::rightGate->Get()
 	{
-		//double speed = fabs (30.0 / Robot::shooter->GetSpeedError());
-		Robot::storage->MoveStorage(-1.0);
+		if (Robot::shooter->UpToSpeed())
+			Robot::storage->MoveStorage(-1.0);
+		else
+			Robot::storage->MoveStorage(1.0);
 	}
 	else {
 		Robot::storage->MoveStorage(0.0);

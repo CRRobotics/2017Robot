@@ -51,12 +51,12 @@ void RobotMap::init()
     
     driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
     drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
-//    driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
-//    drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
-//    drivelDrive1->ConfigEncoderCodesPerRev(1028);
-//    driverDrive1->ConfigEncoderCodesPerRev(1028);
-//    drivelDrive1->SetSensorDirection(true);
-//    driverDrive1->SetSensorDirection(true);
+    driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
+    drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
+    drivelDrive1->ConfigEncoderCodesPerRev(1028);
+    driverDrive1->ConfigEncoderCodesPerRev(1028);
+    drivelDrive1->SetSensorDirection(true);
+    driverDrive1->SetSensorDirection(true);
 
     driverDrive1->SetPIDSourceType(PIDSourceType::kRate);
 	drivelDrive1->SetPIDSourceType(PIDSourceType::kRate);
