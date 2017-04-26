@@ -9,8 +9,8 @@
 // it from being updated in the future.
 
 
-#ifndef GEAR_H
-#define GEAR_H
+#ifndef GearFloorAcq_H
+#define GearFloorAcq_H
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
@@ -19,20 +19,21 @@
  *
  * @author ExampleAuthor
  */
-class Gear: public Subsystem {
+class GearFloorAcq: public Subsystem {
 private:
-	// It's desirable that everything possible is private except
-	// for methods that implement subsystem capabilities
-	std::shared_ptr<Solenoid> piston;
-	std::shared_ptr<DigitalInput> pegSensor;
+	std::shared_ptr<Solenoid> storagePiston;
+	std::shared_ptr<Solenoid> openPiston;
+	std::shared_ptr<DigitalInput> gearSensor;
+
 
 public:
-	Gear();
+	GearFloorAcq();
 	void InitDefaultCommand();
-	void ExtendGear();
-	void RetractGear();
-	bool GetExtended();
-	bool PegPresent();
+	void LowerSystem();
+	void RaiseSystem();
+	void OpenSystem();
+	void CloseSystem();
+	bool GearPresent();
 };
 
 #endif

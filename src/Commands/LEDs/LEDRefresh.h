@@ -30,10 +30,12 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	static void SetMode(LEDs::LEDMode mode, long duration);
+	static LEDs::LEDMode defaultMode;
 
 private:
 	long last_time;
-
+	static long mode_end_time;
 };
 
 #endif

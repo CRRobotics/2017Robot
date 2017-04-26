@@ -31,6 +31,10 @@ std::shared_ptr<Solenoid> RobotMap::drivegearShift;
 std::shared_ptr<Solenoid> RobotMap::rightGate;
 std::shared_ptr<Solenoid> RobotMap::leftGate;
 std::shared_ptr<Solenoid> RobotMap::doorPiston;
+std::shared_ptr<Solenoid> RobotMap::floorAcqStoragePiston;
+std::shared_ptr<Solenoid> RobotMap::floorAcqOpenPiston;
+std::shared_ptr<DigitalInput> RobotMap::floorAcqSensor;
+std::shared_ptr<DigitalInput> RobotMap::pegSensor;
 
 void RobotMap::init()
 {
@@ -51,12 +55,12 @@ void RobotMap::init()
     
     driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
     drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::CtreMagEncoder_Relative);
-    driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
-    drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
-    drivelDrive1->ConfigEncoderCodesPerRev(1028);
-    driverDrive1->ConfigEncoderCodesPerRev(1028);
-    drivelDrive1->SetSensorDirection(true);
-    driverDrive1->SetSensorDirection(true);
+    //driverDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
+    //drivelDrive1->SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
+    //drivelDrive1->ConfigEncoderCodesPerRev(1028);
+    //driverDrive1->ConfigEncoderCodesPerRev(1028);
+    //drivelDrive1->SetSensorDirection(true);
+    //driverDrive1->SetSensorDirection(true);
 
     driverDrive1->SetPIDSourceType(PIDSourceType::kRate);
 	drivelDrive1->SetPIDSourceType(PIDSourceType::kRate);
@@ -104,6 +108,12 @@ void RobotMap::init()
     storageballControlMotor.reset(new CANTalon(STORAGE_ROLLER));
     lw->AddActuator("Storage", "ballControlMotor", storageballControlMotor);
     
+    floorAcqOpenPiston.reset(new Solenoid(PCM_ID, FLOOR_ACQ_OPEN));
+    floorAcqStoragePiston.reset(new Solenoid(PCM_ID, FLOOR_ACQ_LOWER));
+
+    floorAcqSensor.reset(new DigitalInput(GEAR_SEN));
+    pegSensor.reset(new DigitalInput(PEG_SEN));
+
     driveahrs.reset(new AHRS(frc::SPI::kMXP));
 
 //    drivegearShift.reset(new Solenoid(GEAR_DRIVE_DOWN, GEAR_DRIVE_UP));

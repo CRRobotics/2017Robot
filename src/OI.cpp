@@ -18,6 +18,7 @@
 #include "Commands/Storage/RunStorage.h"
 #include "Commands/Storage/EjectFuel.h"
 #include "Commands/Shooter/RunShooter.h"
+#include "Commands/FloorAcq/PickUpFloorGear.h"
 
 bool OI::controllerLeft;
 
@@ -100,8 +101,10 @@ void OI::MapButtons()
 	ejectFuel.reset(new JoystickButton(controllerL.get(), EJECT_FUEL));
 	ejectFuel->WhileHeld(new EjectFuel());
 
-	dropOffGear.reset(new JoystickButton(controllerL.get(), DROP_GEAR));
-	dropOffGear->WhenPressed(new DropOffGear());
+	//dropOffGear.reset(new JoystickButton(controllerL.get(), DROP_GEAR));
+	//dropOffGear->WhenPressed(new DropOffGear());
+	floorGear.reset(new JoystickButton(controllerL.get(), FLOOR_GEAR));
+	floorGear->WhenPressed(new PickUpFloorGear());
 
 	Robot::oiMapped = true;
 }
@@ -180,5 +183,12 @@ bool OI::GetFiring()
 {
 	if (shooterAngleFar != nullptr && shooterAngleShort != nullptr)
 		return shooterAngleFar->Get() || shooterAngleShort->Get();
+	return false;
+}
+
+bool OI::GetFloorGear()
+{
+	if (floorGear != nullptr)
+		return floorGear->Get();
 	return false;
 }

@@ -25,6 +25,7 @@
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Storage.h"
 #include "Subsystems/LEDs.h"
+#include "Subsystems/GearFloorAcq.h"
 
 #include "OI.h"
 
@@ -58,6 +59,7 @@ public:
     static std::shared_ptr<Acquisition> acquisition;
     static std::shared_ptr<Storage> storage;
     static std::shared_ptr<LEDs> leds;
+    static std::shared_ptr<GearFloorAcq> floorAcq;
     static std::shared_ptr<NetworkTable> table;
     static void PrintOrResetYaw();
 	virtual void RobotInit();

@@ -16,6 +16,9 @@
 #define INTAKE_ROLLER 63
 #define STORAGE_ROLLER 6
 
+//Digital Inputs
+#define PEG_SEN 0 //TODO update
+#define GEAR_SEN 1
 
 //Pistons
 #define PCM_ID 61
@@ -26,6 +29,8 @@
 #define GEAR_PISTON 5
 #define SHOOTER_PISTON 0//4 -- intentionally fake
 #define PASSIVE_ACQ 2
+#define FLOOR_ACQ_LOWER 8
+#define FLOOR_ACQ_OPEN 9
 //anthony is a pretty guy i guess
 
 /**
@@ -57,6 +62,10 @@ public:
 	static std::shared_ptr<Solenoid> rightGate;
 	static std::shared_ptr<Solenoid> leftGate;
 	static std::shared_ptr<Solenoid> doorPiston;
+	static std::shared_ptr<Solenoid> floorAcqStoragePiston;
+	static std::shared_ptr<Solenoid> floorAcqOpenPiston;
+	static std::shared_ptr<DigitalInput> pegSensor;
+	static std::shared_ptr<DigitalInput> floorAcqSensor;
 
 
 	static void init();

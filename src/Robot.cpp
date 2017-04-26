@@ -24,6 +24,7 @@
 #include "Commands/Shooter/FireBalls.h"
 #include "Commands/Auto/GearMiddlePeg.h"
 #include "Commands/Auto/HopperAndShoot.h"
+#include "Commands/LEDs/LEDRefresh.h"
 #include "CommandBase.h"
 #include "Robot.h"
 #include "Commands/Shooter/StopShooter.h"
@@ -35,6 +36,7 @@ std::shared_ptr<Gear> Robot::gear;
 std::shared_ptr<Climbing> Robot::climbing;
 std::shared_ptr<Acquisition> Robot::acquisition;
 std::shared_ptr<Storage> Robot::storage;
+std::shared_ptr<GearFloorAcq> Robot::floorAcq;
 std::shared_ptr<LEDs> Robot::leds;
 Robot::TestMode Robot::tMode;
 std::shared_ptr<NetworkTable> Robot::table;
@@ -76,6 +78,7 @@ void Robot::RobotInit()
 	acquisition.reset(new Acquisition());
 	storage.reset(new Storage());
 	leds.reset(new LEDs(30));
+	floorAcq.reset(new GearFloorAcq());
 	SmartDashboard::PutData("Replay speed recording", new SpeedProfileReplay("", true));
 	SmartDashboard::PutData("Create speed recording", new SpeedProfileRecord());
 	SmartDashboard::PutString("input_file_name", "paulsucks.csv");
@@ -146,7 +149,9 @@ void Robot::RobotInit()
 	 */
 	void Robot::DisabledInit()
 	{
-
+		leds->ChangeMode(LEDs::LEDMode::RED_BLINK);
+		LEDRefresh::defaultMode = LEDs::LEDMode::RED_BLINK;
+		//(&(LEDRefresh)(leds->GetDefaultCommand())).Execute();
 	}
 
 	void Robot::DisabledPeriodic()
@@ -167,6 +172,9 @@ void Robot::RobotInit()
 	 */
 	void Robot::AutonomousInit()
 	{
+		LEDRefresh::defaultMode = LEDs::LEDMode::PATRIOTIC;
+		Robot::leds->ChangeMode(LEDs::LEDMode::PATRIOTIC);
+
 		RobotMap::leftGate->Set(true);
 		RobotMap::rightGate->Set(true);
 		Robot::gear->RetractGear();
@@ -218,6 +226,9 @@ void Robot::RobotInit()
 
 	void Robot::TeleopInit()
 	{
+		LEDRefresh::defaultMode = LEDs::LEDMode::RED;
+		Robot::leds->ChangeMode(LEDs::LEDMode::RED);
+
 		(new PositionTracker())->Start();
 		PrintOrResetYaw();
 		side = sideSelection->GetSelected().c_str() == "r";

@@ -33,7 +33,7 @@ public:
 		PURPLE,
 		PATRIOTIC,
 		GREEN_BLINK,
-		YELLOW_BLINK
+		RED_BLINK
 	};
 
 	void Refresh();
@@ -43,7 +43,7 @@ public:
 	std::vector<struct color> *colors;
 	unsigned offset;
 	bool cycle;
-
+	int cycle_time;
 
 private:
 	FILE *spif;

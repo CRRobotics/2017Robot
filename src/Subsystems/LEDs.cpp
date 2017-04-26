@@ -25,6 +25,7 @@ LEDs::LEDs(unsigned number) : Subsystem("LEDs") {
 		(*colors)[i].g = 0;
 		(*colors)[i].b = 0;
 	}
+	cycle_time = 1000;
 	SmartDashboard::PutBoolean("LED RUNNING", false);
 }
 
@@ -43,6 +44,7 @@ void LEDs::ChangeMode(LEDMode mode)
 	switch (mode)
 	{
 		case LEDMode::NONE:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -54,6 +56,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::RED:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -65,6 +68,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::BLUE:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -76,6 +80,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::GREEN:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -87,6 +92,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::YELLOW:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -98,6 +104,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::PURPLE:
+			cycle_time = 1000;
 			Resize(led_number);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -109,6 +116,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::PATRIOTIC:
+			cycle_time = 150;
 			Resize(led_number * 2);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
@@ -120,6 +128,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			}
 			break;
 		case LEDMode::GREEN_BLINK:
+			cycle_time = 100;
 			Resize(led_number * 2);
 			increment = led_number / 2;
 			for (unsigned i = 0; i < number; i++)
@@ -130,14 +139,15 @@ void LEDs::ChangeMode(LEDMode mode)
 				(*colors)[i].b = 0;
 			}
 			break;
-		case LEDMode::YELLOW_BLINK:
+		case LEDMode::RED_BLINK:
+			cycle_time = 600;
 			Resize(led_number * 2);
 			increment = led_number / 2;
 			for (unsigned i = 0; i < number; i++)
 			{
 				(*colors)[i].__brightness = 0xff;
 				(*colors)[i].r = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xf0 : 0;
-				(*colors)[i].g = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xf0 : 0;
+				(*colors)[i].g = 0;
 				(*colors)[i].b = 0;
 			}
 			break;

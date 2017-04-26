@@ -21,7 +21,8 @@
 #define ACQ_IN 11
 #define TOGGLE_HOPPER 10
 #define EJECT_FUEL 4
-#define DROP_GEAR 2
+//#define DROP_GEAR 2
+#define FLOOR_GEAR 2
 #define SHOOT_FAR 3
 #define SHOOT_SHORT 1
 #define TOGGLE_VISION_SHOOTER 7
@@ -44,6 +45,7 @@ public:
 	bool GetFiring();
 	bool GetDrivePTOOn();
 	bool GetDrivePTOOff();
+	bool GetFloorGear();
 private:
 	static bool controllerLeft;
 	std::shared_ptr<Joystick> rJoystick1;
@@ -52,7 +54,7 @@ private:
 	std::shared_ptr<Joystick> lJoystick2;
 
 
-	std::shared_ptr<JoystickButton> dropOffGear;
+	//std::shared_ptr<JoystickButton> dropOffGear;
 	std::shared_ptr<JoystickButton> ejectFuel;
 	std::shared_ptr<JoystickButton> driveLoadingZone;
 	std::shared_ptr<JoystickButton> driveShiftHighGear;
@@ -71,7 +73,7 @@ private:
 	std::shared_ptr<JoystickButton> turnToGear;
 	std::shared_ptr<JoystickButton> shooterAngleFar;
 	std::shared_ptr<JoystickButton> shooterAngleShort;
-
+	std::shared_ptr<JoystickButton> floorGear;
 };
 
 #endif  // OI_H
