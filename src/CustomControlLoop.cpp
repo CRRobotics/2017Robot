@@ -42,8 +42,8 @@ void CustomControlLoop::StartLoop()
 void CustomControlLoop::Loop()
 {
 	double totalError = 0.0;
-	//if (!Robot::drive->BothEncodersPresent())
-	//	return;
+	if (!Robot::drive->BothEncodersPresent())
+		DriverStation::ReportError("MOTION PROFILE CANCELLED - NO ENCODERS PRESENT");
 	std::vector<SpeedPoint> dataStorage (0);
 	std::vector<FullDataPoint> fDataStorage (0);
 	std::vector<VoltPoint> vDataStorage (0);

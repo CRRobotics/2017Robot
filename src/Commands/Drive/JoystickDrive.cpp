@@ -12,33 +12,33 @@ JoystickDrive::JoystickDrive()
 // Called just before this Command runs the first time
 void JoystickDrive::Initialize()
 {
-	//if (Robot::drive->BothEncodersPresent())
-	//{
+	if (Robot::drive->BothEncodersPresent())
+	{
+		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+		Robot::drive->SetDriveRampRate(3.0);
+	}
+	else
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
-
-	//Robot::drive->SetDriveRampRate(0.25);
-	//}
-	//else
-	//	Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
-	bool encodersPresent = true;//Robot::drive->BothEncodersPresent();
-	//if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
-	//{
-		//Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
-	//}
-	/*else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage)
+	bool encodersPresent = Robot::drive->BothEncodersPresent();
+	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
+	{
+		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+	}
+	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage && !Robot::climbing->IsMotorLocked())
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
 		Robot::drive->SetDriveRampRate(3.0);
-	}*/
-	if (fabs(RobotMap::driverDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_rSpeed", 0.0))
-		SmartDashboard::PutNumber("max_rSpeed", fabs(RobotMap::driverDrive1->GetEncVel()));
-	if (fabs(RobotMap::drivelDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_lSpeed", 0.0))
-		SmartDashboard::PutNumber("max_lSpeed", fabs(RobotMap::drivelDrive1->GetEncVel()));
+	}
+
+	//if (fabs(RobotMap::driverDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_rSpeed", 0.0))
+	//	SmartDashboard::PutNumber("max_rSpeed", fabs(RobotMap::driverDrive1->GetEncVel()));
+	//if (fabs(RobotMap::drivelDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_lSpeed", 0.0))
+	//	SmartDashboard::PutNumber("max_lSpeed", fabs(RobotMap::drivelDrive1->GetEncVel()));
 	Robot::drive->TankDrive(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()), Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()), encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving);
 }
 
