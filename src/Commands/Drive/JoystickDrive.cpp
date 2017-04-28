@@ -28,6 +28,10 @@ void JoystickDrive::Execute()
 	if (!encodersPresent)
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
+		RobotMap::drivelDrive2->SetControlMode(CANTalon::ControlMode::kPercentVbus);
+		RobotMap::driverDrive2->SetControlMode(CANTalon::ControlMode::kPercentVbus);
+		RobotMap::drivelDrive2->Set(Robot::oi->GetYDriverL() * fabs(Robot::oi->GetYDriverL()));
+		RobotMap::driverDrive2->Set(-Robot::oi->GetYDriverR() * fabs(Robot::oi->GetYDriverR()));
 	}
 //	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage && !(Robot::climbing->IsMotorLocked()))
 //	{
