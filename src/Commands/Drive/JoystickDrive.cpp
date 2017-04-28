@@ -15,7 +15,7 @@ void JoystickDrive::Initialize()
 	if (Robot::drive->BothEncodersPresent())
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(3.0);
+		Robot::drive->SetDriveRampRate(2.0);
 	}
 	else
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
@@ -25,15 +25,15 @@ void JoystickDrive::Initialize()
 void JoystickDrive::Execute()
 {
 	bool encodersPresent = Robot::drive->BothEncodersPresent();
-	if (!encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::VelocityDriving)
+	if (!encodersPresent)
 	{
 		Robot::drive->SetControlMode(Drive::DriveControlMode::Voltage);
 	}
-	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage && !Robot::climbing->IsMotorLocked())
-	{
-		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
-		Robot::drive->SetDriveRampRate(3.0);
-	}
+//	else if (encodersPresent && Robot::drive->GetControlMode() == Drive::DriveControlMode::Voltage && !(Robot::climbing->IsMotorLocked()))
+//	{
+//		Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+//		Robot::drive->SetDriveRampRate(3.0);
+//	}
 
 	//if (fabs(RobotMap::driverDrive1->GetEncVel()) > SmartDashboard::GetNumber("max_rSpeed", 0.0))
 	//	SmartDashboard::PutNumber("max_rSpeed", fabs(RobotMap::driverDrive1->GetEncVel()));

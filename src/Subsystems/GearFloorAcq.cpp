@@ -34,22 +34,22 @@ void GearFloorAcq::InitDefaultCommand()
 
 void GearFloorAcq::LowerSystem()
 {
-	storagePiston->Set(true);
+	storagePiston->Set(false);
 }
 
 void GearFloorAcq::RaiseSystem()
 {
-	storagePiston->Set(false);
+	storagePiston->Set(true);
 }
 
 void GearFloorAcq::CloseSystem()
 {
-	storagePiston->Set(false);
+	openPiston->Set(false);
 }
 
 void GearFloorAcq::OpenSystem()
 {
-	storagePiston->Set(true);
+	openPiston->Set(true);
 }
 
 bool GearFloorAcq::GearPresent()

@@ -27,6 +27,7 @@ void PickUpFloorGear::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void PickUpFloorGear::Execute()
 {
+	printf("%d\n", mode);
 	Robot::acquisition->CloseHopper();
 	if (!Robot::oi->GetFloorGear())
 		mode = 3;

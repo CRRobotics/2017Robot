@@ -13,13 +13,13 @@
 #include "../Gear/GearOut.h"
 #include "../Gear/GearIn.h"
 
-GearBottomPeg::GearBottomPeg()
+GearBottomPeg::GearBottomPeg()//GEAR RIGHT SIDE
 {
-	AddSequential(new SpeedProfileReplay("gear_bot.csv", false), 9.65);
+	AddSequential(new SpeedProfileReplay("gear_rSide.csv", false), 9.65);
 	//AddSequential(new GearOut(), 0.5);
-	//AddSequential(new Delay(),0.4);
-	//AddSequential(new DriveForwardAtSpeed(-150), 3.0);
-	//AddParallel(new GearIn(), 0.5);
+	AddSequential(new Delay(),0.2);
+	AddSequential(new DriveForwardAtSpeed(-200), 3.0);
+	AddParallel(new GearIn(), 0.5);
 	//AddSequential(new AutoDriveTurn(0), 4.0);
 
 }

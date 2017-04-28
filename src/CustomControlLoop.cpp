@@ -324,21 +324,21 @@ void CustomControlLoop::Loop()
 				double yawAngle;
 
 				SpeedPoint d = dataStorage[ticker];
-				if (Robot::side)
+				if (!Robot::side)
 				{
 					lSpeed = d.lSpeed;
 					rSpeed = d.rSpeed;
-					yawAngle = -1 *  d.angle;
+					yawAngle = d.angle;
 				}
 				else
 				{
 					lSpeed = -1 * d.rSpeed;
 					rSpeed = -1 * d.lSpeed;
-					yawAngle = d.angle;
+					yawAngle = -1 * d.angle;
 				}
 				double angleError = Robot::drive->GetYaw() - yawAngle;//angle_diff(Robot::drive->GetYaw(), yawAngle);
 				SmartDashboard::PutNumber("Angle Error", angleError);
-				double aCorr = 1.0 + angleError / 22.5;
+				double aCorr = 1.0;//+ angleError / 25;
 				double lPosError = 0;
 				double rPosError = 0;
 				if (ticker > 0)
@@ -351,7 +351,7 @@ void CustomControlLoop::Loop()
 					rPosError = d.rPos - dr;
 				}
 				totalError += std::min(fabs(RobotMap::driverDrive1->GetClosedLoopError() * d.dur * 10), 2.5);
-				if (lSpeed > 0)
+				if (lSpeed < 0)
 					Robot::drive->TankDrive(lSpeed / aCorr, -1 * (rSpeed * aCorr));
 				else
 					Robot::drive->TankDrive(lSpeed * aCorr, -1 * (rSpeed / aCorr));

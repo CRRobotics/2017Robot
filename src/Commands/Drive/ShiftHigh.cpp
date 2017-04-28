@@ -8,6 +8,8 @@ ShiftHigh::ShiftHigh()
 // Called just before this Command runs the first time
 void ShiftHigh::Initialize()
 {
+	Robot::drive->SetControlMode(Drive::DriveControlMode::VelocityDriving);
+	Robot::drive->SetDriveRampRate(3.0);
 }
 
 // Called repeatedly when this Command is scheduled to run

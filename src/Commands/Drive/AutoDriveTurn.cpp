@@ -34,7 +34,7 @@ void AutoDriveTurn::Execute()
 	printf("%f %f\n", currentAngle, desiredAngle);
 	SmartDashboard::PutNumber("angle error", error);
 	double direction = 1;
-	if (error < 0)
+	if (error > 0)
 		direction = -1;
 	error = fabs(error);
 	if (error > slowStart)

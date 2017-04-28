@@ -16,7 +16,7 @@ RunShooter::RunShooter(double withSpeed)
 void RunShooter::Initialize()
 {
 	Robot::shooter->ChangeControlMode(CANTalon::ControlMode::kSpeed);
-	Robot::shooter->SetGatePosition(true);
+	Robot::shooter->SetGatePosition(false);
 }
 
 // Called repeatedly when this Command is scheduled to run

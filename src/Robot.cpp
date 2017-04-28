@@ -54,10 +54,15 @@ void Robot::RobotInit()
 	sideSelection->AddDefault("red", "r");
 	sideSelection->AddObject("blue", "b");
 
+	SmartDashboard::PutNumber("angle error", 0);
+	SmartDashboard::PutNumber("drive_speed_error_r", 0);
+	SmartDashboard::PutNumber("drive_speed_error_l", 0);
+
+
 	autoSelection.reset(new frc::SendableChooser<std::string>());
 	autoSelection->AddDefault("Drive Forward (Gear Middle Peg)", "gear_middle");
-	autoSelection->AddObject("Gear Bottom", "gear_bot");
-	autoSelection->AddObject("Gear Top", "gear_top");
+	autoSelection->AddObject("Gear Bottom (Right)", "gear_bot");
+	autoSelection->AddObject("Gear Top (Left)", "gear_top");
 	autoSelection->AddObject("None", "none");
 	autoSelection->AddObject("Gear Middle Peg Recorded", "mpegrecorded");
 	autoSelection->AddObject("BottomPegAndShoot", "bpegshoot");
@@ -131,7 +136,7 @@ void Robot::RobotInit()
 		break;
 	}
 
-	side = true;//TRUE = RED, FALSE = BLUE
+	side = false;//TRUE = RED, FALSE = BLUE
 	oi->SetControllerSide(true);
 	oiMapped = false;
 	oi->MapButtons();
@@ -140,6 +145,9 @@ void Robot::RobotInit()
 	CustomControlLoop::pMode = CustomControlLoop::PlayMode::NONE;
 	CustomControlLoop::rMode = CustomControlLoop::RecordMode::NONE;
 	CustomControlLoop::running = false;
+
+	leds->ChangeMode(LEDs::LEDMode::RED_BLINK);
+	LEDRefresh::defaultMode = LEDs::LEDMode::RED_BLINK;
 }
 
 	/**
@@ -151,12 +159,13 @@ void Robot::RobotInit()
 	{
 		leds->ChangeMode(LEDs::LEDMode::RED_BLINK);
 		LEDRefresh::defaultMode = LEDs::LEDMode::RED_BLINK;
-		//(&(LEDRefresh)(leds->GetDefaultCommand())).Execute();
+
 	}
 
 	void Robot::DisabledPeriodic()
 	{
 		frc::Scheduler::GetInstance()->Run();
+		((LEDRefresh *)(leds->GetDefaultCommand()))->ExecuteCopy();
 	}
 
 	/**
@@ -179,7 +188,7 @@ void Robot::RobotInit()
 		RobotMap::rightGate->Set(true);
 		Robot::gear->RetractGear();
 		PrintOrResetYaw();
-		side = sideSelection->GetSelected() == "r";
+		side = std::string(sideSelection->GetSelected()) == "r";
 		std::string auto_mode = autoSelection->GetSelected();
 		if (auto_mode == "none")
 		{
@@ -195,10 +204,12 @@ void Robot::RobotInit()
 		}
 		else if (auto_mode == "gear_top")
 		{
+			Robot::side = true;
 			autonomousCommand.reset(new GearTopPeg());
 		}
 		else if (auto_mode == "gear_bot")
 		{
+			Robot::side = false;
 			autonomousCommand.reset(new GearBottomPeg());
 		}
 		else if (auto_mode == "mpegrecorded")
@@ -228,10 +239,10 @@ void Robot::RobotInit()
 	{
 		LEDRefresh::defaultMode = LEDs::LEDMode::RED;
 		Robot::leds->ChangeMode(LEDs::LEDMode::RED);
-
-		(new PositionTracker())->Start();
+		Robot::floorAcq->RaiseSystem();
+		//(new PositionTracker())->Start();
 		PrintOrResetYaw();
-		side = sideSelection->GetSelected().c_str() == "r";
+		//side = sideSelection->GetSelected().c_str() == "r";
 
 		CustomControlLoop::outputFileName = SmartDashboard::GetString("output_file_name", "nameless.csv");
 		CustomControlLoop::inputFileName = SmartDashboard::GetString("input_file_name", "nameless.txt");
@@ -245,7 +256,7 @@ void Robot::RobotInit()
 	void Robot::TeleopPeriodic()
 	{
 		//SmartDashboard::PutNumber("shooter_error", Robot::shooter->GetSpeedError());
-
+		SmartDashboard::PutBoolean("Gear Sensor", Robot::floorAcq->GearPresent());
 		SmartDashboard::PutNumber("Robot yaw", Robot::drive->GetYaw());
 		//SmartDashboard::PutNumber("test_speed_error", RobotMap::drivelDrive1->GetClosedLoopError());
 		//SmartDashboard::PutNumber("test_speed_speed", RobotMap::drivelDrive1->GetSpeed());

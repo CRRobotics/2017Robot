@@ -48,6 +48,21 @@ void LEDRefresh::Execute() {
 	}
 }
 
+void LEDRefresh::ExecuteCopy()
+{
+	long current_time = std::chrono::system_clock::now().time_since_epoch().count() * 1000 * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
+		if (current_time - last_time > Robot::leds->cycle_time)
+		{
+			Robot::leds->Refresh();
+			last_time = current_time;
+		}
+		if (mode_end_time != -1 && current_time - mode_end_time > 0)
+		{
+			Robot::leds->ChangeMode(defaultMode);
+			mode_end_time = -1;
+		}
+}
+
 // Make this return true when this Command no longer needs to run execute()
 bool LEDRefresh::IsFinished() {
     return false;

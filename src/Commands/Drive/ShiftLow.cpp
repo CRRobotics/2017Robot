@@ -8,6 +8,8 @@ ShiftLow::ShiftLow()
 // Called just before this Command runs the first time
 void ShiftLow::Initialize()
 {
+	Robot::drive->SetPIDF(0.6, 0.0,0.0, 0.15);
+	Robot::drive->SetDriveRampRate(1.0);
 }
 
 // Called repeatedly when this Command is scheduled to run

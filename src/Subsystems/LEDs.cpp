@@ -62,7 +62,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			for(unsigned i = 0; i < number; i++)
 			{
 					(*colors)[i].__brightness = 0xff;
-					(*colors)[i].r = 0xf0;
+					(*colors)[i].r = 0xff;
 					(*colors)[i].g = 0;
 					(*colors)[i].b = 0;
 			}
@@ -76,7 +76,7 @@ void LEDs::ChangeMode(LEDMode mode)
 					(*colors)[i].__brightness = 0xff;
 					(*colors)[i].r = 0;
 					(*colors)[i].g = 0;
-					(*colors)[i].b = 0xf0;
+					(*colors)[i].b = 0xff;
 			}
 			break;
 		case LEDMode::GREEN:
@@ -87,7 +87,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			{
 					(*colors)[i].__brightness = 0xff;
 					(*colors)[i].r = 0;
-					(*colors)[i].g = 0xf0;
+					(*colors)[i].g = 0xff;
 					(*colors)[i].b = 0;
 			}
 			break;
@@ -98,8 +98,8 @@ void LEDs::ChangeMode(LEDMode mode)
 			for(unsigned i = 0; i < number; i++)
 			{
 					(*colors)[i].__brightness = 0xff;
-					(*colors)[i].r = 0xf0;
-					(*colors)[i].g = 0xf0;
+					(*colors)[i].r = 0xff;
+					(*colors)[i].g = 0xff;
 					(*colors)[i].b = 0;
 			}
 			break;
@@ -110,21 +110,21 @@ void LEDs::ChangeMode(LEDMode mode)
 			for(unsigned i = 0; i < number; i++)
 			{
 					(*colors)[i].__brightness = 0xff;
-					(*colors)[i].r = 0xf0;
+					(*colors)[i].r = 0xff;
 					(*colors)[i].g = 0;
-					(*colors)[i].b = 0xf0;
+					(*colors)[i].b = 0xff;
 			}
 			break;
 		case LEDMode::PATRIOTIC:
-			cycle_time = 150;
+			cycle_time = 75;
 			Resize(led_number * 2);
 			increment = 1;
 			for(unsigned i = 0; i < number; i++)
 			{
 					(*colors)[i].__brightness = 0xff;
-					(*colors)[i].r = (i < number * 2 / 3)? 0xf0 : 0;
-					(*colors)[i].g = (i > number / 3 && i < number * 2 / 3)? 0xf0 : 0;
-					(*colors)[i].b = (i > number / 3)? 0xf0 : 0;
+					(*colors)[i].r = (i < number * 2 / 3)? 0xff : 0;
+					(*colors)[i].g = (i > number / 3 && i < number * 2 / 3)? 0xff : 0;
+					(*colors)[i].b = (i > number / 3)? 0xff : 0;
 			}
 			break;
 		case LEDMode::GREEN_BLINK:
@@ -135,7 +135,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			{
 				(*colors)[i].__brightness = 0xff;
 				(*colors)[i].r = 0;
-				(*colors)[i].g = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xf0 : 0;
+				(*colors)[i].g = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xff : 0;
 				(*colors)[i].b = 0;
 			}
 			break;
@@ -146,7 +146,7 @@ void LEDs::ChangeMode(LEDMode mode)
 			for (unsigned i = 0; i < number; i++)
 			{
 				(*colors)[i].__brightness = 0xff;
-				(*colors)[i].r = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xf0 : 0;
+				(*colors)[i].r = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xff : 0;
 				(*colors)[i].g = 0;
 				(*colors)[i].b = 0;
 			}

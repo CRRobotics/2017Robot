@@ -12,8 +12,8 @@ public:
 	bool IsFinished() override;
 	void End() override;
 	void Interrupted() override;
-	double maxSpeed = 90;
-	double minSpeed = 60;
+	double maxSpeed = 75;
+	double minSpeed = 40;
 	double slowStart = 15;
 	double slowEnd = 9;
 	double desiredAngle;

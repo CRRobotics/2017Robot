@@ -24,13 +24,13 @@
 #define PCM_ID 61
 #define PTO_PISTON 1
 #define SHIFTERS 4
-#define LFUEL_GATE 7
+#define LFUEL_GATE 9//7 -- intentionally wrong
 #define RFUEL_GATE 6
 #define GEAR_PISTON 5
-#define SHOOTER_PISTON 0//4 -- intentionally fake
+#define SHOOTER_PISTON 9//0 -- intentionally fake
 #define PASSIVE_ACQ 2
-#define FLOOR_ACQ_LOWER 8
-#define FLOOR_ACQ_OPEN 9
+#define FLOOR_ACQ_LOWER 0
+#define FLOOR_ACQ_OPEN 7
 //anthony is a pretty guy i guess
 
 /**

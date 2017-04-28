@@ -66,13 +66,13 @@ private:
 	DriveControlMode currentControlMode;
 
 	double vTurnP = 0.65;
-	double vTurnI = 0.01;
+	double vTurnI = 0.005;
 	double vTurnD = 0.5;
 	double vTurnF = 0.14;
-	double vDriveP = 1.4;//0.90;
-	double vDriveI = 0.005;
+	double vDriveP = 0.9;
+	double vDriveI = 0.0;
 	double vDriveD = 0.0;
-	double vDriveF = 0.9;
+	double vDriveF = 0.5;
 	double motionP = 0.0;
 	double motionI = 0.0;
 	double motionD = 0.0;

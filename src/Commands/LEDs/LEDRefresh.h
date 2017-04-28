@@ -30,6 +30,7 @@ public:
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
+	void ExecuteCopy();
 	static void SetMode(LEDs::LEDMode mode, long duration);
 	static LEDs::LEDMode defaultMode;
 
