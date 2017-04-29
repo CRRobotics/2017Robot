@@ -19,6 +19,7 @@
 #include "Commands/Storage/EjectFuel.h"
 #include "Commands/Shooter/RunShooter.h"
 #include "Commands/FloorAcq/PickUpFloorGear.h"
+#include "Commands/FloorAcq/OpenFloorAcq.h"
 
 bool OI::controllerLeft;
 
@@ -105,6 +106,9 @@ void OI::MapButtons()
 	//dropOffGear->WhenPressed(new DropOffGear());
 	floorGear.reset(new JoystickButton(controllerL.get(), FLOOR_GEAR));
 	floorGear->WhenPressed(new PickUpFloorGear());
+
+	openFloor.reset(new JoystickButton(controllerR.get(), OPEN_FLOOR));
+	openFloor->WhileHeld(new OpenFloorAcq());
 
 	Robot::oiMapped = true;
 }

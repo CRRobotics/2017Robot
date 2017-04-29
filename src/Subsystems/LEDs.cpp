@@ -141,12 +141,12 @@ void LEDs::ChangeMode(LEDMode mode)
 			break;
 		case LEDMode::RED_BLINK:
 			cycle_time = 600;
-			Resize(led_number * 2);
-			increment = led_number / 2;
+			Resize((led_number | 3) + 1);// * 2);
+			increment = 2;//led_number / 2;
 			for (unsigned i = 0; i < number; i++)
 			{
 				(*colors)[i].__brightness = 0xff;
-				(*colors)[i].r = (i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xff : 0;
+				(*colors)[i].r = ((i & 3) < 2) ? 0xff : 0;//(i < led_number / 2 || (i > led_number && i < led_number * 3 / 2))? 0xff : 0;
 				(*colors)[i].g = 0;
 				(*colors)[i].b = 0;
 			}

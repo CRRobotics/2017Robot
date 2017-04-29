@@ -14,7 +14,9 @@
 #define DRIVE_TO_GEAR 9 //Driver right
 #define DRIVE_TO_LOADING 7//Drive left
 
+
 //All controller buttons below
+#define OPEN_FLOOR 2
 #define TOGGLE_SHOOTER 6 //controller left
 #define EXTEND_GEAR 9
 #define RETRACT_GEAR 8
@@ -24,6 +26,7 @@
 //#define DROP_GEAR 2
 #define FLOOR_GEAR 2
 #define SHOOT_FAR 3
+
 #define SHOOT_SHORT 1
 #define TOGGLE_VISION_SHOOTER 7
 
@@ -74,6 +77,7 @@ private:
 	std::shared_ptr<JoystickButton> shooterAngleFar;
 	std::shared_ptr<JoystickButton> shooterAngleShort;
 	std::shared_ptr<JoystickButton> floorGear;
+	std::shared_ptr<JoystickButton> openFloor;
 };
 
 #endif  // OI_H

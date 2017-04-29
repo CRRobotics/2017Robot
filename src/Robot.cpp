@@ -239,7 +239,7 @@ void Robot::RobotInit()
 	{
 		LEDRefresh::defaultMode = LEDs::LEDMode::RED;
 		Robot::leds->ChangeMode(LEDs::LEDMode::RED);
-		Robot::floorAcq->RaiseSystem();
+		//Robot::floorAcq->RaiseSystem();
 		//(new PositionTracker())->Start();
 		PrintOrResetYaw();
 		//side = sideSelection->GetSelected().c_str() == "r";

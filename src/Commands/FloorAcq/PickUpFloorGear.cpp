@@ -62,7 +62,7 @@ void PickUpFloorGear::Execute()
 	}
 	else if (mode == 3)
 	{
-		if (drop_ticker < MODE_DELAY)
+		if (drop_ticker < MODE_DELAY * 2)
 			Robot::floorAcq->CloseSystem();
 		else
 		{
